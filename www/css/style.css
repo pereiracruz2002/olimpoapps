@@ -1,0 +1,700 @@
+/* Empty. Add your own CSS if you like */
+
+/* loader starts */
+
+#loader{
+  background-color: #18b4e4;
+  float: left;
+  width: 100%;
+  position: relative;
+}
+
+#loader .loader-inner {
+  border: 8px double #ffffff;
+  border-top: 8px double #0464a5;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 2s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -40px;
+  margin-left: -40px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* loader ends */
+
+/* intro starts */
+
+#intro{
+  position: relative;
+  float: left;
+  width: 100%;
+  overflow: hidden;
+  background: url(../img/intro.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+#intro .intro-inner{
+  float: left;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  top: 45%;
+  /*transform: translateY(-50%);*/
+  padding: 0 20px;
+}
+#intro .intro-inner h1{
+  text-transform: uppercase;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 30px;
+}
+#intro .intro-inner p{
+  color: #ffffff;
+  font-size: 15px;
+  font-family: 'Roboto Condensed', sans-serif;
+  margin: 15px 0;
+}
+#intro .intro-inner p span{
+  color: #18b4e4;
+  font-size: 15px;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+#intro .intro-inner .contact-btn{
+  display: inline-table;
+  padding: 15px;
+  background-color: #18b4e4;
+  border-radius: 30px;
+  width: 100%;
+  float: left;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-family: 'Roboto Condensed', sans-serif;
+  text-decoration: none;
+  font-size: 20px;
+  margin: 20px 0;
+}
+#intro .intro-inner .get-btn{
+  display: inline-table;
+  text-transform: uppercase;
+  font-size: 20px;
+  margin: 0 0 20px;
+  color: #ffffff;
+  text-decoration: none;
+}
+/* intro ends */
+
+/* get-in starts */
+
+#get-in{
+  float: left;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+#get-in .bar-header{
+  float: left;
+  width: 100%;
+  position: relative;
+}
+#get-in .list{
+  float: left;
+  width: 100%;
+  position: relative;
+  padding: 150px 25px;
+}
+#get-in .list .item{
+  border: none;
+  border-bottom: 1px solid #dddddd;
+}
+#get-in .list .getin-btn{
+  /*padding: 15px;*/
+  background-color: #18b4e4;
+  border-radius: 30px;
+  width: 100%;
+  float: left;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-family: 'Roboto Condensed', sans-serif;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 20px 0;
+}
+#get-in .list .facebook-btn{
+  background-color: transparent;
+  border: 1px solid #dddddd;
+  border-radius: 30px;
+  width: 100%;
+  float: left;
+  color: #929292;
+  text-transform: uppercase;
+  font-family: 'Roboto Condensed', sans-serif;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 20px 0;
+}
+#get-in .list .facebook-btn i{
+  margin-right: 15px;
+}
+#get-in .list .account-create{
+  display: block;
+  color: #333333;
+  text-align: center;
+  text-decoration: none;
+}
+#get-in .back-btn i{
+  line-height: 36px;
+  padding: 8px;
+  color: #18b4e4;
+  font-size: 20px;
+}
+/* get-in ends */
+
+/* register-student starts */
+
+#register-student .tabs{ top:43px !important;}
+#register-student{
+  float: left;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+#register-student .bar-header{
+  float: left;
+  width: 100%;
+  position: relative;
+}
+#register-student .back-btn i{
+  line-height: 36px;
+  padding: 8px;
+  color: #18b4e4;
+  font-size: 20px;
+}
+#register-student .register-tabs{
+  float: left;
+  width: 100%;
+}
+#register-student .register-tabs .tabs-icon-top > .tabs .tab-item{
+  font-size: 17px;
+  line-height: 42px;
+}
+#register-student .register-tabs .facebook-btn{
+  background-color: transparent;
+  border: 1px solid #dddddd;
+  border-radius: 30px;
+  width: 100%;
+  float: left;
+  color: #929292;
+  text-transform: uppercase;
+  font-family: 'Roboto Condensed', sans-serif;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 20px 0;
+}
+#register-student .register-tabs .facebook-btn i{
+  margin-right: 15px;
+}
+#register-student .register-tabs .cstm-content{
+  float: left;
+  width: 100%;
+  padding: 50px 25px;
+}
+#register-student .register-tabs .cstm-content .facebook-btn{
+  padding: 15px;
+  border: 1px solid #dddddd;
+  border-radius: 30px;
+  width: 100%;
+  float: left;
+  color: #929292;
+  text-transform: uppercase;
+  font-family: 'Roboto Condensed', sans-serif;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 20px 0;
+  text-align: center;
+}
+#register-student .register-tabs .cstm-content .profile{
+  float: left;
+  width: 100%;
+}
+#register-student .register-tabs .cstm-content .profile .profile-photo{
+  max-width: 110px;
+  max-height: 110px;
+  border-radius: 100%;
+  position: relative;
+  float: left;
+  width: 100%;
+}
+#register-student .register-tabs .cstm-content .profile .profile-photo img{
+  border-radius: 50%;
+  width: 100%;
+}
+#register-student .register-tabs .cstm-content .profile h5{
+  text-transform: capitalize;
+  color: #c5c5c5;
+  text-align: center;
+  margin-top: 48px;
+}
+#register-student .tabs-top > .tabs, #register-student  .tabs.tabs-top{
+  float: left;
+  width: 100%;
+  position: absolute;
+  /*top: 0;*/
+}
+#register-student .register-tabs .list{
+  padding: 30px 0;
+  float: left;
+  width: 100%;
+  position: relative;
+}
+#register-student .register-tabs .list label{
+  border: none;
+  border-bottom: 1px solid #dddddd;
+}
+#register-student .register-tabs .list .input-label{
+  padding: 15px 10px 15px 0;
+}
+#register-student .register-tabs .register-btn{
+  background-color: #18b4e4;
+  border-radius: 30px;
+  width: 100%;
+  float: left;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-family: 'Roboto Condensed', sans-serif;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 20px 0;
+}
+
+/* register-student ends */
+
+/* profile-professional starts */
+
+#profile-professional{
+  float: left;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: #f3f3f3;
+}
+#profile-professional .bar-header{
+  float: left;
+  width: 100%;
+  position: relative;
+}
+#profile-professional .back-btn i{
+  line-height: 36px;
+  padding: 8px;
+  color: #18b4e4;
+  font-size: 20px;
+}
+#profile-professional .check-content{
+  float: left;
+  width: 100%;
+  max-height: 300px;
+  overflow: auto;
+  margin: 35px 0 0;
+  padding: 0 15px;
+}
+#profile-professional .drop-content{
+  float: left;
+  width: 100%;
+  margin: 35px 0 0;
+  padding: 0 15px;
+}
+#profile-professional .text-content{
+  float: left;
+  width: 100%;
+  margin: 35px 0 0;
+  padding: 0 15px;
+
+}
+#profile-professional .text-content .text-inner{
+  border-color: #ddd;
+  background-color: #fff;
+  float: left;
+  width: 100%;
+  padding: 15px;
+}
+#profile-professional .text-content .text-inner .top{
+  float: left;
+  width: 100%;
+  margin-bottom: 20px;
+}
+#profile-professional .text-content .text-inner .top .left{
+  float: left;
+  text-transform: uppercase;
+  color: #333333;
+  font-size: 20px;
+}
+#profile-professional .text-content .text-inner .top .right{
+  float: right;
+}
+#profile-professional .text-content .text-inner p{
+  color: #616161;
+  font-size: 15px;
+}
+
+#profile-professional .range-content{
+  float: left;
+  width: 100%;
+  margin: 35px 0 0;
+  padding: 0 15px;
+}
+#profile-professional .range-content .range-inner{
+  float: left;
+  width: 100%;
+  border-color: #ddd;
+  background-color: #fff;
+  padding: 15px;
+}
+#profile-professional .range-content h5{
+  text-transform: uppercase;
+  color: #333333;
+  font-size: 20px;
+}
+#profile-professional .range-content .range{
+  border:none;
+}
+
+#profile-professional .call-content{
+  float: left;
+  width: 100%;
+  margin: 35px 0 0;
+  padding: 0 15px;
+}
+#profile-professional .call-content .call-inner{
+  float: left;
+  width: 100%;
+  border-color: #ddd;
+  background-color: #fff;
+}
+#profile-professional .call-content .top{
+  float: left;
+  width: 100%;
+  padding: 0 15px;
+}
+#profile-professional .call-content .top h5{
+  text-transform: uppercase;
+  color: #333333;
+  font-size: 20px;
+}
+#profile-professional .call-content .item-avatar{    border: none;
+  border-bottom: 1px solid #a5a5a5;}
+#profile-professional .call-content .item-avatar > img:first-child{
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  max-width: auto;
+  max-height: auto;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+}
+#profile-professional .call-content .item-avatar > img:last-child{
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  max-width: auto;
+  max-height: auto;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+}
+#profile-professional .call-content .item-input{
+  background-color: #e8e8e8;
+}
+
+#profile-professional .call-content .placeholder-icon{
+  padding: 6px 19px 0;
+}
+
+#profile-professional .call-content .list-inset{
+  float: left;
+  width: 100%;
+  padding: 0 15px 20px;
+  margin: 0;
+}
+
+#profile-professional .last-content{
+  float: left;
+  width: 100%;
+  margin: 35px 0;
+  padding: 0 15px;
+}
+#profile-professional .last-content .item{
+  position: relative;
+}
+#profile-professional .last-content .item h5{
+  text-transform: capitalize;
+  font-size: 17px;
+}
+#profile-professional .last-content .item img{
+  position: absolute;
+  right: 16px;
+  top: 12px;
+}
+#profile-professional .save-content{
+  float: left;
+  width: 100%;
+  padding: 0 15px;
+}
+#profile-professional .save-btn{
+  display: inline-table;
+  padding: 15px;
+  background-color: #18b4e4;
+  border-radius: 30px;
+  width: 100%;
+  float: left;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-family: 'Roboto Condensed', sans-serif;
+  text-decoration: none;
+  font-size: 20px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* profile-professional ends */
+
+/* search starts */
+
+#search{
+  float: left;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+#search .search-tabs{
+  float: left;
+  width: 100%;
+}
+#search .search-tabs .tabs-top > .tabs{
+  bottom: 0;
+  top: auto;
+}
+
+
+.header-perfil {
+    background: #ebe5d9;
+    padding-top: 30px;
+}
+
+.pic-chef {
+  position: absolute;
+  background: #6e2582;
+  font-size: .9em;
+  padding: 9px 10px 3px;
+  border-radius: 50%;
+  right: -30px;
+  top: 25%;
+}
+
+
+/* search ends */
+
+.messages {
+  display: -webkit-box !important;
+  display: -moz-box !important;
+  display: -ms-flexbox !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-align-content: center !important;
+  -ms-flex-line-pack: center !important;
+  align-content: center !important;
+  -webkit-box-align: center !important;
+  -moz-box-align: center !important;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  margin-bottom: 20px !important;
+  .message {
+    -webkit-box-flex: 1 !important;
+    -moz-box-flex: 1 !important;
+    -webkit-flex: 1 1 auto !important;
+    -ms-flex: 1 1 auto !important;
+    flex: 1 1 auto !important;
+    padding: 10px !important;
+    -webkit-transition: all 250ms ease-in-out !important;
+    transition: all 250ms ease-in-out !important;
+    overflow: hidden !important;
+    text-align: left !important;
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    -moz-transform: translate3d(0, 0, 0) !important;
+    transform: translate3d(0, 0, 0) !important;
+  }
+}
+
+.profile-item h2{
+  color: #FFF;
+}
+
+.scroll .profile-card{
+  margin: 0px;
+}
+
+.profile-item {
+  text-align: center;
+  background-color: #18b4e4;
+  color:#FFF;
+}
+
+.notification{
+  background-color: #FFF;
+}
+
+.profile-info p{
+  font-size: 12px;
+  color: #FFF;
+}
+
+/*.profile-picture {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  padding: 3px;
+  border-radius: 100%;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  margin: 0 auto;
+  width: 128px;
+  height: 128px;
+  overflow: hidden;
+
+}*/
+
+.profile-picture img {
+  width: 150px;
+  border-radius: 100%;
+}
+
+.profile-name {
+  padding-top: 20px;
+  font-size: x-large !important;
+  font-weight: bold !important;
+  text-transform: capitalize;
+}
+
+
+#profile-bg {
+        position: fixed;
+        left: 0;
+        top: 44px;
+        width: 100%;
+        height: 150px;
+        background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/94311/bg.jpg') no-repeat transparent;
+        background-size: 100%;
+        background-position: 50% 20%;
+        text-align: center;
+      }
+
+      #content {
+        position: relative;
+        margin-top: 150px;
+        background-color: white;
+        box-shadow: 0px -1px 10px rgba(0,0,0,0.4);
+        padding-top: 200px;
+      }
+
+      #profile-info {
+        position: absolute;
+        top: -95px;
+        width: 100%;
+        z-index: 2;
+        text-align: center;
+      }
+      #profile-name {
+        color: #444;
+        font-size: 26px;
+      }
+      #profile-description {
+        font-size: 15px;
+        color: #888;
+      }
+      #profile-description a {
+        color: #888;
+      }
+
+      #profile-image {
+        display: block;
+        border-radius: 100px;
+        border: 1px solid #fff;
+        width: 128px;
+        height: 128px;
+        margin: 30px auto 0;
+        box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+      }
+
+      .list-item-content {
+        padding: 5px;
+      }
+
+      .list-item {
+        color: #666666;
+      }
+
+      .post {
+        color: #444;
+      }
+
+      .post-time {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        font-size: 11px;
+        color: #888;
+      }
+
+      .post-profile-image {
+        display: inline-block;
+        vertical-align: top;
+        width: 48px;
+        height: 48px;
+        margin-right: 10px;
+      }
+      .post-options {
+        position: absolute;
+        font-size: 16px;
+        right: 5px;
+        bottom: 5px;
+        color: #888;
+      }
+
+.button:after {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    bottom: -6px;
+    left: -6px;
+    content: ' ';
+}
+
+.profile-info .button {
+  position: absolute;
+  bottom: 370px;
+  z-index: 100;
+  right: 40px;
+  border: 4px solid #fff;
+  border-radius: 100%;
+}
+
+#capaMapa {
+    display:none;
+    background-color:white;
+    position:fixed;
+    top:160%;
+    left:50%;
+    width:600px;
+    height:400px;
+    margin-top:-200px;
+    margin-left:-300px;
+    z-index:9900;
+}
+
