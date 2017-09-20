@@ -21,7 +21,9 @@
   }, null, {
     "profissional_aluno" : "1_-Ks0710340X-PgDNqYwQ",
     "profissional": "1",
-    "aluno":"-Ks0710340X-PgDNqYwQ"
+    "aluno":"-Ks0710340X-PgDNqYwQ",
+    "photoURLAluno":"https://pbs.twimg.com/profile_images/845340067891679232/fmcmw7VG.jpg",
+    "photoURL" : "http://i2.cdn.cnn.com/cnnnext/dam/assets/160630101057-michael-phelps-u-s-trials-exlarge-169.jpg",
   } ],
   "conversas" : [ null, {
     "data" : "22-09-2017",

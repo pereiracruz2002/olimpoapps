@@ -112,6 +112,50 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 .controller('DashDetailCtrl', function($scope, $stateParams,$firebaseObject) {
   var profissional = $stateParams.dashId;
   var root = firebase.database().ref();
+  var map;
+  var markers = [];
+  $scope.$watch('myModel.tab', function () {
+      console.log($scope.myModel.tab)
+      if ($scope.myModel.tab == 2) {
+          buildMap();
+      }
+  })
+
+  function buildMap() {
+      document.getElementById('map').style.height = (window.innerHeight - 145) + 'px';
+
+      map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 11,
+          center:{ lat:-23.7482748,lng:-46.6887343}
+          //center: {lat: $rootScope.geo.coords.latitude, lng: $rootScope.geo.coords.longitude}
+      });
+       angular.forEach($scope.eventos, function (evento, key) {
+            if (evento.latitude && evento.longitude) {
+                setTimeout(function () {
+                    markers[key] = new google.maps.Marker({
+                        position: {lat: parseFloat(-23.7482748), lng: parseFloat(-46.6887343)},
+                        map: map,
+                        animation: google.maps.Animation.DROP,
+                        title: evento.event_name
+                    })
+                    markers[key].addListener('click', function () {
+                        new google.maps.InfoWindow({
+                            content:
+                                    '<div class="content">' +
+                                    '<div class="bodyContent">' +
+                                    '<a href="">' + evento.event_name + '</a>' +
+                                    '</div>' +
+                                    '</div>'
+
+                        }).open(map, markers[key]);
+                    })
+                }, (key * 200));
+            }
+        })
+        setTimeout(function () {
+            google.maps.event.trigger(map, 'resize');
+        }, 100);
+    }
   $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('id').equalTo(profissional));
 
 })

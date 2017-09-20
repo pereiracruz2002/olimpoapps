@@ -1,5 +1,11 @@
 <ion-view view-title="Chats">
   <ion-content>
+    <div class="list">
+      <label class="item item-input">
+        <input type="text" placeholder="Buscar">
+         <i class="icon ion-search placeholder-icon"></i>
+      </label>
+    </div>
     <ion-list>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
         <img ng-src="{{chat.face}}">
@@ -7,8 +13,8 @@
         <p>{{chat.lastText}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
-        <ion-option-button class="button-assertive" ng-click="remove(chat)">
-          Delete
+        <ion-option-button class="button-positive" ng-click="remove(chat)">
+           <i class="icon ion-trash-a placeholder-icon"></i>
         </ion-option-button>
       </ion-item>
     </ion-list>

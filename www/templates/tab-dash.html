@@ -1,16 +1,32 @@
 <ion-view view-title="Profissionais">
   <ion-content>
-    <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="profile in profiles" type="item-text-wrap" href="#/tab/dash/{{profile.id}}">
-        <img ng-src="{{profile.photoURL}}">
-        <h2>{{profile.nome}}</h2>
-        <p>{{profile.sobrenome}}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
 
-        <ion-option-button class="button-assertive" ng-click="remove(chat)">
-          Delete
-        </ion-option-button>
-      </ion-item>
-    </ion-list>
+    <div class="list">
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete col-90" autocomplete="off" ng-model="formData.city" item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade" max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
+      </label>
+    </div>
+    <div class="button-bar bar-light">
+      <a ng-click="myModel.tab=1" ng-class="myModel.tab==1 ? 'active' : ''" class="button icon-left ion-levels">Lista</a>
+      <a ng-click="myModel.tab=2" ng-class="myModel.tab==2 ? 'active' : ''" class="button icon-left ion-android-map">Mapa</a>
+    </div>
+     <div ng-show="myModel.tab==1" id="lista">
+      <ion-list>
+        <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="profile in profiles" type="item-text-wrap" href="#/tab/dash/{{profile.id}}">
+          <img ng-src="{{profile.photoURL}}">
+          <h2>{{profile.nome}}</h2>
+          <p>{{profile.sobrenome}}</p>
+          <i class="icon ion-chevron-right icon-accessory"></i>
+
+          <ion-option-button class="button-assertive" ng-click="remove(chat)">
+            Delete
+          </ion-option-button>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div ng-show="myModel.tab==2" id="mapa">
+      <div id="map" style="width:100%; height:100%"></div>
+    </div>
   </ion-content>
 </ion-view>
