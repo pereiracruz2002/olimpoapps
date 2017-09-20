@@ -8,8 +8,11 @@
       </label>
     </div>
     <div class="button-bar bar-light">
-      <a ng-click="myModel.tab=1" ng-class="myModel.tab==1 ? 'active' : ''" class="button icon-left ion-levels">Lista</a>
-      <a ng-click="myModel.tab=2" ng-class="myModel.tab==2 ? 'active' : ''" class="button icon-left ion-android-map">Mapa</a>
+      <a ng-show="myModel.tab!=1"  ng-click="myModel.tab=1" ng-class="myModel.tab==1 ? 'active' : ''" class="button icon-left ion-levels">Lista</a>
+
+      <a ng-show="myModel.tab!=3" ng-click="myModel.tab=3" ng-class="myModel.tab==3 ? 'active' : ''" class="button icon-left ion-levels">Filtros</a>
+
+      <a ng-show="myModel.tab!=2" ng-click="myModel.tab=2" ng-class="myModel.tab==2 ? 'active' : ''" class="button icon-left ion-android-map">Mapa</a>
     </div>
      <div ng-show="myModel.tab==1" id="lista">
       <ion-list>
@@ -27,6 +30,124 @@
     </div>
     <div ng-show="myModel.tab==2" id="mapa">
       <div id="map" style="width:100%; height:100%"></div>
+    </div>
+    <div ng-show="myModel.tab==3" id="filtros">
+      <div class="check-content">
+      <ion-list>
+
+        <ion-checkbox  ng-repeat="treino in treinos" ng-model="profile.treino">{{treino.nome}}</ion-checkbox>
+
+
+      </ion-list>
+    </div>
+
+    <div class="drop-content">
+      <div class="list">
+
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Formacao
+          </div>
+          <select>
+            <option>Formation 1</option>
+            <option selected>Formation 1</option>
+            <option>Formation 1</option>
+          </select>
+        </label>
+
+      </div>
+    </div>
+
+    <div class="text-content">
+     <div class="text-inner">
+       <div class="top">
+         <span class="left">Descriçao</span>
+         <span class="right">200/300</span>
+       </div>
+       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab adipisci aperiam atque, commodi consequuntur
+         culpa cumque doloribus dolorum ducimus ea eos est exercitationem expedita fugit harum inventore laboriosam
+         magnam natus nemo nesciunt nostrum obcaecati quae quam repellendus, repudiandae suscipit veniam? Consequuntur
+         dicta laboriosam modi quasi.</p>
+     </div>
+    </div>
+
+    <div class="range-content">
+      <div class="range-inner">
+        <h5>Preco Medio por Treino</h5>
+        <div class="item range">
+          <i class="icon ion-social-usd"></i>
+          <input type="range" name="price">
+          <i class="icon ion-social-usd"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="call-content">
+      <div class="call-inner">
+        <div class="top">
+          <h5>Locais de atendimento</h5>
+        </div>
+        <div class="list">
+          <a class="item item-avatar" href="#">
+            <img src="img/map-icon.png">
+            <h2>Venkman</h2>
+            <p>Back off, man. I'm a scientist.</p>
+            <img src="img/delete-icon.png">
+          </a>
+          <a class="item item-avatar" href="#">
+            <img src="img/map-icon.png">
+            <h2>Venkman</h2>
+            <p>Back off, man. I'm a scientist.</p>
+            <img src="img/delete-icon.png">
+          </a>
+          <a class="item item-avatar" href="#">
+            <img src="img/map-icon.png">
+            <h2>Venkman</h2>
+            <p>Back off, man. I'm a scientist.</p>
+            <img src="img/delete-icon.png">
+          </a>
+          <a class="item item-avatar" href="#">
+            <img src="img/map-icon.png">
+            <h2>Venkman</h2>
+            <p>Back off, man. I'm a scientist.</p>
+            <img src="img/delete-icon.png">
+          </a>
+        </div>
+        <div class="list list-inset">
+          <label class="item item-input">
+
+            <input type="text" placeholder="Busca">
+            <i class="icon ion-search placeholder-icon"></i>
+          </label>
+        </div>
+        <ion-list>
+          <ion-checkbox ng-model="filter.pink">Posso atender em outros locais</ion-checkbox>
+        </ion-list>
+      </div>
+    </div>
+
+    <div class="last-content">
+      <ul class="list">
+        <li class="item">
+        <h5>Adicionar Bairro</h5>
+          <img src="img/add-icon.png" alt="">
+        </li>
+
+        <li class="item">
+          <h5>Add neighborhood</h5>
+          <img src="img/delete-icon.png" alt="">
+        </li>
+
+        <li class="item">
+          <h5>Mariana villa</h5>
+          <img src="img/delete-icon.png" alt="">
+        </li>
+      </ul>
+    </div>
+
+   <div class="save-content">
+     <a href="#" class="save-btn">Salvar</a>
+   </div>
     </div>
   </ion-content>
 </ion-view>

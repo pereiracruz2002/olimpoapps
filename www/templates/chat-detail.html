@@ -4,7 +4,7 @@
     <ion-list>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap">
         <img ng-src="{{chat.photoURL}}">
-        <h2>{{chat.name}}</h2>
+        <h2>{{chat.id}}</h2>
         <p>{{chat.texto}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
@@ -16,6 +16,7 @@
   </ion-content>
   <ion-footer-bar keyboard-attach class="bar-light item-input-inset">
     <label class="item-input-wrapper">
+      <input type="text" name="chat_id"  value="{{chat.id}}" ng-model="data.chat">
       <input type="text" placeholder="Digite uma mensagem" on-return="sendMessage(); closeKeyboard()" ng-model="data.message" on-focus="inputUp()" on-blur="inputDown()" />
     </label>
     <button class="button button-small button-clear" ng-click="sendMessage()">
