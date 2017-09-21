@@ -19,7 +19,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 })
 
-.controller('RegisterCtrl',function($scope,$stateParams,$state,$ionicPopup,$q,$firebaseAuth,UserService){
+.controller('RegisterCtrl',function($scope,$stateParams,$state,$ionicPopup,$q,$firebaseAuth,$firebaseArray,$cordovaCamera,$ionicPlatform,UserService){
   $scope.myModel= {'tab': 1};
 
   var firebaseAuthObject = $firebaseAuth();
@@ -44,6 +44,41 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           );
         return defer.promise;
     }
+
+  $ionicPlatform.ready(function(){
+        if(typeof(Camera) != 'undefined'){
+            var options = {
+                quality: 50,
+                destinationType: Camera.DestinationType.DATA_URL,
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                allowEdit: true,
+                encodingType: Camera.EncodingType.JPEG,
+                targetWidth: 300,
+                targetHeight: 300,
+                popoverOptions: CameraPopoverOptions,
+                saveToPhotoAlbum: false,
+                correctOrientation:true
+            };
+        }
+
+        $scope.choosePicture = function() {
+          
+          var ref = firebase.database();
+          var userReference = ref.ref("fotos/");
+          var syncArray = $firebaseArray(userReference.child("images"));
+
+          $cordovaCamera.getPicture(options).then(function(imageData) {
+            var picture = "data:image/jpeg;base64," + imageData;
+              syncArray.$add({image: picture}).then(function() {
+                  alert("Image has been uploaded");
+            });
+          }, function(error) {
+              console.error(error);
+          });
+        }
+
+       
+    })
 
   $scope.cadastro = function(user){
     var dados = user.estado;
