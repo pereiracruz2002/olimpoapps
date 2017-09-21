@@ -6,11 +6,17 @@
 -->
 <ion-view view-title="{{profile.nome}}">
   <ion-content class="padding" ng-repeat="profile in profiles">
-    <a href="#/tab/chats/{{profile.id}}">
+    <div class="header-perfil">
+        <div class="col-33 col-offset-33 text-center">
+             <h1 id="camera" class="chef-picture" ng-click="choosePicture()" style="background-image:url('{{profile.photoURL}}'); background-position:center center; background-size:cover;">
+                        
+        </div>
+    </div>
+   <!--  <a href="#/tab/chats/{{profile.id}}">
       <img ng-src="{{profile.photoURL}}" style="width: 64px; height: 64px">
     </a>
     <p>
       {{profile.nome}}
-    </p>
+    </p> -->
   </ion-content>
 </ion-view>

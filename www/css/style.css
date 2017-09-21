@@ -698,3 +698,18 @@
     z-index:9900;
 }
 
+.header-perfil{
+    background:#ebe5d9;
+    padding-top:30px;
+}
+
+.detalhe-perfil .header-perfil{
+    background:#fff;
+    padding-top:30px;
+}
+
+#camera {
+    margin-top: 40px;
+    border: 4px solid #fff;
+}
+
