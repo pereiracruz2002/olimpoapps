@@ -60,10 +60,10 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
     })
 
   .state('register', {
-      url: '/register',
-      controller: 'RegisterCtrl',
-      templateUrl: 'templates/register.html'
-    })
+    url: '/register',
+    controller: 'RegisterCtrl',
+    templateUrl: 'templates/register.html'
+  })
 
   // Each tab has its own nav history stack:
 
@@ -107,6 +107,15 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
       }
     })
 
+  .state('tab.account-detail', {
+      url: '/account/:accountId',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/account-detail.html',
+          controller: 'AccountDetailCtrl'
+        }
+      }
+    })
 
 
   .state('tab.account', {

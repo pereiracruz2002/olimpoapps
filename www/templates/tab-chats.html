@@ -6,8 +6,8 @@
          <i class="icon ion-search placeholder-icon"></i>
       </label>
     </div>
-    <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap" href="#/tab/chats/{{chat.profissional}}">
+    <ion-list class="list list-inset">
+      <ion-item class="item item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap" href="#/tab/chats/{{chat.profissional}}">
         <img ng-src="{{chat.photoURLProfissional}}">
         <h2>{{chat.nome}}</h2>
         <p>{{chat.last_msg}}</p>

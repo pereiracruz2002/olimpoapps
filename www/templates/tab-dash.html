@@ -15,16 +15,12 @@
       <a ng-show="myModel.tab!=2" ng-click="myModel.tab=2" ng-class="myModel.tab==2 ? 'active' : ''" class="button icon-left ion-android-map">Mapa</a>
     </div>
      <div ng-show="myModel.tab==1" id="lista">
-      <ion-list>
-        <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="profile in profiles" type="item-text-wrap" href="#/tab/dash/{{profile.id}}">
+      <ion-list class="list list-inset">
+        <ion-item class="item  item-avatar item-icon-right" ng-repeat="profile in profiles" type="item-text-wrap" href="#/tab/dash/{{profile.id}}">
           <img ng-src="{{profile.photoURL}}">
           <h2>{{profile.nome}}</h2>
           <p>{{profile.sobrenome}}</p>
           <i class="icon ion-chevron-right icon-accessory"></i>
-
-          <ion-option-button class="button-assertive" ng-click="remove(chat)">
-            Delete
-          </ion-option-button>
         </ion-item>
       </ion-list>
     </div>

@@ -4,19 +4,21 @@
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
 -->
-<ion-view view-title="{{profile.nome}}">
-  <ion-content class="padding" ng-repeat="profile in profiles">
-    <div class="header-perfil">
-        <div class="col-33 col-offset-33 text-center">
-             <h1 id="camera" class="chef-picture" ng-click="choosePicture()" style="background-image:url('{{profile.photoURL}}'); background-position:center center; background-size:cover;">
-                        
-        </div>
+<ion-view view-title="{{profiles[0].nome}}">
+  <ion-content  ng-repeat="profile in profiles">
+  <div class="hero has-mask " style="background-image: url('../img/cover-image.jpg');">
+    <div class="content">
+        <div class="avatar" style="background-image: url('{{profile.photoURL}}');"></div>
+        <h3>{{profile.nome}} {{profile.sobrenome}}</h3>
     </div>
-   <!--  <a href="#/tab/chats/{{profile.id}}">
-      <img ng-src="{{profile.photoURL}}" style="width: 64px; height: 64px">
-    </a>
-    <p>
-      {{profile.nome}}
-    </p> -->
+  </div>
+  <div class="list">
+    <div class="item item-divider">
+      Especialidades
+    </div>
+    <p class="item" ng-repeat="treino in profiles[0].treinos">
+      {{treino.name}}
+    </p>
+  </div>
   </ion-content>
 </ion-view>

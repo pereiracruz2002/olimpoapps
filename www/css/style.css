@@ -713,3 +713,38 @@
     border: 4px solid #fff;
 }
 
+.hero{
+    background-size: cover;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+    color: #fff;
+    height: 200px;
+    position: relative;
+    text-align: center;
+    -webkit-transition: all 1s cubic-bezier(.55,0,.1,1);
+    transition: all 1s cubic-bezier(.55,0,.1,1);
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    width: 100%;
+}
+
+.hero > .content {
+    bottom: 0px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+}
+
+.hero > .content > .avatar {
+    background-position: center center;
+    background-size: cover;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    display: inline-block;
+    height: 88px;
+    left: auto;
+    margin-bottom: 10px;
+    position: relative;
+    width: 88px;
+}
+

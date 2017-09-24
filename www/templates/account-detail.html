@@ -1,0 +1,87 @@
+<ion-view id="register-student">
+  <ion-content> 
+     <div class="bar bar-header bar-light">
+      <a href="#" class="back-btn"><i class="icon ion-chevron-left"></i></a>
+      <h1 class="title">EDITAR</h1>
+    </div>
+                  <form name="formRegister" ng-submit="cadastro(user)" ng-hide="contentBg">
+                <div class="profile">
+                  <div class="profile-photo">
+                    <a ng-click="choosePicture()" >
+                      <img  src="img/avatar.png" alt="">
+                    </a>
+                     <span class="icon ion-ios-camera" ng-hide="user.photoURL"></span>
+                  </div>
+                  <h5>Foto de perfil</h5>
+                </div>
+
+                <div class="list">
+                  <label class="item item-input item-stacked-label">
+                    <span class="input-label">Nome</span>
+                    <input type="text" name="nome" ng-model="user.nome"  placeholder="Nome" required>
+                    <small ng-show="formRegister.nome.$invalid && formRegister.nome.$touched" class="assertive">
+                      Campo Obrigatório
+                    </small>
+                  </label>
+                  <label class="item item-input item-stacked-label">
+                    <span class="input-label">Sobrenome</span>
+                    <input type="text" name="sobrenome" ng-model="user.sobrenome" placeholder="Sobrenome" required>
+                     <small ng-show="formRegister.sobrenome.$invalid && formRegister.sobrenome.$touched" class="assertive">
+                      Campo Obrigatório
+                    </small>
+                  </label>
+                  <label class="item item-input item-stacked-label">
+                    <span class="input-label">Email</span>
+                    <input type="email" name="email" ng-model="user.email" placeholder="Email" required>
+                    <small ng-show="formRegister.email.$invalid && formRegister.email.$touched" class="assertive">
+                      Campo Obrigatório
+                    </small>
+                  </label>
+                  
+                  <label class="item item-input item-stacked-label">
+                    <span class="input-label">Senha</span>
+                    <input ng-model="user.password" name="password" type="password" placeholder="Senha" required>
+                    <small ng-show="formRegister.password.$invalid && formRegister.password.$touched" class="assertive">
+                      Campo Obrigatório
+                    </small>
+                  </label>
+                  <label class="item item-input item-stacked-label">
+                    <span class="input-label">Repetir Senha</span>
+                    <input type="password" name="password2" placeholder="Repetir Senha" ng-model="user.password2" data-password-verify="formRegister.password" required>
+                    <small ng-show="(formRegister.password2.$invalid || formRegister.password2.$error.passwordVerify) && formRegister.password2.$touched" class="assertive">
+                      As senhas não são iguais!
+                    </small>
+                  </label>
+                  <label class="item item-input item-select">
+                    <div class="input-label">
+                      Sexo
+                    </div>
+                    <select ng-model="user.sexo">
+                      <option>Masculino</option>
+                      <option selected>Feminino</option>
+                    </select>
+                  </label>
+
+                  <label class="item item-input item-stacked-label">
+                    <span class="input-label">Data Nascimento</span>
+                    <input ng-model="user.nascimento" name="nascimento" type="date" placeholder="Data Nasciemnto" required>
+                    <small ng-show="formRegister.nascimento.$invalid && formRegister.nascimento.$touched" class="assertive">
+                      Campo Obrigatório
+                    </small>
+                  </label>
+                   <label class="item item-input">
+                      <i class="icon ion-ios-location-outline placeholder-icon"></i>
+                      <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off" ng-model="user.estado" item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade" max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
+                    </label>
+
+                  <button ng-disabled="formRegister.$invalid" class="button button-block button-positive register-btn">Cadastrar</button>
+
+                </div>
+            </form>
+
+
+
+  </ion-content>
+</ion-view>
+
+
