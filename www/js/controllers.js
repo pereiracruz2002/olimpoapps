@@ -282,6 +282,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   var profissional = $stateParams.accountId;
   var root = firebase.database().ref();
   $scope.user = {};
+  $scope.Optionsexo = [{ name: 'Macho', id: 1 }, { name: 'Feminino', id: 2 }];
  
  
   $dados = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(profissional));
@@ -293,8 +294,11 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
       $scope.user.sobrenome = data[0].sobrenome;
       $scope.user.email = data[0].email;
       $scope.user.password = data[0].password;
-      //$scope.user.nascimento = data[0].nascimento;
-
+      var str_birthday = data[0].nascimento.split('-');
+      var bairro_cidade = data[0].estado_cidade.split('_');
+      $scope.user.nascimento = new Date(str_birthday[0] + '/'+ str_birthday[1] + '/'+str_birthday[2]);
+      $scope.user.estado = bairro_cidade[1]+','+bairro_cidade[0];
+      $scope.user.sexo = {name: 'Macho', id: 1}
 
     },
     function(error) {

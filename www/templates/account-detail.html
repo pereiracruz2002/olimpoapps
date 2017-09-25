@@ -11,6 +11,7 @@
                       <img  src="img/avatar.png" alt="">
                     </a>
                      <span class="icon ion-ios-camera" ng-hide="user.photoURL"></span>
+
                   </div>
                   <h5>Foto de perfil</h5>
                 </div>
@@ -57,8 +58,9 @@
                       Sexo
                     </div>
                     <select ng-model="user.sexo">
-                      <option>Masculino</option>
-                      <option selected>Feminino</option>
+                    <option ng-repeat="item in Optionsexo" ng-value="item.id">{{item.name}}</option>
+                     <!--  <option>Masculino</option>
+                      <option selected>Feminino</option> -->
                     </select>
                   </label>
 

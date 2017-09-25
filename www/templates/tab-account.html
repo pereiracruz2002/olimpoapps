@@ -5,9 +5,10 @@
 <ion-view view-title="{{profiles[0].nome}}">
   <ion-content  class="has-header" ng-repeat="profile in profiles">
   <div class="hero has-mask " style="background-color: #11c1f3;">
-  	<a href="#/tab/account/{{profile.id}}" class="button button-icon icon ion-heart flat pull-right"></a>
+
     <div class="content">
         <div class="avatar" style="background-image: url('{{profile.photoURL}}');"></div>
+          <a href="#/tab/account/{{profiles[0].id}}"><span  class="d4ficon-3 pic-perfil"><i class="icon ion-edit"></i></span></a>
         <h3>{{profile.nome}} {{profile.sobrenome}}</h3>
     </div>
   </div>

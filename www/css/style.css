@@ -488,15 +488,7 @@
     padding-top: 30px;
 }
 
-.pic-chef {
-  position: absolute;
-  background: #6e2582;
-  font-size: .9em;
-  padding: 9px 10px 3px;
-  border-radius: 50%;
-  right: -30px;
-  top: 25%;
-}
+
 
 
 /* search ends */
@@ -738,7 +730,7 @@
 .hero > .content > .avatar {
     background-position: center center;
     background-size: cover;
-    border: 2px solid rgba(255, 255, 255, 0.8);
+    border: 3px solid #169ac1;
     border-radius: 50%;
     display: inline-block;
     height: 88px;
@@ -746,5 +738,20 @@
     margin-bottom: 10px;
     position: relative;
     width: 88px;
+}
+
+.pic-perfil {
+    position: absolute;
+    background:#373737;
+    color:#FFF;
+    font-size: .9em;
+    padding: 9px 10px 3px;
+    border-radius: 50%;
+    right: 40px;
+    top: 86%;
+}
+
+.hero h3{
+  color:#FFF;
 }
 
