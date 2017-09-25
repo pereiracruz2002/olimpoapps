@@ -281,6 +281,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 .controller('AccountDetailCtrl', function($scope, $stateParams,$firebaseObject,$firebaseArray) {
   var profissional = $stateParams.accountId;
   var root = firebase.database().ref();
+  $scope.myModel= {'tab': 1};
   $scope.user = {};
   $scope.Optionsexo = [{ name: 'Macho', id: 1 }, { name: 'Feminino', id: 2 }];
  
