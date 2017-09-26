@@ -149,7 +149,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
               template: error
           });
       });
-   }
+  }
 
 
 })
@@ -160,7 +160,6 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $scope.myModel= {'tab': 1};
   var root = firebase.database().ref();
   $scope.$watch('myModel.tab', function () {
-      console.log($scope.myModel.tab)
       if ($scope.myModel.tab == 2) {
           buildMap();
       }
@@ -281,9 +280,9 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 .controller('AccountDetailCtrl', function($scope, $stateParams,$firebaseObject,$firebaseArray) {
   var profissional = $stateParams.accountId;
   var root = firebase.database().ref();
-  $scope.myModel= {'tab': 1};
+  $scope.myTab= {'tab': 1};
   $scope.user = {};
-  $scope.Optionsexo = [{ name: 'Macho', id: 1 }, { name: 'Feminino', id: 2 }];
+  $scope.Optionsexo = [{ name: 'Masculino', id: 1 }, { name: 'Feminino', id: 2 }];
  
  
   $dados = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(profissional));
@@ -299,7 +298,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
       var bairro_cidade = data[0].estado_cidade.split('_');
       $scope.user.nascimento = new Date(str_birthday[0] + '/'+ str_birthday[1] + '/'+str_birthday[2]);
       $scope.user.estado = bairro_cidade[1]+','+bairro_cidade[0];
-      $scope.user.sexo = {name: 'Macho', id: 1}
+      $scope.user.sexo = data[0].sexo;
 
     },
     function(error) {
@@ -307,7 +306,57 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     }
   );
 
-  console.log($scope.user.nome)
+   $scope.editar = function(user){
+    var dados = user.estado;
+    if(typeof dados === 'object'){
+      var cidade = dados.address_components[1].short_name;
+      var estado = dados.address_components[2].short_name;
+    }
+    var estado_cidade = cidade+"_"+estado;
+
+        if(user.tipo =='aluno')
+          var usuarios = root.child('alunos/');
+        else
+          var usuarios = root.child('profissionais/');
+
+        firebaseUser.updateProfile({
+          displayName: user.nome,
+          photoURL: "https://i0.wp.com/www.revistabula.com/wp/wp-content/uploads/2017/01/elvis.jpg?resize=610%2C350"
+        }).then(function() {
+          var newUsers = usuarios.push();
+          newUsers.set({
+          id:firebaseUser.uid,
+          nome : user.nome,
+          sobrenome:user.sobrenome,
+          sexo:user.sexo,
+          email:user.email,
+          nascimento:user.nascimento,
+          estado:estado,
+          cidade:cidade,
+          estado_cidade:estado_cidade  
+          }).then(function(retorno){
+            if(user.tipo =="aluno")
+              $state.go('tab.dash');
+            else
+              $state.go("setup-profile-professional");
+
+          }).catch(function(error) {
+             var alertPopup = $ionicPopup.alert({
+                  title: 'Erro no Cadastro',
+                  template: error
+              });
+          });
+
+        }).catch(function(error) {
+             var alertPopup = $ionicPopup.alert({
+                  title: 'Erro ao Inserir no banco',
+                  template: error
+              });
+        });
+
+
+
+  }
 
 
 

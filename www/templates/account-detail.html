@@ -1,16 +1,12 @@
-<ion-view id="register-student">
+<ion-view view-title="Editar Peffil">
   <ion-content> 
-     <div class="bar bar-header bar-light">
-      <a href="#" class="back-btn"><i class="icon ion-chevron-left"></i></a>
-      <h1 class="title">EDITAR</h1>
-    </div>
     <div class="button-bar bar-light">
-      <a ng-show="myModel.tab!=1"  ng-click="myModel.tab=1" ng-class="myModel.tab==1 ? 'active' : ''" class="button icon-left ion-levels">Conta</a>
+      <a   ng-click="myTab.tab=1" ng-class="myTab.tab==1 ? 'active' : ''" class="button">Conta</a>
 
-      <a ng-show="myModel.tab!=2" ng-click="myModel.tab=2" ng-class="myModel.tab==2 ? 'active' : ''" class="button icon-left ion-android-map">Perfil</a>
+      <a  ng-click="myTab.tab=2" ng-class="myTab.tab==2 ? 'active' : ''" class="button ">Perfil</a>
     </div>
-    <div ng-show="myModel.tab==1" id="lista">
-      <form name="formRegister" ng-submit="cadastro(user)" ng-hide="contentBg">
+    <div ng-show="myTab.tab==1" id="account">
+      <form name="formRegister" ng-submit="editar(user)" ng-hide="contentBg">
         <div class="profile">
           <div class="profile-photo">
             <a ng-click="choosePicture()" >
@@ -45,7 +41,7 @@
             </small>
           </label>
           
-          <label class="item item-input item-stacked-label">
+          <!-- <label class="item item-input item-stacked-label">
             <span class="input-label">Senha</span>
             <input ng-model="user.password" name="password" type="password" placeholder="Senha" required>
             <small ng-show="formRegister.password.$invalid && formRegister.password.$touched" class="assertive">
@@ -58,15 +54,12 @@
             <small ng-show="(formRegister.password2.$invalid || formRegister.password2.$error.passwordVerify) && formRegister.password2.$touched" class="assertive">
               As senhas não são iguais!
             </small>
-          </label>
+          </label> -->
           <label class="item item-input item-select">
             <div class="input-label">
               Sexo
             </div>
-            <select ng-model="user.sexo">
-            <option ng-repeat="item in Optionsexo" ng-value="item.id">{{item.name}}</option>
-             <!--  <option>Masculino</option>
-              <option selected>Feminino</option> -->
+            <select ng-model="user.sexo" ng-options="sexo.name as sexo.name for sexo in Optionsexo">
             </select>
           </label>
 
@@ -82,12 +75,12 @@
               <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off" ng-model="user.estado" item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade" max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
             </label>
 
-          <button ng-disabled="formRegister.$invalid" class="button button-block button-positive register-btn">Cadastrar</button>
+          <button ng-disabled="formRegister.$invalid" class="button button-block button-positive register-btn">Editar</button>
 
         </div>
       </form>
     </div>
-    <div ng-show="myModel.tab==2" id="mapa">
+    <div ng-show="myTab.tab==2" id="profile">
     </div>
   </ion-content>
 </ion-view>
