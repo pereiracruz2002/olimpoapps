@@ -707,6 +707,7 @@
 
 .hero{
     background-size: cover;
+    background-image: url('../img/cover-image.jpg');
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
     color: #fff;
     height: 200px;
