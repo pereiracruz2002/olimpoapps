@@ -309,14 +309,14 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 
 .controller('AccountDetailCtrl', function($scope, $stateParams,$firebaseObject,$firebaseArray) {
-  var profissional = $stateParams.accountId;
+  var id = $stateParams.accountId;
   var root = firebase.database().ref();
   $scope.myTab= {'tab': 1};
   $scope.user = {};
   $scope.Optionsexo = [{ name: 'Masculino', id: 1 }, { name: 'Feminino', id: 2 }];
  
  
-  $dados = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(profissional));
+  $dados = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(id));
   $dados.$loaded(
     function(data) {
       var key = Object.keys(data)[0];
@@ -346,46 +346,27 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     var estado_cidade = cidade+"_"+estado;
 
         if(user.tipo =='aluno')
-          var usuarios = root.child('alunos/');
+          var usuarios = root.child('alunos/'+id);
         else
-          var usuarios = root.child('profissionais/');
+          var usuarios = root.child('profissionais/'+id);
 
-        firebaseUser.updateProfile({
-          displayName: user.nome,
-          photoURL: "https://i0.wp.com/www.revistabula.com/wp/wp-content/uploads/2017/01/elvis.jpg?resize=610%2C350"
-        }).then(function() {
-          var newUsers = usuarios.push();
-          newUsers.set({
-          id:firebaseUser.uid,
-          nome : user.nome,
-          sobrenome:user.sobrenome,
-          sexo:user.sexo,
-          email:user.email,
-          nascimento:user.nascimento,
-          estado:estado,
-          cidade:cidade,
-          estado_cidade:estado_cidade  
-          }).then(function(retorno){
-            if(user.tipo =="aluno")
-              $state.go('tab.dash');
-            else
-              $state.go("setup-profile-professional");
 
-          }).catch(function(error) {
-             var alertPopup = $ionicPopup.alert({
-                  title: 'Erro no Cadastro',
-                  template: error
-              });
-          });
+          editUsers{
+            nome : user.nome,
+            sobrenome:user.sobrenome,
+            sexo:user.sexo,
+            email:user.email,
+            nascimento:user.nascimento,
+            estado:estado,
+            cidade:cidade,
+            estado_cidade:estado_cidade  
+          };
 
-        }).catch(function(error) {
-             var alertPopup = $ionicPopup.alert({
-                  title: 'Erro ao Inserir no banco',
-                  template: error
-              });
+        editUsers.$save().then(function(ref) {
+          ref.key === obj.$id; // true
+        }, function(error) {
+          console.log("Error:", error);
         });
-
-
 
   }
 
