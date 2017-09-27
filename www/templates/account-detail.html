@@ -10,7 +10,7 @@
         <div class="profile">
           <div class="profile-photo">
             <a ng-click="choosePicture()" >
-              <img  src="img/avatar.png" alt="">
+              <img ng-src="data:image/jpeg;base64,{{user.photoURL}}" alt="">
             </a>
              <span class="icon ion-ios-camera" ng-hide="user.photoURL"></span>
 

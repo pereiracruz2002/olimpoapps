@@ -27,9 +27,9 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
   var root = firebase.database().ref();
 
-  var userReference = root.child("images/" + 1);
-  var syncArray = $firebaseArray(userReference.child("imageuploadapp"));
-  $scope.images = syncArray;
+  //var userReference = root.child("images/" + 1);
+  // var syncArray = $firebaseArray(userReference.child("imageuploadapp"));
+  // $scope.images = syncArray;
 
 
   var geocoder = new google.maps.Geocoder();
@@ -53,68 +53,34 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 
         $ionicPlatform.ready(function(){
-        if(typeof(Camera) != 'undefined'){
-            var options = {
-                quality: 50,
-                destinationType: Camera.DestinationType.DATA_URL,
-                sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
-                allowEdit: true,
-                encodingType: Camera.EncodingType.JPEG,
-                targetWidth: 300,
-                targetHeight: 300,
-                popoverOptions: CameraPopoverOptions,
-                saveToPhotoAlbum: false,
-                correctOrientation:true
-            };
-        }
+          if(typeof(Camera) != 'undefined'){
+              var options = {
+                  quality: 50,
+                  destinationType: Camera.DestinationType.DATA_URL,
+                  sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+                  allowEdit: true,
+                  encodingType: Camera.EncodingType.JPEG,
+                  targetWidth: 300,
+                  targetHeight: 300,
+                  popoverOptions: CameraPopoverOptions,
+                  saveToPhotoAlbum: false,
+                  correctOrientation:true
+              };
+          }
 
-        $scope.choosePicture = function(){
-            $cordovaCamera.getPicture(options).then(function(imageData) {
-                $scope.formData.picture = "data:image/jpeg;base64," + imageData;
-                syncArray.$add({image: imageData}).then(function() {
-                console.log("Image has been uploaded");
-            });
-                
-            }, function(err) {
-              console.log(err)
-            });
-        }
+          $scope.choosePicture = function(){
+              $cordovaCamera.getPicture(options).then(function(imageData) {
+                  $scope.formData.picture = "data:image/jpeg;base64," + imageData;
+                  syncArray.$add({image: imageData}).then(function() {
+                  console.log("Image has been uploaded");
+              });
+                  
+              }, function(err) {
+                console.log(err)
+              });
+          }
+        });
 
-    });
-
-
-        function procesarImagen(pathImagen) {
-          var directorioFuente = pathImagen.substring(0, pathImagen.lastIndexOf('/') + 1),
-          archivoFuente = pathImagen.substring(pathImagen.lastIndexOf('/') + 1, pathImagen.length),
-          nombreParaGuardar = new Date().valueOf() + archivoFuente;
-
-          $cordovaFile.readAsArrayBuffer(directorioFuente, archivoFuente)
-              .then(function (success) {
-                  var blob = new Blob([success], {type: 'image/jpeg'});
-                  enviarFirebase(blob, nombreParaGuardar);
-              }, function (error) {
-                  console.error(error);
-          });
-
-        function enviarFirebase(file, nombre) {
-    var storageRef = firebase.storage().ref();
-    var uploadTask = storageRef.child('images/' + nombre).put(file);
-    uploadTask.on('state_changed', function (snapshot) {
-        console.info(snapshot);
-    }, function (error) {
-        console.error(error);
-    }, function () {
-        var downloadURL = uploadTask.snapshot.downloadURL;
-        console.log(downloadURL);
-    });
-}
-
-
-}
-
-
-       
-   // })
 
   $scope.cadastro = function(user){
     var dados = user.estado;
@@ -308,7 +274,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 })
 
 
-.controller('AccountDetailCtrl', function($scope, $stateParams,$firebaseObject,$firebaseArray) {
+.controller('AccountDetailCtrl', function($scope, $stateParams,$firebaseObject,$firebaseArray,$q) {
   var id = $stateParams.accountId;
   var root = firebase.database().ref();
   $scope.myTab= {'tab': 1};
@@ -330,6 +296,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
       $scope.user.nascimento = new Date(str_birthday[0] + '/'+ str_birthday[1] + '/'+str_birthday[2]);
       $scope.user.estado = bairro_cidade[1]+','+bairro_cidade[0];
       $scope.user.sexo = data[0].sexo;
+      $scope.user.photoURL = data[0].photoURL;
 
     },
     function(error) {
@@ -337,12 +304,33 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     }
   );
 
+  var geocoder = new google.maps.Geocoder();
+  $scope.getAddressSuggestions = function(queryString){
+      var defer = $q.defer();
+      geocoder.geocode(
+        {
+            address: queryString,
+            componentRestrictions: {country: 'BR'}
+        },
+        function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              
+              defer.resolve(results); 
+            }
+            else { defer.reject(results); }
+        }
+        );
+      return defer.promise;
+  }
+
    $scope.editar = function(user){
-    var dados = user.estado;
-    if(typeof dados === 'object'){
-      var cidade = dados.address_components[1].short_name;
-      var estado = dados.address_components[2].short_name;
+    var dadosLocal = user.estado;
+    console.log(dadosLocal)
+    if(typeof dadosLocal === 'object'){
+      var cidade = dadosLocal.address_components[1].short_name;
+      var estado = dadosLocal.address_components[2].short_name;
     }
+    console.log(cidade)
     var estado_cidade = cidade+"_"+estado;
 
         if(user.tipo =='aluno')
@@ -351,7 +339,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           var usuarios = root.child('profissionais/'+id);
 
 
-          editUsers{
+          editUsers={
             nome : user.nome,
             sobrenome:user.sobrenome,
             sexo:user.sexo,
@@ -362,8 +350,10 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
             estado_cidade:estado_cidade  
           };
 
-        editUsers.$save().then(function(ref) {
-          ref.key === obj.$id; // true
+          console.log(editUsers)
+
+        $dados.$add(editUsers).then(function(ref) {
+          ref.key === $dados.$id; // true
         }, function(error) {
           console.log("Error:", error);
         });
