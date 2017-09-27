@@ -28,7 +28,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   var root = firebase.database().ref();
 
   //var userReference = root.child("images/" + 1);
-  // var syncArray = $firebaseArray(userReference.child("imageuploadapp"));
+  var syncArray = $firebaseArray(userReference.child("alunos"));
   // $scope.images = syncArray;
 
 

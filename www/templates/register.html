@@ -15,7 +15,7 @@
                 <div class="profile">
                   <div class="profile-photo">
                     <a ng-click="choosePicture()" >
-                      <img  ng-src="data:image/jpeg;base64,{{formData.picture}}" alt="">
+                      <img  ng-src="{{formData.picture}}" alt="">
                     </a>
                     <!-- <div class="row" ng-repeat="image in images" ng-if="$index % 4 === 0">
                      <img ng-src="data:image/jpeg;base64,{{images[0].image}}" width="100%" />
