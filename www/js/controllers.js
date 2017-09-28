@@ -28,7 +28,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   var root = firebase.database().ref();
 
   //var userReference = root.child("images/" + 1);
-  var syncArray = $firebaseArray(userReference.child("alunos"));
+  var syncArray = $firebaseArray(root.child("alunos"));
   // $scope.images = syncArray;
 
 
@@ -286,6 +286,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $dados.$loaded(
     function(data) {
       var key = Object.keys(data)[0];
+      firebaseId = data[0].$id;
       $scope.user.photoURL = data[0].photoURL;
       $scope.user.nome = data[0].nome;
       $scope.user.sobrenome = data[0].sobrenome;
@@ -333,10 +334,14 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     console.log(cidade)
     var estado_cidade = cidade+"_"+estado;
 
-        if(user.tipo =='aluno')
-          var usuarios = root.child('alunos/'+id);
-        else
-          var usuarios = root.child('profissionais/'+id);
+    console.log(firebaseId)
+
+    var usuarios = root.child('alunos/'+firebaseId);
+
+        // if(user.tipo =='aluno')
+        //   var usuarios = root.child('alunos/'+firebaseId);
+        // else
+        //   var usuarios = root.child('profissionais/'+firebaseId);
 
 
           editUsers={
@@ -352,8 +357,9 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
           console.log(editUsers)
 
-        $dados.$add(editUsers).then(function(ref) {
-          ref.key === $dados.$id; // true
+        $dados.$save(editUsers).then(function(usuarios) {
+          //ref.key === $dados.$id; // true
+          console.log('atualizou')
         }, function(error) {
           console.log("Error:", error);
         });

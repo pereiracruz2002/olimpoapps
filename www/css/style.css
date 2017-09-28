@@ -756,3 +756,17 @@
   color:#FFF;
 }
 
+
+#edit-account .profile .profile-photo{
+  max-width: 110px;
+  max-height: 110px;
+  border-radius: 100%;
+  position: relative;
+  /*float: left;*/
+  width: 100%;
+}
+#edit-account .profile .profile-photo img{
+  border-radius: 50%;
+  width: 100%;
+}
+
