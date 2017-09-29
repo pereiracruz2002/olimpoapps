@@ -161,10 +161,14 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 })
 
-.controller('DashCtrl', function($scope,$firebaseObject,$ionicLoading,$rootScope) {
+.controller('DashCtrl', function($scope,$firebaseObject,$ionicLoading,$rootScope,$q) {
   var map;
   var markers = [];
   $scope.myModel= {'tab': 1};
+  $scope.formData = {
+        city: ""
+  };
+  $scope.profiles = {};
   var root = firebase.database().ref();
   $scope.$watch('myModel.tab', function () {
       if ($scope.myModel.tab == 2) {
@@ -193,27 +197,18 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   //$scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo('SP'));
   
   $scope.$watch('formData.city', function () {
-        var dados = $scope.formData.city;
-        if (typeof dados === 'object') {
+    
+         var dados = $scope.formData.city;
+         if (typeof dados === 'object') {
+          console.log(dados)
             $scope.formData.cidade = dados.address_components[0].short_name;
             $scope.formData.estado = dados.address_components[1].short_name;
             $scope.titulo = 'Profissionais em ' + $scope.formData.cidade + ' - ' + $scope.formData.estado;
-            // $ionicLoading.show();
-            // if ($scope.formData.city.geometry) {
-            //     $rootScope.geo.coords.latitude = $scope.formData.city.geometry.location.lat();
-            //     $rootScope.geo.coords.longitude = $scope.formData.city.geometry.location.lng();
-            // }
-             $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo($scope.formData.cidade));
-            // EventsService.getEventsPublic($scope.formData.cidade, $scope.formData.estado).then(function (result) {
-            //     //$scope.eventos = result.data;
-               
-            //     $ionicLoading.hide();
-            //     if ($scope.myModel.tab == 2) {
-            //         buildMap();
-            //     }
-            // });
-        }
-    });
+
+              $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('cidade').equalTo($scope.formData.cidade));
+  
+         }
+   });
 
   function buildMap() {
     document.getElementById('map').style.height = (window.innerHeight - 145) + 'px';
