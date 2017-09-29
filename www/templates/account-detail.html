@@ -13,6 +13,7 @@
               <img ng-src="data:image/jpeg;base64,{{user.photoURL}}" alt="">
             </a>
              <span class="icon ion-ios-camera" ng-hide="user.photoURL"></span>
+             <span ng-model="user.id">{{user.id}}</span>
 
           </div>
           <h5>Foto de perfil</h5>
@@ -65,7 +66,7 @@
 
           <label class="item item-input item-stacked-label">
             <span class="input-label">Data Nascimento</span>
-            <input ng-model="user.nascimento" name="nascimento" type="date" placeholder="Data Nasciemnto" required>
+            <input ng-model="user.nascimento" name="nascimento" type="date" format="dd/MM/yyyy" placeholder="Data Nasciemnto" required>
             <small ng-show="formRegister.nascimento.$invalid && formRegister.nascimento.$touched" class="assertive">
               Campo Obrigatório
             </small>

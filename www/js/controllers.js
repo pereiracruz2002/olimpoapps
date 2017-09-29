@@ -80,15 +80,25 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
               });
           }
         });
+  
 
 
   $scope.cadastro = function(user){
     var dados = user.estado;
     if(typeof dados === 'object'){
-      var cidade = dados.address_components[1].short_name;
-      var estado = dados.address_components[2].short_name;
+      var cidade = dados.address_components[0].short_name;
+      var estado = dados.address_components[1].short_name;
     }
     var estado_cidade = cidade+"_"+estado;
+
+    var data = new Date(new Date(user.nascimento));
+    var year=data.getFullYear();
+    var month=data.getMonth()+1 //getMonth is zero based;
+    var day=data.getDate();
+    var months = {"1": "01","2": "02","3": "03","4": "04","5": "05","6": "06","7": "07","8": "08","9": "09","10": "10","11": "11","12": "12"};
+    var formatted=day+"-"+months[month]+"-"+year;
+
+    console.log(formatted);
 
     firebaseAuthObject.$createUserWithEmailAndPassword(user.email, user.password).then(function(firebaseUser) {
       firebase.auth().currentUser.sendEmailVerification().then(function() {
@@ -110,7 +120,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           sobrenome:user.sobrenome,
           sexo:user.sexo,
           email:user.email,
-          nascimento:user.nascimento,
+          nascimento:formatted,
           estado:estado,
           cidade:cidade,
           estado_cidade:estado_cidade  
@@ -151,7 +161,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 })
 
-.controller('DashCtrl', function($scope,$firebaseObject) {
+.controller('DashCtrl', function($scope,$firebaseObject,$ionicLoading,$rootScope) {
   var map;
   var markers = [];
   $scope.myModel= {'tab': 1};
@@ -162,6 +172,30 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
       }
   })
   $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo('SP'));
+  
+  // $scope.$watch('formData.city', function () {
+  //       var dados = $scope.formData.city;
+  //       if (typeof dados === 'object') {
+  //           $scope.formData.cidade = dados.address_components[0].short_name;
+  //           $scope.formData.estado = dados.address_components[1].short_name;
+  //           $scope.titulo = 'Profissionais em ' + $scope.formData.cidade + ' - ' + $scope.formData.estado;
+  //           $ionicLoading.show();
+  //           if ($scope.formData.city.geometry) {
+  //               $rootScope.geo.coords.latitude = $scope.formData.city.geometry.location.lat();
+  //               $rootScope.geo.coords.longitude = $scope.formData.city.geometry.location.lng();
+  //           }
+
+  //           EventsService.getEventsPublic($scope.formData.cidade, $scope.formData.estado).then(function (result) {
+  //               //$scope.eventos = result.data;
+  //               $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo($scope.formData.cidade));
+  //               $ionicLoading.hide();
+  //               if ($scope.myModel.tab == 2) {
+  //                   buildMap();
+  //               }
+  //           });
+  //       }
+  //   });
+
   function buildMap() {
     document.getElementById('map').style.height = (window.innerHeight - 145) + 'px';
 
@@ -285,6 +319,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $dados = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(id));
   $dados.$loaded(
     function(data) {
+      console.log(data)
       var key = Object.keys(data)[0];
       firebaseId = data[0].$id;
       $scope.user.photoURL = data[0].photoURL;
@@ -292,9 +327,17 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
       $scope.user.sobrenome = data[0].sobrenome;
       $scope.user.email = data[0].email;
       $scope.user.password = data[0].password;
+      $scope.user.id  = data[0].id;
       var str_birthday = data[0].nascimento.split('-');
+
       var bairro_cidade = data[0].estado_cidade.split('_');
-      $scope.user.nascimento = new Date(str_birthday[0] + '/'+ str_birthday[1] + '/'+str_birthday[2]);
+      var dateformat = str_birthday[2] + '/'+ str_birthday[1] + '/'+str_birthday[0];
+      console.log(dateformat);
+      var maisformat = dateformat.split('/');
+      console.log(maisformat)
+      //scope.user.nascimento = dateformat;
+      $scope.user.nascimento = new Date(maisformat[0] + '/'+ maisformat[1] + '/'+maisformat[2]);
+      //console.log($scope.user.nascimento)
       $scope.user.estado = bairro_cidade[1]+','+bairro_cidade[0];
       $scope.user.sexo = data[0].sexo;
       $scope.user.photoURL = data[0].photoURL;
@@ -328,41 +371,46 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     var dadosLocal = user.estado;
     console.log(dadosLocal)
     if(typeof dadosLocal === 'object'){
-      var cidade = dadosLocal.address_components[1].short_name;
-      var estado = dadosLocal.address_components[2].short_name;
+      var cidade = dadosLocal.address_components[0].short_name;
+      var estado = dadosLocal.address_components[1].short_name;
     }
     console.log(cidade)
     var estado_cidade = cidade+"_"+estado;
 
     console.log(firebaseId)
 
-    var usuarios = root.child('alunos/'+firebaseId);
+    var usuarios = root.child('alunos/');
 
         // if(user.tipo =='aluno')
         //   var usuarios = root.child('alunos/'+firebaseId);
         // else
         //   var usuarios = root.child('profissionais/'+firebaseId);
-
+    var data = new Date(new Date(user.nascimento));
+    var year=data.getFullYear();
+    var month=data.getMonth()+1 //getMonth is zero based;
+    var day=data.getDate();
+    var months = {"1": "01","2": "02","3": "03","4": "04","5": "05","6": "06","7": "07","8": "08","9": "09","10": "10","11": "11","12": "12"};
+    var formatted=day+"-"+months[month]+"-"+year;
 
           editUsers={
             nome : user.nome,
             sobrenome:user.sobrenome,
             sexo:user.sexo,
             email:user.email,
-            nascimento:user.nascimento,
+            nascimento:formatted,
             estado:estado,
             cidade:cidade,
             estado_cidade:estado_cidade  
           };
 
           console.log(editUsers)
-
-        $dados.$save(editUsers).then(function(usuarios) {
-          //ref.key === $dados.$id; // true
-          console.log('atualizou')
-        }, function(error) {
-          console.log("Error:", error);
-        });
+          usuarios.child(firebaseId).set(editUsers);
+        // $dados.$save(editUsers).then(function(usuarios) {
+        //   //ref.key === $dados.$id; // true
+        //   console.log('atualizou')
+        // }, function(error) {
+        //   console.log("Error:", error);
+        // });
 
   }
 
