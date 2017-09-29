@@ -171,30 +171,49 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           buildMap();
       }
   })
-  $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo('SP'));
-  
-  // $scope.$watch('formData.city', function () {
-  //       var dados = $scope.formData.city;
-  //       if (typeof dados === 'object') {
-  //           $scope.formData.cidade = dados.address_components[0].short_name;
-  //           $scope.formData.estado = dados.address_components[1].short_name;
-  //           $scope.titulo = 'Profissionais em ' + $scope.formData.cidade + ' - ' + $scope.formData.estado;
-  //           $ionicLoading.show();
-  //           if ($scope.formData.city.geometry) {
-  //               $rootScope.geo.coords.latitude = $scope.formData.city.geometry.location.lat();
-  //               $rootScope.geo.coords.longitude = $scope.formData.city.geometry.location.lng();
-  //           }
 
-  //           EventsService.getEventsPublic($scope.formData.cidade, $scope.formData.estado).then(function (result) {
-  //               //$scope.eventos = result.data;
-  //               $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo($scope.formData.cidade));
-  //               $ionicLoading.hide();
-  //               if ($scope.myModel.tab == 2) {
-  //                   buildMap();
-  //               }
-  //           });
-  //       }
-  //   });
+  var geocoder = new google.maps.Geocoder();
+    $scope.getAddressSuggestions = function(queryString){
+        var defer = $q.defer();
+        geocoder.geocode(
+          {
+              address: queryString,
+              componentRestrictions: {country: 'BR'}
+          },
+          function (results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                
+                defer.resolve(results); 
+              }
+              else { defer.reject(results); }
+          }
+          );
+        return defer.promise;
+    }
+  //$scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo('SP'));
+  
+  $scope.$watch('formData.city', function () {
+        var dados = $scope.formData.city;
+        if (typeof dados === 'object') {
+            $scope.formData.cidade = dados.address_components[0].short_name;
+            $scope.formData.estado = dados.address_components[1].short_name;
+            $scope.titulo = 'Profissionais em ' + $scope.formData.cidade + ' - ' + $scope.formData.estado;
+            // $ionicLoading.show();
+            // if ($scope.formData.city.geometry) {
+            //     $rootScope.geo.coords.latitude = $scope.formData.city.geometry.location.lat();
+            //     $rootScope.geo.coords.longitude = $scope.formData.city.geometry.location.lng();
+            // }
+             $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo($scope.formData.cidade));
+            // EventsService.getEventsPublic($scope.formData.cidade, $scope.formData.estado).then(function (result) {
+            //     //$scope.eventos = result.data;
+               
+            //     $ionicLoading.hide();
+            //     if ($scope.myModel.tab == 2) {
+            //         buildMap();
+            //     }
+            // });
+        }
+    });
 
   function buildMap() {
     document.getElementById('map').style.height = (window.innerHeight - 145) + 'px';
