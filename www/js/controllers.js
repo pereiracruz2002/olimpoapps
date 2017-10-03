@@ -169,6 +169,8 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
         city: ""
   };
   $scope.profiles = {};
+  
+  $scope.treinos = '';
   var root = firebase.database().ref();
   $scope.$watch('myModel.tab', function () {
       if ($scope.myModel.tab == 2) {
@@ -194,14 +196,14 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           );
         return defer.promise;
     }
-  $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo('SP'));
+  //$scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo('SP'));
   //$scope.treinos = $scope.profiles.treinos[0].join();
-  console.log( $scope.profiles)
+  //console.log( $scope.profiles)
   $scope.$watch('formData.city', function () {
-    
+         var treinamentos = '';
          var dados = $scope.formData.city;
          if (typeof dados === 'object') {
-          console.log(dados)
+          //console.log(dados)
             $scope.formData.cidade = dados.address_components[0].short_name;
             $scope.formData.estado = dados.address_components[1].short_name;
             // loc[0]=dados.address_components[0].geometry.location.lat();
@@ -209,10 +211,36 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
             // console.log(loc[0])
             $scope.titulo = 'Profissionais em ' + $scope.formData.cidade + ' - ' + $scope.formData.estado;
 
-            $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('cidade').equalTo($scope.formData.cidade));
-            $scope.treinos = $scope.profiles.treinos.join();
+            info = $firebaseObject(root.child('profissionais').orderByChild('cidade').equalTo($scope.formData.cidade));
+            $scope.profiles = info;
+            //console.log(data)
+            info.$loaded(
+            function(info) {
+
+              var key = Object.keys(info)[0];
+
+              //console.log(info[key].treinos)
+              angular.forEach(info[key].treinos, function (modalidade, key) {
+                console.log(modalidade.name);
+                if(modalidade.name !="undefined"){
+                  treinamentos+=modalidade.name+",";
+                  $scope.treinos = treinamentos;
+                }
+              });
+              
+            },
+            function(error) {
+              console.error("Error:", error);
+            }
+
+          );
+
+            
+            //$scope.treinos = $scope.profiles.treinos.join();
             
          }
+
+         //console.log(treinamentos)
    });
 
   function buildMap() {

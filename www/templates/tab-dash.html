@@ -15,13 +15,17 @@
       <a ng-show="myModel.tab!=2" ng-click="myModel.tab=2" ng-class="myModel.tab==2 ? 'active' : ''" class="button icon-left ion-android-map">Mapa</a>
     </div>
      <div ng-show="myModel.tab==1" id="lista">
+     <div class="card"  ng-if="profiles.length == 0">
+          <div class="item item-text-wrap assertive">
+              <p>Para encontrar um profissional digite um Bairro e Cidade que deseja</p>
+          </div>
+      </div>
       <ion-list class="list list-inset">
         <ion-item class="item  item-avatar item-icon-right list-custom" ng-repeat="profile in profiles" type="item-text-wrap" href="#/tab/dash/{{profile.id}}">
           <img ng-src="{{profile.photoURL}}">
           <h2><b>{{profile.nome}} {{profile.sobrenome}}</b></h2>
-          <p ng-repeat="treino in profile.treinos">
-            {{treino.name}}
-          </p>
+          <p>{{treinos}}</p>
+
           <p href="#/tab/dash/{{profile.id}}"><ion-icon name="star"></ion-icon> Mais Informaçoes</p>
          
         </ion-item>
@@ -34,7 +38,7 @@
       <div class="check-content">
       <ion-list>
 
-        <ion-checkbox  ng-repeat="treino in treinos" ng-model="profile.treino">{{treino.nome}}</ion-checkbox>
+       <!--  <ion-checkbox  ng-repeat="treino in treinos" ng-model="profile.treino">{{treino.nome}}</ion-checkbox> -->
 
 
       </ion-list>
