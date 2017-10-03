@@ -203,6 +203,9 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           console.log(dados)
             $scope.formData.cidade = dados.address_components[0].short_name;
             $scope.formData.estado = dados.address_components[1].short_name;
+            loc[0]=dados.address_components[0].geometry.location.lat();
+            loc[1]=dados.address_components[0].geometry.location.lng();
+            console.log(loc[0])
             $scope.titulo = 'Profissionais em ' + $scope.formData.cidade + ' - ' + $scope.formData.estado;
 
               $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('cidade').equalTo($scope.formData.cidade));
@@ -414,7 +417,8 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
             nascimento:formatted,
             estado:estado,
             cidade:cidade,
-            estado_cidade:estado_cidade  
+            estado_cidade:estado_cidade,
+            id:user.id
           };
 
           console.log(editUsers)
@@ -441,6 +445,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   //   enableFriends: true
   // };
   var auth = JSON.parse(UserService.getProfile());
+  console.log(auth.uid)
   //var usuarios = root.child('alunos/');
   var root = firebase.database().ref();
   $scope.profiles = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(auth.uid));
