@@ -194,8 +194,9 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           );
         return defer.promise;
     }
-  //$scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo('SP'));
-  
+  $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo('SP'));
+  //$scope.treinos = $scope.profiles.treinos[0].join();
+  console.log( $scope.profiles)
   $scope.$watch('formData.city', function () {
     
          var dados = $scope.formData.city;
@@ -203,13 +204,14 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           console.log(dados)
             $scope.formData.cidade = dados.address_components[0].short_name;
             $scope.formData.estado = dados.address_components[1].short_name;
-            loc[0]=dados.address_components[0].geometry.location.lat();
-            loc[1]=dados.address_components[0].geometry.location.lng();
-            console.log(loc[0])
+            // loc[0]=dados.address_components[0].geometry.location.lat();
+            // loc[1]=dados.address_components[0].geometry.location.lng();
+            // console.log(loc[0])
             $scope.titulo = 'Profissionais em ' + $scope.formData.cidade + ' - ' + $scope.formData.estado;
 
-              $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('cidade').equalTo($scope.formData.cidade));
-  
+            $scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('cidade').equalTo($scope.formData.cidade));
+            $scope.treinos = $scope.profiles.treinos.join();
+            
          }
    });
 

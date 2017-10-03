@@ -16,11 +16,14 @@
     </div>
      <div ng-show="myModel.tab==1" id="lista">
       <ion-list class="list list-inset">
-        <ion-item class="item  item-avatar item-icon-right" ng-repeat="profile in profiles" type="item-text-wrap" href="#/tab/dash/{{profile.id}}">
+        <ion-item class="item  item-avatar item-icon-right list-custom" ng-repeat="profile in profiles" type="item-text-wrap" href="#/tab/dash/{{profile.id}}">
           <img ng-src="{{profile.photoURL}}">
-          <h2>{{profile.nome}}</h2>
-          <p>{{profile.sobrenome}}</p>
-          <i class="icon ion-chevron-right icon-accessory"></i>
+          <h2><b>{{profile.nome}} {{profile.sobrenome}}</b></h2>
+          <p ng-repeat="treino in profile.treinos">
+            {{treino.name}}
+          </p>
+          <p href="#/tab/dash/{{profile.id}}"><ion-icon name="star"></ion-icon> Mais Informaçoes</p>
+         
         </ion-item>
       </ion-list>
     </div>
