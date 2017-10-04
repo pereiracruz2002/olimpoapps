@@ -710,7 +710,7 @@
     background-image: url('../img/cover-image.jpg');
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
     color: #fff;
-    height: 200px;
+    height: 245px;
     position: relative;
     text-align: center;
     -webkit-transition: all 1s cubic-bezier(.55,0,.1,1);
@@ -718,6 +718,7 @@
     -webkit-transform: translate3d(0,0,0);
     transform: translate3d(0,0,0);
     width: 100%;
+    margin-bottom: 20px;
 }
 
 .hero > .content {
@@ -731,14 +732,18 @@
 .hero > .content > .avatar {
     background-position: center center;
     background-size: cover;
-    border: 3px solid #169ac1;
+    border: 8px solid #524e4d;
     border-radius: 50%;
     display: inline-block;
-    height: 88px;
+    height: 120px;
     left: auto;
     margin-bottom: 10px;
     position: relative;
-    width: 88px;
+    width: 120px;
+}
+
+.hero h3{
+  margin-top: 0;
 }
 
 .pic-perfil {
@@ -780,8 +785,8 @@
 }
 
 .list .list-custom .item img{
-  max-width: 60px;
-  max-height: 60px;
+  max-width: 60px !important;
+  max-height: 60px !important;
 }
 
 .list .list-custom .item p{
