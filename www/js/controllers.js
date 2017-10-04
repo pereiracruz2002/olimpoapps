@@ -98,7 +98,6 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     var months = {"1": "01","2": "02","3": "03","4": "04","5": "05","6": "06","7": "07","8": "08","9": "09","10": "10","11": "11","12": "12"};
     var formatted=day+"-"+months[month]+"-"+year;
 
-    console.log(formatted);
 
     firebaseAuthObject.$createUserWithEmailAndPassword(user.email, user.password).then(function(firebaseUser) {
       firebase.auth().currentUser.sendEmailVerification().then(function() {
@@ -163,6 +162,8 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 .controller('DashCtrl', function($scope,$firebaseObject,$ionicLoading,$rootScope,$q) {
   var map;
+  lat = '';
+  lng = '';
   var markers = [];
   $scope.myModel= {'tab': 1};
   $scope.formData = {
@@ -201,6 +202,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   //console.log( $scope.profiles)
   $scope.$watch('formData.city', function () {
          var treinamentos = '';
+
          var dados = $scope.formData.city;
          if (typeof dados === 'object') {
           //console.log(dados)
@@ -208,7 +210,8 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
             $scope.formData.estado = dados.address_components[1].short_name;
             // loc[0]=dados.address_components[0].geometry.location.lat();
             // loc[1]=dados.address_components[0].geometry.location.lng();
-            // console.log(loc[0])
+            lat = dados.geometry.location.lat();
+            lng = dados.geometry.location.lng();
             $scope.titulo = 'Profissionais em ' + $scope.formData.cidade + ' - ' + $scope.formData.estado;
 
             info = $firebaseObject(root.child('profissionais').orderByChild('cidade').equalTo($scope.formData.cidade));
@@ -216,12 +219,8 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
             //console.log(data)
             info.$loaded(
             function(info) {
-
               var key = Object.keys(info)[0];
-
-              //console.log(info[key].treinos)
               angular.forEach(info[key].treinos, function (modalidade, key) {
-                console.log(modalidade.name);
                 if(modalidade.name !="undefined"){
                   treinamentos+=modalidade.name+",";
                   $scope.treinos = treinamentos;
@@ -234,13 +233,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
             }
 
           );
-
-            
-            //$scope.treinos = $scope.profiles.treinos.join();
-            
-         }
-
-         //console.log(treinamentos)
+        }
    });
 
   function buildMap() {
@@ -248,31 +241,31 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
       map = new google.maps.Map(document.getElementById('map'), {
           zoom: 11,
-          center:{ lat:-23.7482748,lng:-46.6887343}
+          center:{ lat:lat,lng:lng}
           //center: {lat: $rootScope.geo.coords.latitude, lng: $rootScope.geo.coords.longitude}
       });
-       angular.forEach($scope.eventos, function (evento, key) {
-            if (evento.latitude && evento.longitude) {
+       angular.forEach($scope.profiles, function (profissional, chave) {
+            //if (evento.latitude && evento.longitude) {
                 setTimeout(function () {
-                    markers[key] = new google.maps.Marker({
-                        position: {lat: parseFloat(-23.7482748), lng: parseFloat(-46.6887343)},
+                    markers[chave] = new google.maps.Marker({
+                        position: {lat: parseFloat(lat), lng: parseFloat(lng)},
                         map: map,
                         animation: google.maps.Animation.DROP,
-                        title: evento.event_name
+                        title: profissional.name
                     })
-                    markers[key].addListener('click', function () {
+                    markers[chave].addListener('click', function () {
                         new google.maps.InfoWindow({
                             content:
                                     '<div class="content">' +
                                     '<div class="bodyContent">' +
-                                    '<a href="">' + evento.event_name + '</a>' +
+                                    '<a href="">' + profissional.name + '</a>' +
                                     '</div>' +
                                     '</div>'
 
-                        }).open(map, markers[key]);
+                        }).open(map, markers[chave]);
                     })
-                }, (key * 200));
-            }
+                }, (chave * 200));
+            //}
         })
         setTimeout(function () {
             google.maps.event.trigger(map, 'resize');
