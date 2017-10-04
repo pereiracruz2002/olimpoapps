@@ -757,6 +757,10 @@
     top: 86%;
 }
 
+.pic-perfil-detail{
+  background:#18b4e4;
+}
+
 .hero h3{
   color:#FFF;
 }
@@ -780,16 +784,16 @@
   background-color: #f8f8f8;
 }
 
-.list .list-custom .item h2{
+.list .list-custom .item-content h2{
   margin: 0 0 2px 7px;
 }
 
-.list .list-custom .item img{
+.list .list-custom .item-content img{
   max-width: 60px !important;
   max-height: 60px !important;
 }
 
-.list .list-custom .item p{
+.list .list-custom .item-content p{
   margin-left: 10px;
 }
 
