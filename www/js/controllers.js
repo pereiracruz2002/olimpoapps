@@ -224,7 +224,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
                 console.log(modalidade.name);
                 if(modalidade.name !="undefined"){
                   treinamentos+=modalidade.name+",";
-                  $scope.treinos = treinamentos;
+                  $scope.treinos = treinamentos.slice(0, -1);
                 }
               });
               
