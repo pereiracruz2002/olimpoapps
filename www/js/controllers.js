@@ -293,7 +293,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, UserService,$firebaseObject) {
+.controller('ChatDetailCtrl', function($scope, $stateParams, UserService,$firebaseObject,$firebaseArray) {
   var profissional = $stateParams.chatId;
   var auth = JSON.parse(UserService.getProfile());
   var profissional_aluno = profissional+'_'+auth.uid;
@@ -302,11 +302,12 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $scope.chats  = [];
 
 
+
   var chat = $firebaseObject(root.child('chat').orderByChild('profissional_aluno').equalTo(profissional_aluno));
   chat.$loaded(
     function(data) {
       var key = Object.keys(data)[0];
-      $scope.chats = $firebaseObject(root.child('conversas').orderByChild('id').equalTo(key));
+      $scope.chats = $firebaseArray(root.child('conversas').orderByChild('id').equalTo(key));
 
     },
     function(error) {
@@ -314,6 +315,8 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     }
 
   );
+
+  console.log($scope.chats)
 
   function dataAtual(){
     var today = new Date();
@@ -335,15 +338,15 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     var message = conversaRef.push();
     var id = $scope.chats[Object.keys($scope.chats)[0]].id
     var message = conversaRef.push();
-    objMessage = {
-      id:profissional,
+
+
+    $scope.chats.$add({
+      id:id,
       nome:auth.displayName,
       photoURL:auth.photoURL,
       texto: $scope.data.message
-    }
-    message.set(objMessage).then(function(retorno){
-      $scope.chats.push(objMessage)
     });
+
   }
 
 
