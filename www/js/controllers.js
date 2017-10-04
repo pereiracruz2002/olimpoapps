@@ -223,7 +223,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
               angular.forEach(info[key].treinos, function (modalidade, key) {
                 if(modalidade.name !="undefined"){
                   treinamentos+=modalidade.name+",";
-                  $scope.treinos = treinamentos;
+                  $scope.treinos = treinamentos.slice(0, -1);
                 }
               });
               
@@ -279,7 +279,9 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   var root = firebase.database().ref();
   $scope.profiles = [];
   $scope.profiles = $firebaseArray(root.child('profissionais').orderByChild('id').equalTo(profissional));
-  console.log($scope.profiles)
+  var estado_cidade = $scope.profiles.cidade_bairro;
+  //var backway = estado_cidade.split("_");
+  console.log(estado_cidade)
 
 })
 
