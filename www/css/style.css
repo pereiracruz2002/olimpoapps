@@ -666,6 +666,11 @@
     bottom: -6px;
     left: -6px;
     content: ' ';
+    
+}
+
+.bar-light .button.button-clear{
+  color:#18b4e5 !important;
 }
 
 .profile-info .button {
@@ -747,14 +752,14 @@
 }
 
 .pic-perfil {
-    position: absolute;
-    background:#373737;
-    color:#FFF;
-    font-size: .9em;
-    padding: 9px 10px 3px;
-    border-radius: 50%;
-    right: 40px;
-    top: 86%;
+  position: absolute;
+  background:#373737;
+  color:#FFF;
+  font-size: 2.2em;
+  padding: 7px 10px 6px;
+  border-radius: 50%;
+  right: 22px;
+  top: 86%;
 }
 
 .pic-perfil-detail{
@@ -810,6 +815,41 @@
   font-weight: bold;
   text-transform: uppercase;
 }
+
+.chat-msg{
+  border:1px solid #fff!important;
+}
+
+.chat-msg p {
+    display: inline-block;
+    margin: 0;
+    width: auto;
+    padding: 8px 10px 8px 10px;
+    background: #f8f8f8;
+    word-wrap: break-word;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.chat-msg div {
+    display: block;
+    flex: 1;
+    order: 2;
+}
+
+.chat-msg div:before {
+    position: relative;
+    float: left;
+    content: '';
+    margin: 7px 0 0 -8px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 8px 8px 0;
+    border-color: transparent #f8f8f8 transparent transparent;
+}
+
+
 
 
 
