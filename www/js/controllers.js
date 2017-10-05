@@ -21,14 +21,14 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 .controller('RegisterCtrl',function($scope,$stateParams,$state,$ionicPopup,$q,$firebaseAuth,$firebaseArray,$cordovaCamera,$ionicPlatform,UserService){
   $scope.myModel= {'tab': 1};
-  $scope.formData = {'picture': ''};
+  $scope.user = {'picture': ''};
 
   var firebaseAuthObject = $firebaseAuth();
 
   var root = firebase.database().ref();
 
   //var userReference = root.child("images/" + 1);
-  var syncArray = $firebaseArray(root.child("alunos"));
+  //var syncArray = $firebaseArray(root.child("alunos"));
   // $scope.images = syncArray;
 
 
@@ -70,10 +70,10 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
           $scope.choosePicture = function(){
               $cordovaCamera.getPicture(options).then(function(imageData) {
-                  $scope.formData.picture = "data:image/jpeg;base64," + imageData;
-                  syncArray.$add({image: imageData}).then(function() {
-                  console.log("Image has been uploaded");
-              });
+                  $scope.user.picture = "data:image/jpeg;base64," + imageData;
+                  //syncArray.$add({image: imageData}).then(function() {
+                  //console.log("Image has been uploaded");
+                  //});
                   
               }, function(err) {
                 console.log(err)
@@ -117,6 +117,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           id:firebaseUser.uid,
           nome : user.nome,
           sobrenome:user.sobrenome,
+          imagem:user.picture,
           sexo:user.sexo,
           email:user.email,
           nascimento:formatted,
@@ -302,11 +303,12 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $scope.chats  = [];
 
 
-
-  var chat = $firebaseObject(root.child('chat').orderByChild('profissional_aluno').equalTo(profissional_aluno));
+  var chat = $firebaseArray(root.child('chat').orderByChild('profissional_aluno').equalTo(profissional_aluno));
   chat.$loaded(
     function(data) {
-      var key = Object.keys(data)[0];
+      var key = data[0].$id;
+      //var key = Object.keys(data)[0];
+      //console.log(key)
       $scope.chats = $firebaseArray(root.child('conversas').orderByChild('id').equalTo(key));
 
     },
@@ -316,7 +318,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
   );
 
-  console.log($scope.chats)
+  console.log($scope.chats.length)
 
   function dataAtual(){
     var today = new Date();
@@ -333,19 +335,63 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   }
 
   $scope.sendMessage = function(){
-    var conversaRef = root.child('conversas/');
-    var data = dataAtual();
-    var message = conversaRef.push();
-    var id = $scope.chats[Object.keys($scope.chats)[0]].id
-    var message = conversaRef.push();
+     var data = dataAtual();
+     var refChat = root.child('chat');
+     var list = $firebaseArray(refChat);
+     var id = '';
+    if($scope.chats.length == 0){
+      list.$add({ aluno: auth.uid,profissional:profissional,profissional_aluno:profissional_aluno,last_msg:$scope.data.message,photoURLAluno:'',photoURLProfissional:'' }).then(function(refChat) {
+        //console.log(refChat.key)
+        id = refChat.key;
+
+        $scope.chats.$add({id:id,nome:auth.displayName,photoURL:auth.photoURL,texto: $scope.data.message}).then(function(conversaRef) {
+        //console.log(refChat.key)
+        var id = conversaRef.key;
+        console.log("added record with id " + id);
+        //list.$indexFor(id); // returns location in the array
+        },function(err) {
+          console.log(err)
+        });
 
 
-    $scope.chats.$add({
-      id:id,
-      nome:auth.displayName,
-      photoURL:auth.photoURL,
-      texto: $scope.data.message
-    });
+
+      });
+      
+
+
+    }else{
+       id = $scope.chats[Object.keys($scope.chats)[0]].id
+
+
+       $scope.chats.$add({id:id,nome:auth.displayName,photoURL:auth.photoURL,texto: $scope.data.message}).then(function(conversaRef) {
+        //console.log(refChat.key)
+        var id = conversaRef.key;
+        console.log("added record with id " + id);
+        //list.$indexFor(id); // returns location in the array
+        },function(err) {
+          console.log(err)
+        });
+    }
+
+    // console.log(id)
+
+    // var conversaRef = root.child('conversas/');
+    // var novas = $firebaseArray(conversaRef);
+
+    
+
+
+    //var message = conversaRef.push();
+      
+
+    // $scope.chats.$add({
+    //   id:id,
+    //   nome:auth.displayName,
+    //   photoURL:auth.photoURL,
+    //   texto: $scope.data.message
+    // }).then(function(refChat){
+
+    // });
 
   }
 
@@ -353,7 +399,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 })
 
 
-.controller('AccountDetailCtrl', function($scope, $stateParams,$firebaseObject,$firebaseArray,$q) {
+.controller('AccountDetailCtrl', function($scope, $stateParams,$firebaseObject,$firebaseArray,$q,$cordovaCamera,$ionicPlatform) {
   var id = $stateParams.accountId;
   var root = firebase.database().ref();
   $scope.myTab= {'tab': 1};
@@ -364,7 +410,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $dados = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(id));
   $dados.$loaded(
     function(data) {
-      console.log(data)
+      //console.log(data)
       var key = Object.keys(data)[0];
       firebaseId = data[0].$id;
       $scope.user.photoURL = data[0].photoURL;
@@ -377,15 +423,16 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
       var bairro_cidade = data[0].estado_cidade.split('_');
       var dateformat = str_birthday[2] + '/'+ str_birthday[1] + '/'+str_birthday[0];
-      console.log(dateformat);
+      //console.log(dateformat);
       var maisformat = dateformat.split('/');
-      console.log(maisformat)
+      //console.log(maisformat)
       //scope.user.nascimento = dateformat;
       $scope.user.nascimento = new Date(maisformat[0] + '/'+ maisformat[1] + '/'+maisformat[2]);
       //console.log($scope.user.nascimento)
       $scope.user.estado = bairro_cidade[1]+','+bairro_cidade[0];
       $scope.user.sexo = data[0].sexo;
-      $scope.user.photoURL = data[0].photoURL;
+      //$scope.user.photoURL = data[0].photoURL;
+      $scope.user.picture = data[0].imagem;
 
     },
     function(error) {
@@ -412,17 +459,46 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
       return defer.promise;
   }
 
+  $ionicPlatform.ready(function(){
+    if(typeof(Camera) != 'undefined'){
+          var options = {
+              quality: 50,
+              destinationType: Camera.DestinationType.DATA_URL,
+              sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+              allowEdit: true,
+              encodingType: Camera.EncodingType.JPEG,
+              targetWidth: 300,
+              targetHeight: 300,
+              popoverOptions: CameraPopoverOptions,
+              saveToPhotoAlbum: false,
+              correctOrientation:true
+          };
+      }
+
+      $scope.choosePicture = function(){
+          $cordovaCamera.getPicture(options).then(function(imageData) {
+              $scope.user.picture = "data:image/jpeg;base64," + imageData;
+          }, function(err) {
+            console.log(err)
+          });
+      }
+    });
+
    $scope.editar = function(user){
     var dadosLocal = user.estado;
-    console.log(dadosLocal)
+    //console.log(dadosLocal)
     if(typeof dadosLocal === 'object'){
       var cidade = dadosLocal.address_components[0].short_name;
       var estado = dadosLocal.address_components[1].short_name;
+    }else{
+      var localizacao = dadosLocal.split(',');
+      var cidade = localizacao[1];
+      var estado = localizacao[0];
     }
-    console.log(cidade)
+    console.log(localizacao)
     var estado_cidade = cidade+"_"+estado;
 
-    console.log(firebaseId)
+    //console.log(firebaseId)
 
     var usuarios = root.child('alunos/');
 
@@ -446,7 +522,8 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
             estado:estado,
             cidade:cidade,
             estado_cidade:estado_cidade,
-            id:user.id
+            id:user.id,
+            imagem:user.picture
           };
 
           console.log(editUsers)
@@ -472,9 +549,12 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   // $scope.settings = {
   //   enableFriends: true
   // };
+  $scope.profiles = {
+    'cidade':'',
+    'estado':'',
+    'estado_cidade':''
+  }
   var auth = JSON.parse(UserService.getProfile());
-  console.log(auth.uid)
-  //var usuarios = root.child('alunos/');
   var root = firebase.database().ref();
   $scope.profiles = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(auth.uid));
   console.log($scope.profiles)

@@ -14,13 +14,17 @@
               <form name="formRegister" ng-submit="cadastro(user)" ng-hide="contentBg">
                 <div class="profile">
                   <div class="profile-photo">
+
+                    <h1 class="select-picture" ng-click="choosePicture()" style="background-image:url('{{user.picture}}'); background-position:center center; background-size:cover;">
+                    <span class="icon ion-ios-camera" ng-hide="user.picture"></span>
+
                     <a ng-click="choosePicture()" >
-                      <img  ng-src="{{formData.picture}}" alt="">
+                      <img  ng-src="{{user.picture}}" alt="">
                     </a>
                     <!-- <div class="row" ng-repeat="image in images" ng-if="$index % 4 === 0">
                      <img ng-src="data:image/jpeg;base64,{{images[0].image}}" width="100%" />
                      </div> -->
-                     <span class="icon ion-ios-camera" ng-hide="formData.picture"></span>
+                     <!-- <span class="icon ion-ios-camera" ng-hide="formData.picture"></span> -->
                   </div>
                   <h5>Foto de perfil</h5>
                 </div>
