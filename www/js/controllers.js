@@ -158,6 +158,23 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
       });
   }
 
+  $ionicModal.fromTemplateUrl('templates/termo.html',{
+    scope:$scope,
+    animation:'slide-in-up',
+  }).then(function(m){
+    $scope.modal =m;
+    
+  });
+
+  $scope.abreModal = function(){
+    
+      $scope.modal.show();
+  }
+
+  $scope.fechaModal =function(){
+    $scope.modal.hide();
+  }
+
 
 })
 

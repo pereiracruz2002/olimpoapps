@@ -127,6 +127,8 @@
                   <input type="hidden" name="tipo" ng-init="user.tipo='aluno'" ng-model="user.tipo">
                   <ion-checkbox ng-model="filter.red">Li e aceito os termos de uso</ion-checkbox>
 
+                   <a  ng-click="abreModal()"> Termos de uso</a>
+
                   <button ng-disabled="formRegister.$invalid" class="button button-block button-positive register-btn">Cadastrar</button>
 
                 </div>
