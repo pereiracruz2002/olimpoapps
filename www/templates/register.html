@@ -21,10 +21,6 @@
                     <a ng-click="choosePicture()" >
                       <img  ng-src="{{user.picture}}" alt="">
                     </a>
-                    <!-- <div class="row" ng-repeat="image in images" ng-if="$index % 4 === 0">
-                     <img ng-src="data:image/jpeg;base64,{{images[0].image}}" width="100%" />
-                     </div> -->
-                     <!-- <span class="icon ion-ios-camera" ng-hide="formData.picture"></span> -->
                   </div>
                   <h5>Foto de perfil</h5>
                 </div>
@@ -84,46 +80,13 @@
                     </small>
                   </label>
 
-                  <!-- <label class="item item-input item-select">
-                    <div class="input-label">
-                      
-                    </div>
-                    <select ng-model="user.nascimento">
-                      <option>date</option>
-                      <option selected>Month</option>
-                      <option>Red</option>
-                    </select>
-                  </label> -->
-
-                   
-
-
-                  <!-- <label class="item item-input item-select">
-                    <div class="input-label">
-                     Estado
-                    </div>
-                    <select ng-model="user.estado">
-                      <option>State 1</option>
-                      <option selected>State 2</option>
-                      <option>State 3</option>
-                    </select>
-                  </label> -->
+                 
                    <label class="item item-input">
                       <i class="icon ion-ios-location-outline placeholder-icon"></i>
                       <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off" ng-model="user.estado" item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade" max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
                     </label>
 
-                 <!--  <label class="item item-input item-select">
-                    <div class="input-label">
-                      Cidade
-                    </div>
-                    <select ng-model="user.cidade">
-                      <option>City 1</option>
-                      <option selected>City 2</option>
-                      <option>City 3</option>
-                    </select>
-                   
-                  </label> -->
+                 
                   <input type="hidden" name="tipo" ng-init="user.tipo='aluno'" ng-model="user.tipo">
                   <ion-checkbox ng-model="filter.red">Li e aceito os termos de uso</ion-checkbox>
 
@@ -147,6 +110,18 @@
                <h5>Profile photo</h5>
              </div>
              <form name="formRegisterProfissional" ng-submit="cadastro(user)" ng-hide="contentBg">
+             <div class="profile">
+                  <div class="profile-photo">
+
+                    <h1 class="select-picture" ng-click="choosePicture()" style="background-image:url('{{user.picture}}'); background-position:center center; background-size:cover;">
+                    <span class="icon ion-ios-camera" ng-hide="user.picture"></span>
+
+                    <a ng-click="choosePicture()" >
+                      <img  ng-src="{{user.picture}}" alt="">
+                    </a>
+                  </div>
+                  <h5>Foto de perfil</h5>
+                </div>
             <div class="list">
                   <label class="item item-input item-stacked-label">
                     <span class="input-label">Nome</span>
@@ -207,7 +182,7 @@
                       <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off" ng-model="user.estado" item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade" max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
                   </label>
 
-                  <input type="hidden" name="tipo" ng-init="user.tipo='aluno'" ng-model="user.tipo">
+                  <input type="hidden" name="tipo" ng-init="user.tipo='profissionais'" ng-model="user.tipo">
                   <ion-checkbox ng-model="filter.red">Li e aceito os termos de uso</ion-checkbox>
 
                   <button ng-disabled="formRegisterProfissional.$invalid" class="button button-block button-positive register-btn">Cadastrar</button>

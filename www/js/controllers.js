@@ -19,7 +19,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 })
 
-.controller('RegisterCtrl',function($scope,$stateParams,$state,$ionicPopup,$q,$firebaseAuth,$firebaseArray,$cordovaCamera,$ionicPlatform,UserService){
+.controller('RegisterCtrl',function($scope,$stateParams,$state,$ionicPopup,$q,$firebaseAuth,$firebaseArray,$cordovaCamera,$ionicPlatform,UserService,$ionicModal){
   $scope.myModel= {'tab': 1};
   $scope.user = {'picture': ''};
 
@@ -109,8 +109,8 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           var usuarios = root.child('profissionais/');
 
         firebaseUser.updateProfile({
-          displayName: user.nome,
-          photoURL: "https://i0.wp.com/www.revistabula.com/wp/wp-content/uploads/2017/01/elvis.jpg?resize=610%2C350"
+          displayName: user.nome+' '+user.tipo,
+          photoURL: user.picture
         }).then(function() {
           var newUsers = usuarios.push();
           newUsers.set({
@@ -311,7 +311,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, UserService,$firebaseObject,$firebaseArray) {
+.controller('ChatDetailCtrl', function($scope, $stateParams, UserService,$firebaseObject,$firebaseArray,$firebaseAuth) {
   var profissional = $stateParams.chatId;
   var auth = JSON.parse(UserService.getProfile());
   var profissional_aluno = profissional+'_'+auth.uid;
@@ -319,23 +319,31 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   var objMessage = {};
   $scope.chats  = [];
 
+  var userAuth = $firebaseAuth();
+
+  userAuth.$onAuthStateChanged(function(firebaseUser) {
+      $scope.firebaseUser = firebaseUser;
+    });
 
   var chat = $firebaseArray(root.child('chat').orderByChild('profissional_aluno').equalTo(profissional_aluno));
-  chat.$loaded(
-    function(data) {
-      var key = data[0].$id;
-      //var key = Object.keys(data)[0];
-      //console.log(key)
-      $scope.chats = $firebaseArray(root.child('conversas').orderByChild('id').equalTo(key));
+  if(chat.length > 0){
 
-    },
-    function(error) {
-      console.error("Error:", error);
-    }
+    chat.$loaded(
+      function(data) {
+        var key = data[0].$id;
+        //var key = Object.keys(data)[0];
+        console.log(key)
+        $scope.chats = $firebaseArray(root.child('conversas').orderByChild('id').equalTo(key));
+        console.log($scope.chats)
+      },
+      function(error) {
+        console.error("Error:", error);
+      }
 
-  );
+    );
+  }
 
-  console.log($scope.chats.length)
+
 
   function dataAtual(){
     var today = new Date();
@@ -355,12 +363,16 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
      var data = dataAtual();
      var refChat = root.child('chat');
      var list = $firebaseArray(refChat);
+     var myconversas = $firebaseArray(root.child('conversas'));
      var id = '';
     if($scope.chats.length == 0){
+
+      //$scope.chats = myconversas;
+
       list.$add({ aluno: auth.uid,profissional:profissional,profissional_aluno:profissional_aluno,last_msg:$scope.data.message,photoURLAluno:'',photoURLProfissional:'' }).then(function(refChat) {
         //console.log(refChat.key)
         id = refChat.key;
-
+        $scope.chats = $firebaseArray(root.child('conversas').orderByChild('id').equalTo(id));
         $scope.chats.$add({id:id,nome:auth.displayName,photoURL:auth.photoURL,texto: $scope.data.message}).then(function(conversaRef) {
         //console.log(refChat.key)
         var id = conversaRef.key;
@@ -372,6 +384,8 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 
 
+      },function(err) {
+        console.log(err)
       });
       
 
@@ -389,26 +403,6 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           console.log(err)
         });
     }
-
-    // console.log(id)
-
-    // var conversaRef = root.child('conversas/');
-    // var novas = $firebaseArray(conversaRef);
-
-    
-
-
-    //var message = conversaRef.push();
-      
-
-    // $scope.chats.$add({
-    //   id:id,
-    //   nome:auth.displayName,
-    //   photoURL:auth.photoURL,
-    //   texto: $scope.data.message
-    // }).then(function(refChat){
-
-    // });
 
   }
 
