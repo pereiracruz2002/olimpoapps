@@ -298,7 +298,6 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $scope.profiles = [];
   $scope.profiles = $firebaseArray(root.child('profissionais').orderByChild('id').equalTo(profissional));
   var estado_cidade = $scope.profiles.cidade_bairro;
-  //var backway = estado_cidade.split("_");
   console.log(estado_cidade)
 
 })
@@ -308,6 +307,11 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   var root = firebase.database().ref();
   $scope.chats  = [];
   $scope.chats = $firebaseObject(root.child('chat').orderByChild('aluno').equalTo(auth.uid));
+
+})
+
+.controller('ConfigurationCtrl', function($scope, UserService) {
+  console.log('configuracao')
 
 })
 

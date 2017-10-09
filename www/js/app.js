@@ -44,7 +44,7 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('tab', {
     url: '/tab',
     abstract: true,
     templateUrl: 'templates/tabs.html'
@@ -77,6 +77,13 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
         controller: 'DashCtrl'
       }
     }
+  })
+
+
+  .state('configuration', {
+    url: '/configuration',
+    templateUrl: 'templates/configuration.html',
+    controller: 'ConfigurationCtrl',
   })
 
 

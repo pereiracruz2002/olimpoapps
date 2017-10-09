@@ -21,5 +21,25 @@
       {{treino.name}}
     </p>
   </div>
+  <div class="list">
+    <div class="item item-divider">
+      Formação
+    </div>
+    <p class="item">{{profile.formacao}}</p>
+  </div>
+  <div class="list">
+    <div class="item item-divider">
+      Sobre Mim
+    </div>
+    <p class="item">{{profile.sobre}}</p>
+  </div>
+  <div class="list">
+    <div class="item item-divider">
+      Locais de Atendimento
+    </div>
+    <p class="item" ng-repeat="locais in profiles[0].locais">
+      {{locais.endereco}}
+    </p>
+  </div>
   </ion-content>
 </ion-view>
