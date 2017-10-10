@@ -27,11 +27,6 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
   var root = firebase.database().ref();
 
-  //var userReference = root.child("images/" + 1);
-  //var syncArray = $firebaseArray(root.child("alunos"));
-  // $scope.images = syncArray;
-
-
   var geocoder = new google.maps.Geocoder();
     $scope.getAddressSuggestions = function(queryString){
         var defer = $q.defer();
@@ -128,7 +123,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
             if(user.tipo =="aluno")
               $state.go('tab.dash');
             else
-              $state.go("setup-profile-professional");
+              $state.go("tab/account/"+firebaseUser.uid);
 
           }).catch(function(error) {
              var alertPopup = $ionicPopup.alert({
@@ -322,30 +317,37 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   var root = firebase.database().ref();
   var objMessage = {};
   $scope.chats  = [];
+  $scope.total = 0;
+
 
   var userAuth = $firebaseAuth();
 
   userAuth.$onAuthStateChanged(function(firebaseUser) {
-      $scope.firebaseUser = firebaseUser;
-    });
+    $scope.firebaseUser = firebaseUser;
+  });
 
+  console.log(profissional_aluno)
   var chat = $firebaseArray(root.child('chat').orderByChild('profissional_aluno').equalTo(profissional_aluno));
-  if(chat.length > 0){
+  console.log(chat.length)
+  //if(chat.length > 0){
 
     chat.$loaded(
       function(data) {
-        var key = data[0].$id;
-        //var key = Object.keys(data)[0];
-        console.log(key)
-        $scope.chats = $firebaseArray(root.child('conversas').orderByChild('id').equalTo(key));
-        console.log($scope.chats)
+        console.log(data.length)
+        if(data.length > 0){
+          var key = data[0].$id;
+          $scope.total = 1;
+          //var key = Object.keys(data)[0];
+          console.log(key)
+          $scope.chats = $firebaseArray(root.child('conversas').orderByChild('id').equalTo(key));
+        }
       },
       function(error) {
         console.error("Error:", error);
       }
 
     );
-  }
+  //}
 
 
 
@@ -369,7 +371,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
      var list = $firebaseArray(refChat);
      var myconversas = $firebaseArray(root.child('conversas'));
      var id = '';
-    if($scope.chats.length == 0){
+    if($scope.total == 0){
 
       //$scope.chats = myconversas;
 
