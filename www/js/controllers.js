@@ -323,6 +323,8 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   var objMessage = {};
   $scope.chats  = [];
 
+  console.log(profissional_aluno)
+
   var userAuth = $firebaseAuth();
 
   userAuth.$onAuthStateChanged(function(firebaseUser) {
@@ -330,6 +332,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     });
 
   var chat = $firebaseArray(root.child('chat').orderByChild('profissional_aluno').equalTo(profissional_aluno));
+  console.log(chat.length)
   if(chat.length > 0){
 
     chat.$loaded(
