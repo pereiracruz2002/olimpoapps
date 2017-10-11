@@ -46,8 +46,10 @@
 
     <div class="drop-content">
       <div class="list">
-
-        <label class="item item-input item-select">
+        <ion-list ng-repeat="especialidades in especial">
+          <ion-checkbox ng-model="{{especial.modalidade}}">{{especial.modalidade}}</ion-checkbox>
+        </ion-list>
+        <!-- <label class="item item-input item-select">
           <div class="input-label">
             Formação
           </div>
@@ -56,12 +58,12 @@
             <option selected>Formation 1</option>
             <option>Formation 1</option>
           </select>
-        </label>
+        </label> -->
 
       </div>
     </div>
 
-    <div class="text-content">
+    <!-- <div class="text-content">
      <div class="text-inner">
        <div class="top">
          <span class="left">Descriçao</span>
@@ -146,7 +148,7 @@
           <img src="img/delete-icon.png" alt="">
         </li>
       </ul>
-    </div>
+    </div> -->
 
    <div class="save-content">
      <a href="#" class="save-btn">Salvar</a>

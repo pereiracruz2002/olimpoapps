@@ -173,7 +173,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 })
 
-.controller('DashCtrl', function($scope,$firebaseObject,$ionicLoading,$rootScope,$q) {
+.controller('DashCtrl', function($scope,$firebaseObject,$firebaseArray,$ionicLoading,$rootScope,$q) {
   var map;
   lat = '';
   lng = '';
@@ -183,6 +183,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
         city: ""
   };
   $scope.profiles = {};
+  $scope.especialidades = [];
   
   $scope.treinos = '';
   var root = firebase.database().ref();
@@ -210,6 +211,8 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           );
         return defer.promise;
     }
+  $scope.especialidades = $firebaseArray(root.child('treinos').orderByChild('modalidades'));
+  console.log($scope.especialidades)
   //$scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo('SP'));
   //$scope.treinos = $scope.profiles.treinos[0].join();
   //console.log( $scope.profiles)
