@@ -6,6 +6,8 @@
   },
   "dependencies": {
     "angularfire": "^2.3.0",
-    "ion-autocomplete": "^0.4.0"
+    "ion-autocomplete": "^0.4.0",
+    "angular-number-picker": "^2.2.0",
+    "ionic-numberpicker": "^1.1.4"
   }
 }

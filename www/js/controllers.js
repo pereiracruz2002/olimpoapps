@@ -180,9 +180,11 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   var markers = [];
   $scope.myModel= {'tab': 1};
   $scope.formData = {
-        city: ""
+        city: "",
+        num: 0
   };
   $scope.profiles = {};
+  //$scope.input.num = 0;
   
   $scope.treinos = '';
   var root = firebase.database().ref();
@@ -210,6 +212,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           );
         return defer.promise;
     }
+  $scope.especialidades = $firebaseObject(root.child('treinos').orderByChild('modalidade'));
   //$scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo('SP'));
   //$scope.treinos = $scope.profiles.treinos[0].join();
   //console.log( $scope.profiles)
