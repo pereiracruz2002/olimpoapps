@@ -856,6 +856,44 @@
   border:0;
 }
 
+#filtros .row{
+  padding-top: 10px;
+}
+
+#filtros h5{
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+#filtros .item{
+  border:none;
+}
+
+#filtros .input-group span{
+  
+  padding:0 10px;
+  padding-top:7px;
+  width: 30%;
+}
+
+#filtros input{
+  text-align: center;
+}
+
+#filtros .input-group span, #filtros input{
+  float: left;
+  width: 30%;
+}
+
+
+#filtros .input-group{
+  width: 90%;
+  border: 1px solid #ccc;
+  display: table;
+  border-radius: 15px;
+  margin-left: 10%;
+}
+
 
 
 
