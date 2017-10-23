@@ -326,7 +326,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 })
 
-.controller('ConfigurationCtrl', function($scope, UserService) {
+.controller('ConfigurationCtrl', function($scope, UserService,$ionicSideMenuDelegate) {
 
 
 })
@@ -590,7 +590,13 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   }
 
 })
-.controller('AccountCtrl', function($scope,$firebaseAuth,$firebaseArray,UserService) {
+
+.controller('MenuController', function($scope, $ionicSideMenuDelegate) {
+  $scope.toggleLeft = function() {
+    $ionicSideMenuDelegate.toggleLeft();
+  };
+})
+.controller('AccountCtrl', function($scope,$firebaseAuth,$firebaseArray,UserService,$ionicSideMenuDelegate) {
 
   $scope.profiles = {
     'cidade':'',

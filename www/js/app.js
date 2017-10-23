@@ -50,6 +50,14 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
     templateUrl: 'templates/tabs.html'
   })
 
+  .state('menu', {
+      url : '/menu',
+      templateUrl : 'menu-abstract.html',
+      abstract : true,
+      controller : 'MenuController'
+  })
+
+
   .state('intro', {
       url: '/intro',
       templateUrl: 'templates/intro.html'
@@ -80,7 +88,7 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
   })
 
 
-  .state('configuration', {
+  .state('menu.configuration', {
     url: '/configuration',
     templateUrl: 'templates/configuration.html',
     controller: 'ConfigurationCtrl',
