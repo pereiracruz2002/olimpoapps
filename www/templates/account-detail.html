@@ -3,7 +3,7 @@
     <div class="button-bar bar-light">
       <a   ng-click="myTab.tab=1" ng-class="myTab.tab==1 ? 'active' : ''" class="button">Conta</a>
 
-      <a  ng-click="myTab.tab=2" ng-class="myTab.tab==2 ? 'active' : ''" class="button ">Perfil</a>
+      <a ng-show="perfil" ng-click="myTab.tab=2" ng-class="myTab.tab==2 ? 'active' : ''" class="button ">Perfil</a>
     </div>
     <div ng-show="myTab.tab==1" id="edit-account">
       <form name="formRegister" ng-submit="editar(user)" ng-hide="contentBg">
@@ -89,6 +89,49 @@
       </form>
     </div>
     <div ng-show="myTab.tab==2" id="profile">
+      <div class="row">
+        <div class="col-80 col-offset-10 filtros">
+          <div class="check-content">
+            <h5>Especialidades</h5>
+            <ion-list>
+              <ion-checkbox  ng-repeat="especialidade in especialidades" ng-model="profile.treino">{{especialidade.modalidade}}</ion-checkbox>
+            </ion-list>
+          </div>
+          <h5>Preco Medio por Treino</h5>
+            <div class="row">
+              <div class="col-10">R$</div>
+              <div class="col-35">
+                <h-number value="formData.num_start" min="0" max="1000" step="1" change="onChanged()">
+                  <input type="text" ng-model="formData.num_start">
+                 </h-number>
+              </div>
+              <div class="col-15"> - </div>
+              <div class="col-35">
+                <h-number value="formData.num_end" min="0" max="1000" step="1" change="onChanged()">
+                  <input type="text"   ng-model="formData.num_end">
+                 </h-number>
+              </div>
+            </div>
+            <h5>Idade</h5>
+            <div class="row">
+              <div class="col-15">DE</div>
+              <div class="col-35">
+                <h-number value="formData.age_start" min="0" max="1000" step="1" change="onChanged()">
+                  <input type="text" ng-model="formData.age_start">
+                 </h-number>
+              </div>
+              <div class="col-15"> a </div>
+              <div class="col-35">
+                <h-number value="formData.age_end" min="0" max="1000" step="1" change="onChanged()">
+                  <input type="text"   ng-model="formData.age_end">
+                 </h-number>
+              </div>
+            </div>
+          <div class="save-content">
+             <a href="#" class="button button-block button-positive save-btn">Buscar</a>
+           </div>
+        </div>
+      </div>
     </div>
   </ion-content>
 </ion-view>

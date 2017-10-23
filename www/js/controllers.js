@@ -80,6 +80,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
   $scope.cadastro = function(user){
     var dados = user.estado;
+    var auth = $firebaseAuth();
     if(typeof dados === 'object'){
       var cidade = dados.address_components[0].short_name;
       var estado = dados.address_components[1].short_name;
@@ -104,7 +105,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           var usuarios = root.child('profissionais/');
 
         firebaseUser.updateProfile({
-          displayName: user.nome+' '+user.tipo,
+          displayName: user.nome+'_'+user.tipo,
           photoURL: user.picture
         }).then(function() {
           var newUsers = usuarios.push();
@@ -120,10 +121,16 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           cidade:cidade,
           estado_cidade:estado_cidade  
           }).then(function(retorno){
+            UserService.saveProfile(firebaseUser);
+          //UserService.saveProfile(firebaseUser);
+
+
             if(user.tipo =="aluno")
               $state.go('tab.dash');
             else
-              $state.go("tab/account/"+firebaseUser.uid);
+              $state.go('tab.account');
+
+              //$state.go("tab.account/"+firebaseUser.uid);
 
           }).catch(function(error) {
              var alertPopup = $ionicPopup.alert({
@@ -186,9 +193,9 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
         age_start: 0,
         age_end:0
   };
-  $scope.profiles = {};
+  $scope.profiles = [];
 
-  $scope.especialidades = [];
+  $scope.especialidades = {};
 
   
   $scope.treinos = '';
@@ -237,7 +244,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
             lng = dados.geometry.location.lng();
             $scope.titulo = 'Profissionais em ' + $scope.formData.cidade + ' - ' + $scope.formData.estado;
 
-            info = $firebaseObject(root.child('profissionais').orderByChild('cidade').equalTo($scope.formData.cidade));
+            info = $firebaseArray(root.child('profissionais').orderByChild('cidade').equalTo($scope.formData.cidade));
             $scope.profiles = info;
             //console.log(data)
             info.$loaded(
@@ -259,7 +266,10 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
         }
    });
 
+
+
   function buildMap() {
+    var i = 0;
     document.getElementById('map').style.height = (window.innerHeight - 145) + 'px';
 
       map = new google.maps.Map(document.getElementById('map'), {
@@ -267,6 +277,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
           center:{ lat:lat,lng:lng}
           //center: {lat: $rootScope.geo.coords.latitude, lng: $rootScope.geo.coords.longitude}
       });
+      
        angular.forEach($scope.profiles, function (profissional, chave) {
             //if (evento.latitude && evento.longitude) {
                 setTimeout(function () {
@@ -281,7 +292,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
                             content:
                                     '<div class="content">' +
                                     '<div class="bodyContent">' +
-                                    '<a href="">' + profissional.name + '</a>' +
+                                    '<a href="#/tab/dash">'+$scope.profiles.length+'</a>' +
                                     '</div>' +
                                     '</div>'
 
@@ -316,7 +327,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 })
 
 .controller('ConfigurationCtrl', function($scope, UserService) {
-  console.log('configuracao')
+
 
 })
 
@@ -329,16 +340,13 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $scope.chats  = [];
   $scope.total = 0;
 
-
-  console.log(profissional_aluno)
-
   var userAuth = $firebaseAuth();
 
   userAuth.$onAuthStateChanged(function(firebaseUser) {
     $scope.firebaseUser = firebaseUser;
   });
 
-  console.log(profissional_aluno)
+ 
   var chat = $firebaseArray(root.child('chat').orderByChild('profissional_aluno').equalTo(profissional_aluno));
   console.log(chat.length)
 
@@ -347,7 +355,6 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
     chat.$loaded(
       function(data) {
-        console.log(data.length)
         if(data.length > 0){
           var key = data[0].$id;
           $scope.total = 1;
@@ -430,15 +437,26 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 })
 
 
-.controller('AccountDetailCtrl', function($scope, $stateParams,$firebaseObject,$firebaseArray,$q,$cordovaCamera,$ionicPlatform) {
+.controller('AccountDetailCtrl', function($scope, $stateParams,$firebaseObject,$firebaseArray,$q,$cordovaCamera,$ionicPlatform, UserService) {
   var id = $stateParams.accountId;
   var root = firebase.database().ref();
+  $scope.perfil = false;
   $scope.myTab= {'tab': 1};
   $scope.user = {};
   $scope.Optionsexo = [{ name: 'Masculino', id: 1 }, { name: 'Feminino', id: 2 }];
- 
- 
-  $dados = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(id));
+  var auth = JSON.parse(UserService.getProfile());
+  var profile = auth.displayName;
+  var arraytipo  = profile.split('_');
+  var tipo = arraytipo[1];
+  
+  console.log(tipo)
+
+  if(tipo == "aluno"){
+    $dados = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(id));
+  }else{
+    $scope.perfil=true;
+    $dados = $firebaseArray(root.child('profissionais').orderByChild('id').equalTo(id));
+  }
   $dados.$loaded(
     function(data) {
       //console.log(data)
@@ -492,18 +510,18 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
   $ionicPlatform.ready(function(){
     if(typeof(Camera) != 'undefined'){
-          var options = {
-              quality: 50,
-              destinationType: Camera.DestinationType.DATA_URL,
-              sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
-              allowEdit: true,
-              encodingType: Camera.EncodingType.JPEG,
-              targetWidth: 300,
-              targetHeight: 300,
-              popoverOptions: CameraPopoverOptions,
-              saveToPhotoAlbum: false,
-              correctOrientation:true
-          };
+        var options = {
+            quality: 50,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+            allowEdit: true,
+            encodingType: Camera.EncodingType.JPEG,
+            targetWidth: 300,
+            targetHeight: 300,
+            popoverOptions: CameraPopoverOptions,
+            saveToPhotoAlbum: false,
+            correctOrientation:true
+        };
       }
 
       $scope.choosePicture = function(){
@@ -526,12 +544,15 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
       var cidade = localizacao[1];
       var estado = localizacao[0];
     }
-    console.log(localizacao)
+
     var estado_cidade = cidade+"_"+estado;
 
     //console.log(firebaseId)
-
-    var usuarios = root.child('alunos/');
+    if(tipo == "alunos"){
+      var usuarios = root.child('alunos/');
+    }else{
+      var usuarios = root.child('profissionais/');
+    }
 
         // if(user.tipo =='aluno')
         //   var usuarios = root.child('alunos/'+firebaseId);
@@ -568,25 +589,25 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
   }
 
-
-
-
-
-
-
 })
-
 .controller('AccountCtrl', function($scope,$firebaseAuth,$firebaseArray,UserService) {
-  // $scope.settings = {
-  //   enableFriends: true
-  // };
+
   $scope.profiles = {
     'cidade':'',
     'estado':'',
     'estado_cidade':''
   }
   var auth = JSON.parse(UserService.getProfile());
+  console.log(auth)
+  var profile = auth.displayName;
+  var arraytipo  = profile.split('_');
+  var tipo = arraytipo[1];
+  console.log(tipo)
   var root = firebase.database().ref();
-  $scope.profiles = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(auth.uid));
-  console.log($scope.profiles)
+  if(tipo=="aluno"){
+    $scope.profiles = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(auth.uid)); 
+  }else{
+     $scope.profiles = $firebaseArray(root.child('profissionais').orderByChild('id').equalTo(auth.uid)); 
+  }
+
 });
