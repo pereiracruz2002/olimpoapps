@@ -326,7 +326,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 })
 
-.controller('ConfigurationCtrl', function($scope, UserService,$ionicSideMenuDelegate) {
+.controller('ConfigurationCtrl', function($scope, UserService) {
 
 
 })

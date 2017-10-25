@@ -52,9 +52,8 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
 
   .state('menu', {
       url : '/menu',
-      templateUrl : 'menu-abstract.html',
+      templateUrl : 'templates/menu.html',
       abstract : true,
-      controller : 'MenuController'
   })
 
 
