@@ -331,6 +331,13 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 })
 
+.controller('TabCtrl', function($scope, UserService,$state) {
+  $scope.logout = function(){
+    UserService.logout();
+    $state.go('login');
+  }
+})
+
 .controller('ChatDetailCtrl', function($scope, $stateParams, UserService,$firebaseObject,$firebaseArray,$firebaseAuth) {
   var profissional = $stateParams.chatId;
   var auth = JSON.parse(UserService.getProfile());
