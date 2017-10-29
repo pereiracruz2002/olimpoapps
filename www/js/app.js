@@ -88,7 +88,7 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
   })
 
 
-  .state('menu.configuration', {
+  .state('configuration', {
     url: '/configuration',
     templateUrl: 'templates/configuration.html',
     controller: 'ConfigurationCtrl',

@@ -187,12 +187,15 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   var markers = [];
   $scope.myModel= {'tab': 1};
   $scope.formData = {
-        city: "",
-        num_start: 0,
-        num_end:0,
-        age_start: 0,
-        age_end:0
+    city: "",
+       
   };
+  $scope.formDataSearch = {
+    num_start: 0,
+    num_end:0,
+    age_start: 0,
+    age_end:0
+  }
   $scope.profiles = [];
 
   $scope.especialidades = {};
@@ -230,6 +233,25 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   //$scope.profiles = $firebaseObject(root.child('profissionais').orderByChild('estado').equalTo('SP'));
   //$scope.treinos = $scope.profiles.treinos[0].join();
   //console.log( $scope.profiles)
+
+  $scope.search = function (formDataSearch) {
+    console.log(formDataSearch.treino)
+    
+    var treinoSelecionado = root.child('treino_profissionais').orderByChild('treino').equalTo($scope.formDataSearch.treino).on('value', function(keys) {
+      keys.forEach(function(keySnapshot) {
+        console.log(keySnapshot.key)
+        root.child('profissionais').orderByChild('id').equalTo(keySnapshot.key).once('value', function(postSnapshot) {
+          console.log(postSnapshot.val());
+          $scope.profiles = postSnapshot.val();
+        });
+      });
+
+});
+    
+    console.log(treinoSelecionado)
+    $scope.myModel= {'tab': 1};
+  }
+
   $scope.$watch('formData.city', function () {
          var treinamentos = '';
 

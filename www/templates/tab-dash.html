@@ -40,21 +40,21 @@
           <div class="check-content">
             <h5>Especialidades</h5>
             <ion-list>
-              <ion-checkbox  ng-repeat="especialidade in especialidades" ng-model="profile.treino">{{especialidade.modalidade}}</ion-checkbox>
+              <ion-radio  ng-repeat="especialidade in especialidades" ng-model="formDataSearch.treino" ng-value="'{{especialidade.modalidade}}'">{{especialidade.modalidade}}</ion-radio>
             </ion-list>
           </div>
           <h5>Preco Medio por Treino</h5>
             <div class="row">
               <div class="col-10">R$</div>
               <div class="col-35">
-                <h-number value="formData.num_start" min="0" max="1000" step="1" change="onChanged()">
-                  <input type="text" ng-model="formData.num_start">
+                <h-number value="formDataSearch.num_start" min="0" max="1000" step="1" change="onChanged()">
+                  <input type="text" ng-model="formDataSearch.num_start">
                  </h-number>
               </div>
               <div class="col-15"> - </div>
               <div class="col-35">
-                <h-number value="formData.num_end" min="0" max="1000" step="1" change="onChanged()">
-                  <input type="text"   ng-model="formData.num_end">
+                <h-number value="formDataSearch.num_end" min="0" max="1000" step="1" change="onChanged()">
+                  <input type="text"   ng-model="formDataSearch.num_end">
                  </h-number>
               </div>
             </div>
@@ -62,22 +62,20 @@
             <div class="row">
               <div class="col-15">DE</div>
               <div class="col-35">
-                <h-number value="formData.age_start" min="0" max="1000" step="1" change="onChanged()">
-                  <input type="text" ng-model="formData.age_start">
+                <h-number value="formDataSearch.age_start" min="0" max="1000" step="1" change="onChanged()">
+                  <input type="text" ng-model="formDataSearch.age_start">
                  </h-number>
               </div>
               <div class="col-15"> a </div>
               <div class="col-35">
-                <h-number value="formData.age_end" min="0" max="1000" step="1" change="onChanged()">
-                  <input type="text"   ng-model="formData.age_end">
+                <h-number value="formDataSearch.age_end" min="0" max="1000" step="1" change="onChanged()">
+                  <input type="text"   ng-model="formDataSearch.age_end">
                  </h-number>
               </div>
             </div>
-       
-
-
            <div class="save-content">
-             <a href="#" class="button button-block button-positive save-btn">Buscar</a>
+            <!--  <a ng-click="seach(formDataSearch)" href="#" class="button button-block button-positive save-btn">Buscar</a> -->
+            <button ng-click="search(formDataSearch)" class="button button-block button-positive getin-btn">Entrar</button>
            </div>
         </div>
       </div>
