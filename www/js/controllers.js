@@ -193,8 +193,9 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $scope.formDataSearch = {
     num_start: 0,
     num_end:0,
-    age_start: 0,
-    age_end:0
+    modalidades:'',
+    sexo:''
+
   }
   $scope.profiles = [];
 
@@ -235,20 +236,22 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   //console.log( $scope.profiles)
 
   $scope.search = function (formDataSearch) {
-    console.log(formDataSearch.treino)
-    
-    var treinoSelecionado = root.child('treino_profissionais').orderByChild('treino').equalTo($scope.formDataSearch.treino).on('value', function(keys) {
-      keys.forEach(function(keySnapshot) {
-        console.log(keySnapshot.key)
-        root.child('profissionais').orderByChild('id').equalTo(keySnapshot.key).once('value', function(postSnapshot) {
-          console.log(postSnapshot.val());
-          $scope.profiles = postSnapshot.val();
-        });
-      });
 
-});
+  console.log(formDataSearch)
+   if(formDataSearch.modalidades != ''){
+      console.log('modalidades')
+       $scope.profiles = $firebaseArray(root.child('treino_profissionais').orderByChild('treino').equalTo($scope.formDataSearch.modalidades));
+   }else if(formDataSearch.sexo != ''){
+      console.log('sexo')
+       $scope.profiles = $firebaseArray(root.child('sexo_profissionais').orderByChild('sexo').equalTo($scope.formDataSearch.sexo));
+   }else if(formDataSearch.num_start != 0){
+      console.log('valor')
+      $scope.profiles = $firebaseArray(root.child('preco_profissionais').orderByChild('valor').startAt(100));
+   }
+   
     
-    console.log(treinoSelecionado)
+    
+    console.log($scope.profiles)
     $scope.myModel= {'tab': 1};
   }
 
@@ -267,24 +270,22 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
             $scope.titulo = 'Profissionais em ' + $scope.formData.cidade + ' - ' + $scope.formData.estado;
 
             info = $firebaseArray(root.child('profissionais').orderByChild('cidade').equalTo($scope.formData.cidade));
-            $scope.profiles = info;
-            //console.log(data)
-            info.$loaded(
-            function(info) {
-              var key = Object.keys(info)[0];
-              angular.forEach(info[key].treinos, function (modalidade, key) {
-                if(modalidade.name !="undefined"){
-                  treinamentos+=modalidade.name+",";
-                  $scope.treinos = treinamentos.slice(0, -1);
-                }
-              });
-              
-            },
-            function(error) {
-              console.error("Error:", error);
-            }
-
-          );
+              $scope.profiles = info;
+              info.$loaded(
+              function(info) {
+                var key = Object.keys(info)[0];
+                angular.forEach(info[key].treinos, function (modalidade, key) {
+                  if(modalidade.name !="undefined"){
+                    treinamentos+=modalidade.name+",";
+                    $scope.treinos = treinamentos.slice(0, -1);
+                  }
+                });
+                
+              },
+              function(error) {
+                console.error("Error:", error);
+              }
+            );
         }
    });
 
