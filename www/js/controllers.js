@@ -236,22 +236,39 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   //console.log( $scope.profiles)
 
   $scope.search = function (formDataSearch) {
+    var treinamentos = '';
+    var dados = [];
+    var firebaseNo = 'profissionais_treinos/Treino';
 
-  console.log(formDataSearch)
-   if(formDataSearch.modalidades != ''){
-      console.log('modalidades')
-       $scope.profiles = $firebaseArray(root.child('treino_profissionais').orderByChild('treino').equalTo($scope.formDataSearch.modalidades));
-   }else if(formDataSearch.sexo != ''){
-      console.log('sexo')
-       $scope.profiles = $firebaseArray(root.child('sexo_profissionais').orderByChild('sexo').equalTo($scope.formDataSearch.sexo));
-   }else if(formDataSearch.num_start != 0){
-      console.log('valor')
-      $scope.profiles = $firebaseArray(root.child('preco_profissionais').orderByChild('valor').startAt(100));
-   }
-   
-    
-    
-    console.log($scope.profiles)
+  
+  if(formDataSearch.modalidades != ''){
+    firebaseNo = 'profissionais_treinos/Treino';
+    busca = formDataSearch.modalidades;
+  }else if(formDataSearch.sexo != ''){
+    firebaseNo = 'profissionais_sexo/Sexo';
+    busca = formDataSearch.sexo;
+  }else if(formDataSearch.num_start != 0){
+    firebaseNo = 'profissionais_valor/Valor';
+    busca = formDataSearch.num_start;
+  }
+  console.log(busca)
+    info_treinos = $firebaseArray(root.child(firebaseNo).child(busca));
+    console.log(info_treinos)
+    info_treinos.$loaded().then(function(data){
+      angular.forEach(info_treinos, function (valor, chave) {
+        dados= $firebaseArray(root.child('profissionais').orderByChild('id').startAt(valor.$id));
+        dados.$loaded().then(function(info){
+          $scope.profiles.push({nome:info[0].nome,sobrenome:info[0].sobrenome,id:info[0].id,photoURL:info[0].photoURL});
+          var key = Object.keys(info)[0];
+          angular.forEach(info[key].treinos, function (modalidade, key) {
+            if(modalidade.name !="undefined"){
+              treinamentos+=modalidade.name+",";
+              $scope.treinos = treinamentos.slice(0, -1);
+            }
+          });
+        })
+      });  
+    });
     $scope.myModel= {'tab': 1};
   }
 
@@ -337,7 +354,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $scope.profiles = [];
   $scope.profiles = $firebaseArray(root.child('profissionais').orderByChild('id').equalTo(profissional));
   var estado_cidade = $scope.profiles.cidade_bairro;
-  console.log(estado_cidade)
+  
 
 })
 
