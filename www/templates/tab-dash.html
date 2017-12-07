@@ -40,7 +40,7 @@
           <div class="check-content">
             <h5>Especialidades</h5>
             <ion-list>
-              <ion-radio  ng-repeat="especialidade in especialidades" ng-model="formDataSearch.modalidades" ng-value="'{{especialidade.modalidade}}'">{{especialidade.modalidade}}</ion-radio>
+              <ion-radio  ng-repeat="especialidade in especialidades" ng-model="formDataSearch.modalidades" name="especialidades" ng-value="'{{especialidade.modalidade}}'">{{especialidade.modalidade}}</ion-radio>
             </ion-list>
           </div>
           <h5>Preco Medio por Treino</h5>
@@ -60,9 +60,9 @@
             </div>
             <h5>Sexo</h5>
               <ion-list>
-                <ion-radio ng-model="formDataSearch.sexo" ng-value="'Masculino'">Homem</ion-radio>
-                <ion-radio ng-model="formDataSearch.sexo" ng-value="'Feminino'">Mulher</ion-radio>
-                <ion-radio ng-model="formDataSearch.sexo" ng-value="'Ambos'">Ambos</ion-radio>
+                <ion-radio name="sexo" ng-model="formDataSearch.sexo" ng-value="'Masculino'">Homem</ion-radio>
+                <ion-radio name="sexo" ng-model="formDataSearch.sexo" ng-value="'Feminino'">Mulher</ion-radio>
+                <ion-radio name="sexo" ng-model="formDataSearch.sexo" ng-value="'Ambos'">Ambos</ion-radio>
               </ion-list>
             <!--<h5>Idade</h5>-->
             <!-- <div class="row">

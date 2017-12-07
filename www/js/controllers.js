@@ -240,7 +240,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     var dados = [];
     var firebaseNo = 'profissionais_treinos/Treino';
 
-  
+  console.log(formDataSearch.sexo)
   if(formDataSearch.modalidades != ''){
     firebaseNo = 'profissionais_treinos/Treino';
     busca = formDataSearch.modalidades;
@@ -250,8 +250,11 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   }else if(formDataSearch.num_start != 0){
     firebaseNo = 'profissionais_valor/Valor';
     busca = formDataSearch.num_start;
+  }else if(formDataSearch.modalidades != '' && formDataSearch.sexo != ''){
+    firebaseNo = 'treino_sexo/'+formDataSearch.modalidades;
+    busca = formDataSearch.sexo; 
   }
-  console.log(busca)
+  //console.log(busca)
     info_treinos = $firebaseArray(root.child(firebaseNo).child(busca));
     console.log(info_treinos)
     info_treinos.$loaded().then(function(data){
