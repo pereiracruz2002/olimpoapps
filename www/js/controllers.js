@@ -79,6 +79,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
 
   $scope.cadastro = function(user){
+    $scope.formData = {};
     var dados = user.estado;
     var auth = $firebaseAuth();
     if(typeof dados === 'object'){
@@ -97,54 +98,78 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
     firebaseAuthObject.$createUserWithEmailAndPassword(user.email, user.password).then(function(firebaseUser) {
       firebase.auth().currentUser.sendEmailVerification().then(function() {
-
-
-        if(user.tipo =='aluno')
-          var usuarios = root.child('alunos/');
-        else
-          var usuarios = root.child('profissionais/');
-
         firebaseUser.updateProfile({
-          displayName: user.nome+'_'+user.tipo,
+          displayName: user.nome,
           photoURL: user.picture
         }).then(function() {
-          var newUsers = usuarios.push();
-          newUsers.set({
-          id:firebaseUser.uid,
-          nome : user.nome,
-          sobrenome:user.sobrenome,
-          imagem:user.picture,
-          sexo:user.sexo,
-          email:user.email,
-          nascimento:formatted,
-          estado:estado,
-          cidade:cidade,
-          estado_cidade:estado_cidade  
-          }).then(function(retorno){
-            UserService.saveProfile(firebaseUser);
-          //UserService.saveProfile(firebaseUser);
-
-
+          $scope.formData = {
+            id:firebaseUser.uid,
+            nome : user.nome,
+            sobrenome:user.sobrenome,
+            sexo:user.sexo,
+            email:user.email,
+            nascimento:formatted,
+            estado:estado,
+            cidade:cidade,
+            status:'enable'
+          }
+          UserService.saveProfile(firebaseUser);
+          UserService.register($scope.formData).then(function(result){
             if(user.tipo =="aluno")
               $state.go('tab.dash');
             else
               $state.go('tab.account');
-
-              //$state.go("tab.account/"+firebaseUser.uid);
-
-          }).catch(function(error) {
-             var alertPopup = $ionicPopup.alert({
-                  title: 'Erro no Cadastro',
-                  template: error
-              });
           });
-
         }).catch(function(error) {
-             var alertPopup = $ionicPopup.alert({
-                  title: 'Erro ao Inserir no banco',
-                  template: error
-              });
+          var alertPopup = $ionicPopup.alert({
+              title: 'Erro no Cadastro',
+              template: error
+          });
         });
+
+        // if(user.tipo =='aluno')
+        //   var usuarios = root.child('alunos/');
+        // else
+        //   var usuarios = root.child('profissionais/');
+
+    //     firebaseUser.updateProfile({
+    //       displayName: user.nome+'_'+user.tipo,
+    //       photoURL: user.picture
+    //     }).then(function() {
+    //       var newUsers = usuarios.push();
+    //       newUsers.set({
+    //       id:firebaseUser.uid,
+    //       nome : user.nome,
+    //       sobrenome:user.sobrenome,
+    //       imagem:user.picture,
+    //       sexo:user.sexo,
+    //       email:user.email,
+    //       nascimento:formatted,
+    //       estado:estado,
+    //       cidade:cidade,
+    //       estado_cidade:estado_cidade  
+    //       }).then(function(retorno){
+    //         UserService.saveProfile(firebaseUser);
+
+    //         if(user.tipo =="aluno")
+    //           $state.go('tab.dash');
+    //         else
+    //           $state.go('tab.account');
+
+
+    //       }).catch(function(error) {
+    //          var alertPopup = $ionicPopup.alert({
+    //               title: 'Erro no Cadastro',
+    //               template: error
+    //           });
+    //       });
+
+    //     }).catch(function(error) {
+    //          var alertPopup = $ionicPopup.alert({
+    //               title: 'Erro ao Inserir no banco',
+    //               template: error
+    //           });
+    //     });
 
       }).catch(function(error) {
          var alertPopup = $ionicPopup.alert({
