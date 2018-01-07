@@ -81,7 +81,8 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
     url: '/dash',
     views: {
       'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
+        // templateUrl: 'templates/tab-dash.html',
+        templateUrl: 'templates/tab-home.html',
         controller: 'DashCtrl'
       }
     }
