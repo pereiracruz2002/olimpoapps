@@ -30,7 +30,7 @@
             <ion-item ng-repeat="item in list track by $index" class="item-avatar">
 
                 <img  ng-src="img/icons/{{item.img}}">
-                <h2><a href="#/tab/dash/{{item.id}}">{{item.name}}</a></h2>
+                <h2><a href="#/tab/dash/{{item.profissional}}">{{item.name}}</a></h2>
                 <p>At {{item.distance}} km</p>
 
                 <ion-option-button class="button-positive icon ion-map" ng-click="showMap(item)"></ion-option-button>

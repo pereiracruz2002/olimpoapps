@@ -40,6 +40,7 @@ App.service('UserService', function($http, URL_API, $httpParamSerializerJQLike,$
         var defer = $q.defer();
         objects.$loaded().then(function() {
             object.g = service.encodeGeohash(object.l);
+            console.log(object.l)
             defer.resolve(objects.$add(object));
         });
         return defer.promise;

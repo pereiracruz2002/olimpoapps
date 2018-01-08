@@ -426,6 +426,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
     geoQuery.on("key_entered", function (key, location, distance) {
       $timeout(function () {
+  
         UserService.get(key).then(function (restaurant) {
           restaurant.distance = distance.toFixed(2);
           
@@ -882,7 +883,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     newObj.name = $scope.form.name;
     newObj.img = $scope.form.img
     newObj.l   = [lat, lng];
-    newObj.id = profissional_id,
+    newObj.profissional = profissional_id,
     newObj.modalidade = ['corrida','luta']
 
     UserService.create(newObj).then(function(){
