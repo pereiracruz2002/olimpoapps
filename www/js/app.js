@@ -135,6 +135,16 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
       }
     })
 
+  .state('tab.form', {
+      url: '/form',
+      views: {
+        'tab-form': {
+          templateUrl: 'templates/tab-form.html',
+          controller: 'FormCtrl'
+        }
+      }
+    })
+
 
   .state('tab.account', {
     url: '/account',

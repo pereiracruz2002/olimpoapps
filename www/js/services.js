@@ -12,6 +12,7 @@ App.service('UserService', function($http, URL_API, $httpParamSerializerJQLike,$
         return user;
     }
     service.saveProfile= function(user){
+        console.log(user);
       localStorage.setItem("user.current_user", JSON.stringify(user));
     }
     service.logout = function(){

@@ -7,8 +7,21 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
     auth.$signInWithEmailAndPassword(user.email,user.password).then(function(firebaseUser) {
         $scope.firebaseUser = firebaseUser;
+
+        var profile = firebaseUser.displayName;
+        var arraytipo  = profile.split('_');
+        var tipo = arraytipo[1];
+
+        firebaseUser.tipo = tipo;
         UserService.saveProfile(firebaseUser);
-        $state.go('tab.dash');
+
+        $scope.tipo = tipo;
+
+        if(tipo =="aluno")
+          $state.go('tab.dash');
+        else
+          $state.go('tab.account');
+
       }).catch(function(error) {
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -16,6 +29,8 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
         if (errorCode === 'auth/invalid-email') {
             msgError = 'Digite um email válido.';
+          }else if(errorCode === "auth/argument-error"){
+            msgError = 'Email deve ser uma string valida.';
           }else if (errorCode === 'auth/wrong-password') {
             msgError = 'Senha Incorreta.';
           }else if(errorCode === 'auth/user-not-found') {
@@ -32,8 +47,6 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
             msgError = 'Usuário não encontrado.';
             //msgError =errorMessage
           }
-
-
         var alertPopup = $ionicPopup.alert({
           title: 'Erro no Login',
           template: msgError
@@ -807,7 +820,6 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   }
 
 })
-
 .controller('MenuController', function($scope, $ionicSideMenuDelegate) {
   $scope.toggleLeft = function() {
     $ionicSideMenuDelegate.toggleLeft();
@@ -833,4 +845,53 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
      $scope.profiles = $firebaseArray(root.child('profissionais').orderByChild('id').equalTo(auth.uid)); 
   }
 
+})
+.controller('FormCtrl', function ($scope, $state, UserService) {
+
+  $scope.images = ['aubergine.png',
+    'birthday-cake.png',
+    'bread.png',
+    'brochettes.png',
+    'carrot.png',
+    'chicken-1.png',
+    'chocolate-1.png',
+    'chocolate.png',
+    'coffee.png',
+    'covering.png',
+    'beer.png',
+    'biscuit.png',
+    'breakfast.png',
+    'burger.png',
+    'cheese.png',
+    'chicken.png',
+    'chocolate-2.png',
+    'cocktail.png',
+    'coke.png'];
+
+  $scope.form = {};
+
+  $scope.save = function(){
+    var lat = $scope.form.location.geometry.location.lat();
+    var lng = $scope.form.location.geometry.location.lng();
+    var auth = JSON.parse(UserService.getProfile());
+    var auth = JSON.parse(UserService.getProfile());
+    console.log(auth)
+    var profissional_id = auth.uid;
+    console.log(profissional_id)
+    var newObj = {};
+    newObj.name = $scope.form.name;
+    newObj.img = $scope.form.img
+    newObj.l   = [lat, lng];
+    newObj.id = profissional_id,
+    newObj.modalidade = ['corrida','luta']
+
+    UserService.create(newObj).then(function(){
+      $scope.form = {};
+      $state.go('tab.account');
+    })
+  };
+
+  $scope.locationChangedCallback = function (location) {
+    //none
+  }
 });
