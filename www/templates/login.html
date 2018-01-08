@@ -9,7 +9,7 @@
         <span class="input-label">Senha</span>
         <input type="password" placeholder="senha" ng-model="user.password">
       </label>
-        <p ng-if="firebaseUser">Signed in user: <strong>{{ firebaseUser.uid }}</strong></p>
+       <!--  <p ng-if="firebaseUser">Signed in user: <strong>{{ firebaseUser.uid }}</strong></p> -->
         <p ng-if="error">Error: <strong>{{ error }}</strong></p>
         <button ng-click="signIn(user)" class="button button-block button-positive getin-btn">Entrar</button>
       <button  class="button button-block button-positive facebook-btn"><i class="icon ion-social-facebook"></i>Entrar com facebook</button>

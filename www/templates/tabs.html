@@ -35,6 +35,12 @@ navigation history that also transitions its views in and out.
   <ion-tab title="Perfil" icon-off="ion-person" icon-on="ion-person" href="#/tab/account">
     <ion-nav-view name="tab-account"></ion-nav-view>
   </ion-tab>
+  
+ <!--  <!-- Account Tab -->
+  <ion-tab title="Endereco" icon-off="ion-person" icon-on="ion-person" href="#/tab/form">
+    <ion-nav-view name="tab-form"></ion-nav-view>
+  </ion-tab> -->
+
 
 
 </ion-tabs>
@@ -45,12 +51,16 @@ navigation history that also transitions its views in and out.
    <!-- Side Menu (left) -->
   <ion-side-menu side="left">
     <ion-header-bar class="bar-stable">
-      <h1 class="title">Left</h1>
+      <h1 class="title">Menu</h1>
     </ion-header-bar>
     <ion-content>
       <ion-list>
         <ion-item menu-close href="#/app/configuration">
           Configurações
+        </ion-item>
+
+        <ion-item menu-close href="#/tab/form">
+          Novo Endereço
         </ion-item>
         <ion-item menu-close ng-click="logout()">
           Sair

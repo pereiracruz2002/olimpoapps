@@ -1,0 +1,48 @@
+<ion-view view-title="Profissionais">
+
+    <ion-nav-bar class="bar-stable" align-title="center">
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+            </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right" class="button26">
+            <button class="button button-icon button-clear ion-ios-gear" ng-click="filter()" id="edit-button">
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+
+    <ion-content>
+
+        <div class="list list-inset">
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+
+                    <ion-google-place placeholder="Digite um endereço, lugar or CEP"
+                                      ng-model="location"
+                                      current-location="true"
+                                      location-changed="locationChangedCallback"/>
+            </label>
+        </div>
+
+
+        <ion-list class="list-home">
+
+            <ion-item ng-repeat="item in list track by $index" class="item-avatar">
+
+                <img  ng-src="img/icons/{{item.img}}">
+                <h2><a href="#/tab/dash/{{item.id}}">{{item.name}}</a></h2>
+                <p>At {{item.distance}} km</p>
+
+                <ion-option-button class="button-positive icon ion-map" ng-click="showMap(item)"></ion-option-button>
+                <ion-option-button class="button-positive icon ion-gear-a" ng-click="remove(chat)">
+                </ion-option-button>
+            </ion-item>
+
+            <ion-item ng-if="ready && list.length == 0">
+                <p>Nenhum Resultado para sua busca.</p>
+            </ion-item>
+
+        </ion-list>
+
+    </ion-content>
+</ion-view>
