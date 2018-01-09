@@ -22,14 +22,18 @@
                                       current-location="true"
                                       location-changed="locationChangedCallback"/>
             </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Local</span>
+                <input type="text" placeholder="Restaurant xyz" ng-model="search"">
+            </label>
         </div>
 
 
         <ion-list class="list-home">
 
-            <ion-item ng-repeat="item in list track by $index" class="item-avatar">
+            <ion-item ng-repeat="item in list | filter:search track by $index" class="item-avatar">
 
-                <img  ng-src="img/icons/{{item.img}}">
+                <img  ng-src="{{item.profileImg}}">
                 <h2><a href="#/tab/dash/{{item.profissional}}">{{item.name}}</a></h2>
                 <p>At {{item.distance}} km</p>
 

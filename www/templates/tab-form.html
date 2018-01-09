@@ -1,13 +1,13 @@
-<ion-view view-title="New Restaurant">
+<ion-view view-title="Novo Endereço">
     <ion-content>
 
         <div class="list list-inset">
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Name</span>
+                <span class="input-label">Local</span>
                 <input type="text" placeholder="Restaurant xyz" ng-model="form.name">
             </label>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Location</span>
+                <span class="input-label">Localização</span>
                 <ion-google-place placeholder="Enter an address, Apt# and ZIP"
                                   ng-model="form.location"
                                   current-location="true"
@@ -16,15 +16,15 @@
 
             <label class="item item-input item-stacked-label">
                 <div class="input-label label-radio">
-                    Image
+                    Treinos
                 </div>
 
                 <div class="row" style="flex-wrap: wrap;">
-                    <div class="col col-33" ng-repeat="item in images">
+                    <div class="col col-33" ng-repeat="item in modalidades">
                         <ion-radio ng-click="alterarTema()"
-                                   ng-model="form.img"
-                                   ng-value="item">
-                            <img class="item-image" src="img/icons/{{item}}">
+                                   ng-model="form.modalidades"
+                                   ng-value="item">{{item}}
+                            <!-- <img class="item-image" src="img/icons/{{item}}"> -->
                         </ion-radio>
                     </div>
                 </div>

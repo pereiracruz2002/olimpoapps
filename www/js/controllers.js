@@ -847,7 +847,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   }
 
 })
-.controller('FormCtrl', function ($scope, $state, UserService) {
+.controller('FormCtrl', function ($scope, $state,$firebaseAuth,$firebaseArray, UserService) {
 
   $scope.images = ['aubergine.png',
     'birthday-cake.png',
@@ -868,23 +868,48 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     'chocolate-2.png',
     'cocktail.png',
     'coke.png'];
-
+ $scope.modalidades = [
+ 'Artes Marciais',
+  'Atividades aquáticas',
+  'Cardiacos, obesos e diabéticos',
+  'Ciclismo',
+  'Condicionamento Físico',
+  'Corrida de rua e Caminhada',
+  'Cross Fit',
+  'Emagrecimento',
+  'Gestantes',
+  'Hiit',
+  'Hipertrofia',
+  'Natação',
+  'Personal Figth',
+  'Pilates',
+  'Reabilitação',
+  'Treinamento Funcional',
+  'Tênis',
+  'Yoga',
+  'Zumba Fitness'
+ ]
+  var root = firebase.database().ref();
+  var auth = JSON.parse(UserService.getProfile());
+  var profile = $firebaseArray(root.child('profissionais').orderByChild('id').equalTo(auth.uid));
+  console.log(profile)
   $scope.form = {};
 
   $scope.save = function(){
     var lat = $scope.form.location.geometry.location.lat();
     var lng = $scope.form.location.geometry.location.lng();
     var auth = JSON.parse(UserService.getProfile());
-    var auth = JSON.parse(UserService.getProfile());
+
     console.log(auth)
     var profissional_id = auth.uid;
     console.log(profissional_id)
     var newObj = {};
     newObj.name = $scope.form.name;
-    newObj.img = $scope.form.img
+    // newObj.img = $scope.form.img
     newObj.l   = [lat, lng];
     newObj.profissional = profissional_id,
-    newObj.modalidade = ['corrida','luta']
+    newObj.modalidade = $scope.form.modalidades,
+    newObj.profileImg = profile[0].imagem
 
     UserService.create(newObj).then(function(){
       $scope.form = {};
