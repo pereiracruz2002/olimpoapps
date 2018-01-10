@@ -894,6 +894,72 @@
   margin-left: 10%;
 }
 
+.ion-google-place-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    display: none;
+}
+
+input.ion-google-place[readonly] {
+    background-color: transparent;
+    cursor: text;
+}
+.ion-google-place-container .item{
+    font-size: 14px;
+}
+
+.list-home .list {
+    padding: 1px;
+    overflow: hidden;
+    margin: 20px 10px;
+    border-radius: 2px;
+    background-color: #fff;
+}
+
+.right-buttons .button-icon:before, .modal .button-icon:before {
+    font-size: 24px !important;
+}
+
+.button-icon {
+    font-size: 24px;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+.scroll {
+    height: 100%;
+}
+
+.item-image {
+    width: 24px;
+}
+
+.item-radio .item-content {
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.item-radio .radio-icon {
+    padding: 10px;
+    font-size: 18px;
+}
+
+.item-input .row {
+    padding: 0;
+}
+
+.item-input .col {
+    padding-left: 0;
+    padding-bottom: 0;
+}
+
 
 
 

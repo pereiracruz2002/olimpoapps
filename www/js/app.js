@@ -81,7 +81,8 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
     url: '/dash',
     views: {
       'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
+        // templateUrl: 'templates/tab-dash.html',
+        templateUrl: 'templates/tab-home.html',
         controller: 'DashCtrl'
       }
     }
@@ -130,6 +131,16 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
         'tab-account': {
           templateUrl: 'templates/account-detail.html',
           controller: 'AccountDetailCtrl'
+        }
+      }
+    })
+
+  .state('tab.form', {
+      url: '/form',
+      views: {
+        'tab-form': {
+          templateUrl: 'templates/tab-form.html',
+          controller: 'FormCtrl'
         }
       }
     })
