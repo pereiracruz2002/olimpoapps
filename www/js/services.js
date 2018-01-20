@@ -21,6 +21,7 @@ App.service('UserService', function($http, URL_API, $httpParamSerializerJQLike,$
     }
 
     service.getByGeo = function (lat, lng, radius) {
+        
         if(typeof geoQuery !== 'undefined'){
             geoQuery.updateCriteria({
                 center: [lat, lng],

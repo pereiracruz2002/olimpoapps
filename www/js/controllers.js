@@ -413,6 +413,19 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     distance: 10
   };
 
+  var auth = JSON.parse(UserService.getProfile());
+
+  var profile = auth.displayName;
+  var arraytipo  = profile.split('_');
+  var tipo = arraytipo[1];
+  $scope.tipo= {'tipo': 1};
+  console.log(tipo)
+
+
+  
+
+  
+
   $scope.locationChangedCallback = function (location) {
     $scope.list = [];
     $scope.lat  = location.geometry.location.lat();
@@ -428,6 +441,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
       $timeout(function () {
   
         UserService.get(key).then(function (restaurant) {
+          console.log(restaurant)
           restaurant.distance = distance.toFixed(2);
           
           // var modalidades = restaurant.modalidade;
@@ -532,15 +546,27 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $scope.profiles = [];
   $scope.profiles = $firebaseArray(root.child('profissionais').orderByChild('id').equalTo(profissional));
   var estado_cidade = $scope.profiles.cidade_bairro;
-  
+  console.log('aqui')
 
 })
 
 .controller('ChatsCtrl', function($scope, UserService,$firebaseObject) {
   var auth = JSON.parse(UserService.getProfile());
   var root = firebase.database().ref();
+  var profile = auth.displayName;
+  var arraytipo  = profile.split('_');
+  var tipo = arraytipo[1];
+  if(tipo == "profissionais"){
+    tipo = "profissional";
+  }
+  // var arraytipo  = profile.split('_');
+  // var tipo = arraytipo[1];
+  console.log(auth)
+
+
+
   $scope.chats  = [];
-  $scope.chats = $firebaseObject(root.child('chat').orderByChild('aluno').equalTo(auth.uid));
+  $scope.chats = $firebaseObject(root.child('chat').orderByChild(tipo).equalTo(auth.uid));
 
 })
 
@@ -563,9 +589,9 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, UserService,$firebaseObject,$firebaseArray,$firebaseAuth) {
-  var profissional = $stateParams.chatId;
+  var profissional_aluno = $stateParams.chatId;
   var auth = JSON.parse(UserService.getProfile());
-  var profissional_aluno = profissional+'_'+auth.uid;
+  var profissional_aluno = profissional_aluno;
   var root = firebase.database().ref();
   var objMessage = {};
   $scope.chats  = [];
@@ -847,7 +873,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   }
 
 })
-.controller('FormCtrl', function ($scope, $state,$firebaseAuth,$firebaseArray, UserService) {
+.controller('FormCtrl', function ($scope, $state,$firebaseAuth,$firebaseArray, UserService,$ionicPopup) {
 
   $scope.images = ['aubergine.png',
     'birthday-cake.png',
@@ -912,6 +938,10 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     newObj.profileImg = profile[0].imagem
 
     UserService.create(newObj).then(function(){
+      var alertPopup = $ionicPopup.alert({
+          title: 'Endereco Cadastrado Com Sucesso',
+          template: 'Endereco Cadastrado Com Sucesso'
+      });
       $scope.form = {};
       $state.go('tab.account');
     })
