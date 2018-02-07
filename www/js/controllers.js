@@ -405,13 +405,35 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   
 // })
 
-.controller('DashCtrl', function($scope, $timeout, $ionicModal, $ionicPopup, UserService) {
-
+.controller('DashCtrl', function($scope,$firebaseArray, $timeout, $ionicModal, $ionicPopup, UserService) {
+  var root = firebase.database().ref();
   $scope.location = {};
   $scope.list = [];
   $scope.data = {
     distance: 10
   };
+
+  $scope.modalidades = [
+   'Artes Marciais',
+    'Atividades aquáticas',
+    'Obesos, Cardiopatas e diabéticos',
+    'Ciclismo',
+    'Condicionamento Físico',
+    'Corrida de rua e Caminhada',
+    'Cross Fit',
+    'Emagrecimento',
+    'Gestantes',
+    'Hiit',
+    'Hipertrofia',
+    'Natação',
+    'Personal Figth',
+    'Pilates',
+    'Reabilitação',
+    'Treinamento Funcional',
+    'Tênis',
+    'Yoga',
+    'Zumba Fitness'
+ ];
 
   var auth = JSON.parse(UserService.getProfile());
 
@@ -421,9 +443,55 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $scope.tipo= {'tipo': 1};
   console.log(tipo)
 
+  var myPopupEspecialidades = $ionicPopup.show({
+      templateUrl: 'templates/popup-especialidades.html',
+      title: 'Especialidades',
+      scope: $scope,
+      buttons: [
+        { text: 'Cancel' }, {
+          text: '<b>Save</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            if (!$scope.data) {
+              e.preventDefault();
+            } else {
+              console.log($scope.data.modalidades)
+              return $scope.data.modalidades;
+            }
+          }
+        }
+      ]
+    });
 
+    myPopupEspecialidades.then(function(resposta) {
+      $scope.list = [];
+
+      $scope.FilterByEspecialides(resposta);
+      //$scope.geoQuery();
+    });
   
+  $scope.FilterByEspecialides = function(resposta){
 
+    $scope.list = $firebaseArray(root.child('enderecos').orderByChild('modalidade').equalTo(resposta));
+
+    // UserService.getEspecialidades(resposta).then(function (restaurant) {
+    //   console.log(restaurant)
+
+      
+      // var modalidades = restaurant.modalidade;
+
+      // for (i = 0; i < modalidades.length; i++) { 
+      //     console.log(modalidades[i]);
+      //     if(modalidades[i]==$scope.data.modalidade){
+      //       $scope.list.push(restaurant);
+      //     $scope.list = uniqueArray($scope.list, '$id');
+      //     }
+      // }
+      //$scope.list.push(restaurant);
+      //$scope.list = uniqueArray($scope.list, '$id');
+   // });
+
+  }
   
 
   $scope.locationChangedCallback = function (location) {
@@ -436,12 +504,13 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $scope.geoQuery = function(){
 
     var geoQuery = UserService.getByGeo($scope.lat, $scope.lng, $scope.data.distance);
-
+    console.log(geoQuery)
     geoQuery.on("key_entered", function (key, location, distance) {
+      console.log(key)
       $timeout(function () {
   
         UserService.get(key).then(function (restaurant) {
-          console.log(restaurant)
+          //console.log(restaurant)
           restaurant.distance = distance.toFixed(2);
           
           // var modalidades = restaurant.modalidade;
@@ -589,9 +658,9 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, UserService,$firebaseObject,$firebaseArray,$firebaseAuth) {
-  var profissional_aluno = $stateParams.chatId;
+  var profissional = $stateParams.chatId;
   var auth = JSON.parse(UserService.getProfile());
-  var profissional_aluno = profissional_aluno;
+  var profissional_aluno = profissional+"_"+auth.uid;
   var root = firebase.database().ref();
   var objMessage = {};
   $scope.chats  = [];
@@ -875,26 +944,7 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 })
 .controller('FormCtrl', function ($scope, $state,$firebaseAuth,$firebaseArray, UserService,$ionicPopup) {
 
-  $scope.images = ['aubergine.png',
-    'birthday-cake.png',
-    'bread.png',
-    'brochettes.png',
-    'carrot.png',
-    'chicken-1.png',
-    'chocolate-1.png',
-    'chocolate.png',
-    'coffee.png',
-    'covering.png',
-    'beer.png',
-    'biscuit.png',
-    'breakfast.png',
-    'burger.png',
-    'cheese.png',
-    'chicken.png',
-    'chocolate-2.png',
-    'cocktail.png',
-    'coke.png'];
- $scope.modalidades = [
+  $scope.modalidades = [
  'Artes Marciais',
   'Atividades aquáticas',
   'Cardiacos, obesos e diabéticos',
@@ -922,29 +972,33 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
   $scope.form = {};
 
   $scope.save = function(){
+  
     var lat = $scope.form.location.geometry.location.lat();
     var lng = $scope.form.location.geometry.location.lng();
     var auth = JSON.parse(UserService.getProfile());
 
-    console.log(auth)
+    //console.log(auth)
     var profissional_id = auth.uid;
-    console.log(profissional_id)
+    //console.log(profissional_id)
     var newObj = {};
-    newObj.name = $scope.form.name;
+    //newObj.name = $scope.form.name;
     // newObj.img = $scope.form.img
     newObj.l   = [lat, lng];
     newObj.profissional = profissional_id,
     newObj.modalidade = $scope.form.modalidades,
-    newObj.profileImg = profile[0].imagem
-
+    //newObj.profileImg = profile[0].imagem
+    console.log(newObj)
     UserService.create(newObj).then(function(){
+      console.log('retorno')
       var alertPopup = $ionicPopup.alert({
           title: 'Endereco Cadastrado Com Sucesso',
           template: 'Endereco Cadastrado Com Sucesso'
       });
       $scope.form = {};
       $state.go('tab.account');
-    })
+    },function(error) {
+        console.error("Error:", error);
+      })
   };
 
   $scope.locationChangedCallback = function (location) {

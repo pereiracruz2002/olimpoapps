@@ -1,0 +1,29 @@
+<ion-view view-title="Seleciona Modalidade">
+    <ion-content>
+
+        <div class="list list-inset">
+            <label class="item item-input item-stacked-label">
+                <div class="input-label label-radio">
+                    Treinos
+                </div>
+
+                <div class="row" style="flex-wrap: wrap;">
+                    <div class="col col-33" ng-repeat="item in modalidades">
+                        <ion-radio ng-click="alterarTema()"
+                                   ng-model="form.modalidades"
+                                   ng-value="item">{{item}}
+                            <!-- <img class="item-image" src="img/icons/{{item}}"> -->
+                        </ion-radio>
+                    </div>
+                </div>
+            </label>
+
+            <button class="button button-block button-positive" ng-click="save()">
+                Buscar
+            </button>
+
+            <br>
+        </div>
+
+    </ion-content>
+</ion-view>

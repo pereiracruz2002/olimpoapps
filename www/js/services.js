@@ -38,21 +38,36 @@ App.service('UserService', function($http, URL_API, $httpParamSerializerJQLike,$
     };
 
     service.create = function (object) {
+        console.log('cheguei aqui')
         var defer = $q.defer();
         objects.$loaded().then(function() {
             object.g = service.encodeGeohash(object.l);
-            console.log(object.l)
+           
             defer.resolve(objects.$add(object));
         });
         return defer.promise;
     };
 
     service.get = function (id) {
+        console.log(id)
         var defer = $q.defer();
+
         objects.$loaded().then(function() {
+            console.log(objects.$getRecord(id))
             defer.resolve(objects.$getRecord(id));
         });
         return defer.promise;
+    };
+
+    service.getEspecialidades = function (modalidade) {
+        var defer = $q.defer();
+
+        objects.$loaded().then(function() {
+             console.log(objects.$keyAt(0).modalidade)
+            defer.resolve(objects.$indexFor('modalidade'));
+        });
+        return defer.promise;
+        //return $firebaseArray(root.child('enderecos').orderByChild('modalidades').equalTo(profissional));
     };
 
     service.encodeGeohash = function(location, precision) {

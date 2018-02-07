@@ -25,8 +25,8 @@
      <!-- GeoFire-->
 
     <script src="lib/geofire/dist/geofire.js"></script>
+    
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMbjchaqX9paF4tEMBI7PLXxvxTXidysw&v=3.exp"></script>
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
@@ -35,13 +35,18 @@
     <script src="cordova.js"></script>
     <script src="lib/angularfire/dist/angularfire.js"></script>
     <script src="lib/firebase/firebase.js"></script>
-    <script src="lib/ion-autocomplete/dist/ion-autocomplete.js"></script>
-    <!-- path to ionic/angularjs js -->
+
+   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+     <script src="lib/ion-google-autocomplete/dist/ion-google-autocomplete.js"></script>
+   <!--  // <script src="lib/ion-autocomplete/dist/ion-autocomplete.js"></script>
+    <!-- path to ionic/angularjs js --> 
   <script type="text/javascript"  src="lib/angular-number-picker/di
 st/angular-number-picker.min.js"></script>
-    <link href="lib/ion-autocomplete/dist/ion-autocomplete.css" rel="stylesheet">
+
+    <!-- <link href="lib/ion-autocomplete/dist/ion-autocomplete.css" rel="stylesheet"> -->
+    <!-- https://codepen.io/Froelund/pen/BuiDz-->
     <script>
-        var App = angular.module('starter', ['ionic','firebase', 'ion-autocomplete','starter.controllers','starter.services','starter.directives','ngCordova','ngNumberPicker']);
+        var App = angular.module('starter', ['ion-google-autocomplete','ionic','firebase','starter.controllers','starter.services','starter.directives','ngCordova','ngNumberPicker',]);
     </script>
     <!-- your app's js -->
     <script src="js/constants.js"></script>

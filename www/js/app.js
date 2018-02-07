@@ -145,6 +145,16 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
       }
     })
 
+  // .state('tab.preform', {
+  //     url: '/preform',
+  //     views: {
+  //       'tab-preform': {
+  //         templateUrl: 'templates/tab-preform.html',
+  //         controller: 'FormPreCtrl'
+  //       }
+  //     }
+  // })
+
 
   .state('tab.account', {
     url: '/account',
