@@ -9,6 +9,7 @@
             <button class="button button-icon button-clear ion-ios-gear" ng-click="filter()" id="edit-button">
             </button>
         </ion-nav-buttons>
+        
     </ion-nav-bar>
 
     <ion-content>
@@ -34,11 +35,11 @@
             <ion-item ng-repeat="item in list | filter:search track by $index" class="item-avatar">
 
                 <img  ng-src="{{item.profileImg}}">
-                <h2><a href="#/tab/dash/{{item.profissional}}">{{item.name}}</a></h2>
+                <!-- <h2>{{item.name}}</a></h2> -->
                 <p>Distancia: {{item.distance}} km</p>
-                <p>Modalidades: {{item.modalidade}} </p>
+                <p><a href="#/tab/dash/{{item.profissional}}">Modalidades: {{item.modalidade}}</a> </p>
 
-                <ion-option-button class="button-positive icon ion-map" ng-click="showMap(item)"></ion-option-button>
+                <ion-option-button ng-show="shouldShowButton" class="button-positive icon ion-map" ng-click="showMap(item)"></ion-option-button>
                
             </ion-item>
 

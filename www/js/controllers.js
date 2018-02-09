@@ -577,6 +577,34 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
     });
   };
 
+  $scope.filterModalities = function() {
+
+    // Custom popup
+    var myPopup = $ionicPopup.show({
+      templateUrl: 'templates/popup-especialidades.html',
+      title: 'Modalidades',
+      scope: $scope,
+      buttons: [
+        { text: 'Cancel' }, {
+          text: '<b>Save</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            if (!$scope.data) {
+              e.preventDefault();
+            } else {
+              return $scope.data;
+            }
+          }
+        }
+      ]
+    });
+
+    myPopup.then(function(res) {
+      $scope.list = [];
+      $scope.geoQuery();
+    });
+  };
+
   $ionicModal.fromTemplateUrl('templates/modal-map.html', function ($ionicModal) {
     $scope.modal = $ionicModal;
   }, {
@@ -607,6 +635,9 @@ App.controller('LoginCtrl', function($scope,$state,$ionicPopup,$firebaseAuth,Use
 
     $scope.map = map;
   }; 
+
+  $scope.shouldShowButton = true;
+  $scope.showHome = false;
 })
 
 .controller('DashDetailCtrl', function($scope, $stateParams,$firebaseObject,$firebaseArray) {
