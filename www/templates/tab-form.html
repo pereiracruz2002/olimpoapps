@@ -9,7 +9,7 @@
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Localização</span>
                <!-- <input type="text" placeholder="Change address" google-autocomplete-suggestion location="form.location" country-code="{{countryCode}}" on-selection="onAddressSelection(location)" ng-model="form.location.formatted_address" readonly required> -->
-                <ion-google-place placeholder="Enter an address, Apt# and ZIP"
+                <ion-google-place placeholder="Digite um endereço, lugar or CEP"
                                   ng-model="form.location"
                                   current-location="true"
                                   location-changed="locationChangedCallback"/>
@@ -20,8 +20,8 @@
                     Treinos
                 </div>
 
-                <div class="row" style="flex-wrap: wrap;">
-                    <div class="col col-33" ng-repeat="item in modalidades">
+                <div class="row" style="flex-wrap: wrap;"> <!-- trampo -->
+                    <div class="col col-100" ng-repeat="item in modalidades">
                         <ion-radio ng-click="alterarTema()"
                                    ng-model="form.modalidades"
                                    ng-value="item">{{item}}

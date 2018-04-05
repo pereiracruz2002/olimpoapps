@@ -19,7 +19,7 @@ navigation history that also transitions its views in and out.
       </ion-nav-bar>
 
       <!-- TABS -->
-    <ion-tabs  class="tabs-icon-top tabs-color-active-positive">
+    <ion-tabs class="tabs-icon-top tabs-color-active-positive">
 
         <!-- Dashboard Tab -->
         <ion-tab ng-show="showHome" title="Status" icon-off="ion-search" icon-on="ion-search" href="#/tab/dash">
@@ -36,8 +36,8 @@ navigation history that also transitions its views in and out.
           <ion-nav-view name="tab-account"></ion-nav-view>
         </ion-tab>
         
-       <!--  <!-- Account Tab -->
-        <ion-tab   title="Endereco" icon-off="ion-person" icon-on="ion-person" href="#/tab/form">
+       <!--  Address Tab -->
+        <ion-tab ng-if="addressShow" ng-class="myTab.tab==3 ? 'active' : ''" title="Endereco" icon-off="ion-person" icon-on="ion-person" href="#/tab/form">
           <ion-nav-view name="tab-form"></ion-nav-view>
         </ion-tab>
 

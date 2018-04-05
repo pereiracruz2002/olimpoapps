@@ -4,30 +4,37 @@
     <div class="list">
       <label class="item item-input">
         <i class="icon ion-search placeholder-icon"></i>
-        <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete col-90" autocomplete="off" ng-model="formData.city" item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade" max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
+        <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete col-90" autocomplete="off" ng-model="formData.city"
+          item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade"
+          max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
       </label>
     </div>
     <div class="button-bar bar-light">
-      <a ng-show="myModel.tab!=1"  ng-click="myModel.tab=1" ng-class="myModel.tab==1 ? 'active' : ''" class="button icon-left ion-levels">Lista</a>
+      <a ng-show="myModel.tab!=1" ng-click="myModel.tab=1" ng-class="myModel.tab==1 ? 'active' : ''" class="button icon-left ion-levels">Lista</a>
 
       <a ng-show="myModel.tab!=3" ng-click="myModel.tab=3" ng-class="myModel.tab==3 ? 'active' : ''" class="button icon-left ion-levels">Filtros</a>
 
       <a ng-show="myModel.tab!=2" ng-click="myModel.tab=2" ng-class="myModel.tab==2 ? 'active' : ''" class="button icon-left ion-android-map">Mapa</a>
     </div>
-     <div ng-show="myModel.tab==1" id="lista">
-     <div class="card"  ng-if="profiles.length == 0">
-          <div class="item item-text-wrap assertive">
-              <p>Para encontrar um profissional digite um Bairro e Cidade que deseja</p>
-          </div>
+    <div ng-show="myModel.tab==1" id="lista">
+      <div class="card" ng-if="profiles.length == 0">
+        <div class="item item-text-wrap assertive">
+          <p>Para encontrar um profissional digite um Bairro e Cidade que deseja</p>
+        </div>
       </div>
       <ion-list class="list list-inset">
         <ion-item class="item  item-avatar item-icon-right list-custom" ng-repeat="profile in profiles" type="item-text-wrap" href="#/tab/dash/{{profile.id}}">
           <img ng-src="{{profile.photoURL}}">
-          <h2><b>{{profile.nome}} {{profile.sobrenome}}</b></h2>
+          <h2>
+            <b>{{profile.nome}} {{profile.sobrenome}}</b>
+          </h2>
           <p>{{treinos}}</p>
 
-          <p><a href="#/tab/dash/{{profile.id}}"><ion-icon name="star"></ion-icon> Mais Informações</a></p>
-         
+          <p>
+            <a href="#/tab/dash/{{profile.id}}">
+              <ion-icon name="star"></ion-icon> Mais Informações</a>
+          </p>
+
         </ion-item>
       </ion-list>
     </div>
@@ -40,32 +47,32 @@
           <div class="check-content">
             <h5>Especialidades</h5>
             <ion-list>
-              <ion-radio  ng-repeat="especialidade in especialidades" ng-model="formDataSearch.modalidades" name="especialidades" ng-value="'{{especialidade.modalidade}}'">{{especialidade.modalidade}}</ion-radio>
+              <ion-radio ng-repeat="especialidade in especialidades" ng-model="formDataSearch.modalidades" name="especialidades" ng-value="'{{especialidade.modalidade}}'">{{especialidade.modalidade}}</ion-radio>
             </ion-list>
           </div>
           <h5>Preco Medio por Treino</h5>
-            <div class="row">
-              <div class="col-10">R$</div>
-              <div class="col-35">
-                <h-number value="formDataSearch.num_start" min="0" max="1000" step="100" change="onChanged()">
-                  <input type="text" ng-model="formDataSearch.num_start">
-                 </h-number>
-              </div>
-              <div class="col-15"> - </div>
-              <div class="col-35">
-                <h-number value="formDataSearch.num_end" min="0" max="1000" step="100" change="onChanged()">
-                  <input type="text" ng-model="formDataSearch.num_end">
-                 </h-number>
-              </div>
+          <div class="row">
+            <div class="col-10">R$</div>
+            <div class="col-35">
+              <h-number value="formDataSearch.num_start" min="0" max="1000" step="100" change="onChanged()">
+                <input type="text" ng-model="formDataSearch.num_start">
+              </h-number>
             </div>
-            <h5>Sexo</h5>
-              <ion-list>
-                <ion-radio name="sexo" ng-model="formDataSearch.sexo" ng-value="'Masculino'">Homem</ion-radio>
-                <ion-radio name="sexo" ng-model="formDataSearch.sexo" ng-value="'Feminino'">Mulher</ion-radio>
-                <ion-radio name="sexo" ng-model="formDataSearch.sexo" ng-value="'Ambos'">Ambos</ion-radio>
-              </ion-list>
-            <!--<h5>Idade</h5>-->
-            <!-- <div class="row">
+            <div class="col-15"> - </div>
+            <div class="col-35">
+              <h-number value="formDataSearch.num_end" min="0" max="1000" step="100" change="onChanged()">
+                <input type="text" ng-model="formDataSearch.num_end">
+              </h-number>
+            </div>
+          </div>
+          <h5>Sexo</h5>
+          <ion-list>
+            <ion-radio name="sexo" ng-model="formDataSearch.sexo" ng-value="'Masculino'">Homem</ion-radio>
+            <ion-radio name="sexo" ng-model="formDataSearch.sexo" ng-value="'Feminino'">Mulher</ion-radio>
+            <ion-radio name="sexo" ng-model="formDataSearch.sexo" ng-value="'Ambos'">Ambos</ion-radio>
+          </ion-list>
+          <!--<h5>Idade</h5>-->
+          <!-- <div class="row">
               <div class="col-15">DE</div>
               <div class="col-35">
                 <h-number value="formDataSearch.age_start" min="0" max="1000" step="1" change="onChanged()">
@@ -79,10 +86,10 @@
                  </h-number>
               </div>
             </div> -->
-           <div class="save-content">
+          <div class="save-content">
 
             <button ng-click="search(formDataSearch)" class="button button-block button-positive getin-btn">Entrar</button>
-           </div>
+          </div>
         </div>
       </div>
     </div>

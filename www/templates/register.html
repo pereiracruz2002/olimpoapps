@@ -1,131 +1,143 @@
 <ion-view id="register-student">
-  <ion-content> 
-     <div class="bar bar-header bar-light">
-      <a href="#" class="back-btn"><i class="icon ion-chevron-left"></i></a>
+  <ion-content>
+    <div class="bar bar-header bar-light">
+      <a href="#" class="back-btn">
+        <i class="icon ion-chevron-left"></i>
+      </a>
       <h1 class="title">CADASTRO</h1>
     </div>
 
-   <div  class="register-tabs">
-     <ion-tabs class="tabs-icon-top">
-      <ion-tab title="Aluno" ng-show="isSet(1)" >
-         <ion-nav-view name="student-tab"></ion-nav-view>
+    <div class="register-tabs">
+      <ion-tabs class="tabs-icon-top">
+        <ion-tab title="Aluno" ng-show="isSet(1)">
+          <!-- trampo -->
+          <ion-nav-view name="student-tab"></ion-nav-view>
+          <div class="cstm-content">
+            <a href="#" class="facebook-btn">
+              <i class="icon ion-social-facebook"></i>Entrar com facebook</a>
+            <form name="formRegister" ng-submit="cadastro(user)" ng-hide="contentBg">
+              <div class="profile">
+                <div class="profile-photo">
+
+                  <h1 class="select-picture" ng-click="choosePicture()" style="background-image:url('{{user.picture}}'); background-position:center center; background-size:cover;">
+                    <span class="icon ion-ios-camera" ng-hide="user.picture"></span>
+
+                    <a ng-click="choosePicture()">
+                      <img ng-src="{{user.picture}}" alt="">
+                    </a>
+                </div>
+                <h5>Foto de perfil</h5>
+              </div>
+
+              <div class="list">
+                <label class="item item-input item-stacked-label">
+                  <span class="input-label">Nome</span>
+                  <input type="text" name="nome" ng-model="user.nome" placeholder="Nome" required>
+                  <small ng-show="formRegister.nome.$invalid && formRegister.nome.$touched" class="assertive">
+                    Campo Obrigatório
+                  </small>
+                </label>
+                <label class="item item-input item-stacked-label">
+                  <span class="input-label">Sobrenome</span>
+                  <input type="text" name="sobrenome" ng-model="user.sobrenome" placeholder="Sobrenome" required>
+                  <small ng-show="formRegister.sobrenome.$invalid && formRegister.sobrenome.$touched" class="assertive">
+                    Campo Obrigatório
+                  </small>
+                </label>
+                <label class="item item-input item-stacked-label">
+                  <span class="input-label">Email</span>
+                  <input type="email" name="email" ng-model="user.email" placeholder="Email" required>
+                  <small ng-show="formRegister.email.$invalid && formRegister.email.$touched" class="assertive">
+                    Campo Obrigatório
+                  </small>
+                </label>
+
+                <label class="item item-input item-stacked-label">
+                  <span class="input-label">Senha</span>
+                  <input ng-model="user.password" name="password" type="password" placeholder="Senha" required>
+                  <small ng-show="formRegister.password.$invalid && formRegister.password.$touched" class="assertive">
+                    Campo Obrigatório
+                  </small>
+                </label>
+                <label class="item item-input item-stacked-label">
+                  <span class="input-label">Repetir Senha</span>
+                  <input type="password" name="password2" placeholder="Repetir Senha" ng-model="user.password2" data-password-verify="formRegister.password"
+                    required>
+                  <small ng-show="(formRegister.password2.$invalid || formRegister.password2.$error.passwordVerify) && formRegister.password2.$touched"
+                    class="assertive">
+                    As senhas não são iguais!
+                  </small>
+                </label>
+                <label class="item item-input item-select">
+                  <div class="input-label">
+                    Sexo
+                  </div>
+                  <select ng-model="user.sexo">
+                    <option>Masculino</option>
+                    <option selected>Feminino</option>
+                  </select>
+                </label>
+
+                <label class="item item-input item-stacked-label">
+                  <span class="input-label">Data Nascimento</span>
+                  <input ng-model="user.nascimento" name="nascimento" type="date" placeholder="Data Nascimento" format="dd/MM/yyyy" required>
+                  <small ng-show="formRegister.nascimento.$invalid && formRegister.nascimento.$touched" class="assertive">
+                    Campo Obrigatório
+                  </small>
+                </label>
+
+
+                <label class="item item-input">
+                  <i class="icon ion-ios-location-outline placeholder-icon"></i>
+                  <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off" ng-model="user.estado"
+                    item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade"
+                    max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
+                </label>
+
+
+                <input type="hidden" name="tipo" ng-init="user.tipo='aluno'" ng-model="user.tipo">
+                <ion-checkbox ng-model="filter.red">Li e aceito os termos de uso</ion-checkbox>
+
+                <a ng-click="abreModal()"> Termos de uso</a>
+                <!-- trampo -->
+
+                <button ng-disabled="formRegister.$invalid" class="button button-block button-positive register-btn">Cadastrar</button>
+
+              </div>
+            </form>
+
+          </div>
+        </ion-tab>
+        <ion-tab title="Profissional">
+          <ion-nav-view name="professional-tab" ng-show="isSet(2)">
             <div class="cstm-content">
-              <a href="#" class="facebook-btn"><i class="icon ion-social-facebook"></i>Entrar com facebook</a>
-              <form name="formRegister" ng-submit="cadastro(user)" ng-hide="contentBg">
+              <a href="#" class="facebook-btn">
+                <i class="icon ion-social-facebook"></i>Entrar com facebook</a>
+              <div class="profile">
+                <div class="profile-photo">
+                  <a href="#">
+                    <img src="img/avatar.png" alt="">
+                  </a>
+                </div>
+                <h5>Profile photo</h5>
+              </div>
+              <form name="formRegisterProfissional" ng-submit="cadastro(user)" ng-hide="contentBg">
                 <div class="profile">
                   <div class="profile-photo">
 
                     <h1 class="select-picture" ng-click="choosePicture()" style="background-image:url('{{user.picture}}'); background-position:center center; background-size:cover;">
-                    <span class="icon ion-ios-camera" ng-hide="user.picture"></span>
+                      <span class="icon ion-ios-camera" ng-hide="user.picture"></span>
 
-                    <a ng-click="choosePicture()" >
-                      <img  ng-src="{{user.picture}}" alt="">
-                    </a>
+                      <a ng-click="choosePicture()">
+                        <img ng-src="{{user.picture}}" alt="">
+                      </a>
                   </div>
                   <h5>Foto de perfil</h5>
                 </div>
-
                 <div class="list">
                   <label class="item item-input item-stacked-label">
                     <span class="input-label">Nome</span>
-                    <input type="text" name="nome" ng-model="user.nome"  placeholder="Nome" required>
-                    <small ng-show="formRegister.nome.$invalid && formRegister.nome.$touched" class="assertive">
-                      Campo Obrigatório
-                    </small>
-                  </label>
-                  <label class="item item-input item-stacked-label">
-                    <span class="input-label">Sobrenome</span>
-                    <input type="text" name="sobrenome" ng-model="user.sobrenome" placeholder="Sobrenome" required>
-                     <small ng-show="formRegister.sobrenome.$invalid && formRegister.sobrenome.$touched" class="assertive">
-                      Campo Obrigatório
-                    </small>
-                  </label>
-                  <label class="item item-input item-stacked-label">
-                    <span class="input-label">Email</span>
-                    <input type="email" name="email" ng-model="user.email" placeholder="Email" required>
-                    <small ng-show="formRegister.email.$invalid && formRegister.email.$touched" class="assertive">
-                      Campo Obrigatório
-                    </small>
-                  </label>
-                  
-                  <label class="item item-input item-stacked-label">
-                    <span class="input-label">Senha</span>
-                    <input ng-model="user.password" name="password" type="password" placeholder="Senha" required>
-                    <small ng-show="formRegister.password.$invalid && formRegister.password.$touched" class="assertive">
-                      Campo Obrigatório
-                    </small>
-                  </label>
-                  <label class="item item-input item-stacked-label">
-                    <span class="input-label">Repetir Senha</span>
-                    <input type="password" name="password2" placeholder="Repetir Senha" ng-model="user.password2" data-password-verify="formRegister.password" required>
-                    <small ng-show="(formRegister.password2.$invalid || formRegister.password2.$error.passwordVerify) && formRegister.password2.$touched" class="assertive">
-                      As senhas não são iguais!
-                    </small>
-                  </label>
-                  <label class="item item-input item-select">
-                    <div class="input-label">
-                      Sexo
-                    </div>
-                    <select ng-model="user.sexo">
-                      <option>Masculino</option>
-                      <option selected>Feminino</option>
-                    </select>
-                  </label>
-
-                  <label class="item item-input item-stacked-label">
-                    <span class="input-label">Data Nascimento</span>
-                    <input ng-model="user.nascimento" name="nascimento" type="date" placeholder="Data Nascimento" format="dd/MM/yyyy" required>
-                    <small ng-show="formRegister.nascimento.$invalid && formRegister.nascimento.$touched" class="assertive">
-                      Campo Obrigatório
-                    </small>
-                  </label>
-
-                 
-                   <label class="item item-input">
-                      <i class="icon ion-ios-location-outline placeholder-icon"></i>
-                      <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off" ng-model="user.estado" item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade" max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
-                    </label>
-
-                 
-                  <input type="hidden" name="tipo" ng-init="user.tipo='aluno'" ng-model="user.tipo">
-                  <ion-checkbox ng-model="filter.red">Li e aceito os termos de uso</ion-checkbox>
-
-                   <a  ng-click="abreModal()"> Termos de uso</a>
-
-                  <button ng-disabled="formRegister.$invalid" class="button button-block button-positive register-btn">Cadastrar</button>
-
-                </div>
-            </form>
-
-            </div>
-       </ion-tab>
-       <ion-tab title="Profissional" >
-         <ion-nav-view name="professional-tab" ng-show="isSet(2)">
-           <div class="cstm-content">
-             <a href="#" class="facebook-btn"><i class="icon ion-social-facebook"></i>Entrar com facebook</a>
-             <div class="profile">
-               <div class="profile-photo">
-                 <a href="#"><img src="img/avatar.png" alt=""></a>
-               </div>
-               <h5>Profile photo</h5>
-             </div>
-             <form name="formRegisterProfissional" ng-submit="cadastro(user)" ng-hide="contentBg">
-             <div class="profile">
-                  <div class="profile-photo">
-
-                    <h1 class="select-picture" ng-click="choosePicture()" style="background-image:url('{{user.picture}}'); background-position:center center; background-size:cover;">
-                    <span class="icon ion-ios-camera" ng-hide="user.picture"></span>
-
-                    <a ng-click="choosePicture()" >
-                      <img  ng-src="{{user.picture}}" alt="">
-                    </a>
-                  </div>
-                  <h5>Foto de perfil</h5>
-                </div>
-            <div class="list">
-                  <label class="item item-input item-stacked-label">
-                    <span class="input-label">Nome</span>
-                    <input type="text" name="nome" ng-model="user.nome"  placeholder="Nome" required>
+                    <input type="text" name="nome" ng-model="user.nome" placeholder="Nome" required>
                     <small ng-show="formRegisterProfissional.nome.$invalid && formRegisterProfissional.nome.$touched" class="assertive">
                       Campo Obrigatório
                     </small>
@@ -133,7 +145,7 @@
                   <label class="item item-input item-stacked-label">
                     <span class="input-label">Sobrenome</span>
                     <input type="text" name="sobrenome" ng-model="user.sobrenome" placeholder="Sobrenome" required>
-                     <small ng-show="formRegisterProfissional.sobrenome.$invalid && formRegisterProfissional.sobrenome.$touched" class="assertive">
+                    <small ng-show="formRegisterProfissional.sobrenome.$invalid && formRegisterProfissional.sobrenome.$touched" class="assertive">
                       Campo Obrigatório
                     </small>
                   </label>
@@ -144,7 +156,7 @@
                       Campo Obrigatório
                     </small>
                   </label>
-                  
+
                   <label class="item item-input item-stacked-label">
                     <span class="input-label">Senha</span>
                     <input ng-model="user.password" name="password" type="password" placeholder="Senha" required>
@@ -154,8 +166,10 @@
                   </label>
                   <label class="item item-input item-stacked-label">
                     <span class="input-label">Repetir Senha</span>
-                    <input type="password" name="password2" placeholder="Repetir Senha" ng-model="user.password2" data-password-verify="formRegisterProfissional.password" required>
-                    <small ng-show="(formRegisterProfissional.password2.$invalid || formRegisterProfissional.password2.$error.passwordVerify) && formRegisterProfissional.password2.$touched" class="assertive">
+                    <input type="password" name="password2" placeholder="Repetir Senha" ng-model="user.password2" data-password-verify="formRegisterProfissional.password"
+                      required>
+                    <small ng-show="(formRegisterProfissional.password2.$invalid || formRegisterProfissional.password2.$error.passwordVerify) && formRegisterProfissional.password2.$touched"
+                      class="assertive">
                       As senhas não são iguais!
                     </small>
                   </label>
@@ -178,23 +192,26 @@
                   </label>
 
                   <label class="item item-input">
-                      <i class="icon ion-ios-location-outline placeholder-icon"></i>
-                      <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off" ng-model="user.estado" item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade" max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
+                    <i class="icon ion-ios-location-outline placeholder-icon"></i>
+                    <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off" ng-model="user.estado"
+                      item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade"
+                      max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
                   </label>
 
                   <input type="hidden" name="tipo" ng-init="user.tipo='profissionais'" ng-model="user.tipo">
                   <ion-checkbox ng-model="filter.red">Li e aceito os termos de uso</ion-checkbox>
 
+                  <a ng-click="abreModal()"> Termos de uso</a>
+                  <!-- trampo -->
+
                   <button ng-disabled="formRegisterProfissional.$invalid" class="button button-block button-positive register-btn">Cadastrar</button>
 
                 </div>
-           </div>
-         </ion-nav-view>
-       </ion-tab>
-     </ion-tabs>
-   </div>
+            </div>
+          </ion-nav-view>
+        </ion-tab>
+      </ion-tabs>
+    </div>
 
   </ion-content>
 </ion-view>
-
-

@@ -1,7 +1,7 @@
-<ion-view view-title="Editar Peffil">
-  <ion-content> 
+<ion-view view-title="Editar Perfil">
+  <ion-content>
     <div class="button-bar bar-light">
-      <a   ng-click="myTab.tab=1" ng-class="myTab.tab==1 ? 'active' : ''" class="button">Conta</a>
+      <a ng-click="myTab.tab=1" ng-class="myTab.tab==1 ? 'active' : ''" class="button">Conta</a>
 
       <a ng-show="perfil" ng-click="myTab.tab=2" ng-class="myTab.tab==2 ? 'active' : ''" class="button ">Perfil</a>
     </div>
@@ -14,12 +14,12 @@
             </a>
              <span class="icon ion-ios-camera" ng-hide="user.imagem"></span>
              <span ng-model="user.id">{{user.id}}</span> -->
-              <h1 class="select-picture" ng-click="choosePicture()" style="background-image:url('{{user.picture}}'); background-position:center center; background-size:cover;">
-                    <span class="icon ion-ios-camera" ng-hide="user.picture"></span>
+            <h1 class="select-picture" ng-click="choosePicture()" style="background-image:url('{{user.picture}}'); background-position:center center; background-size:cover;">
+              <span class="icon ion-ios-camera" ng-hide="user.picture"></span>
 
-                    <a ng-click="choosePicture()" >
-                      <img  ng-src="{{user.picture}}" alt="">
-                    </a>
+              <a ng-click="choosePicture()">
+                <img ng-src="{{user.picture}}" alt="">
+              </a>
 
           </div>
           <span ng-model="user.id">{{user.id}}</span>
@@ -29,7 +29,7 @@
         <div class="list">
           <label class="item item-input item-stacked-label">
             <span class="input-label">Nome</span>
-            <input type="text" name="nome" ng-model="user.nome"  placeholder="Nome" required>
+            <input type="text" name="nome" ng-model="user.nome" placeholder="Nome" required>
             <small ng-show="formRegister.nome.$invalid && formRegister.nome.$touched" class="assertive">
               Campo Obrigatório
             </small>
@@ -37,7 +37,7 @@
           <label class="item item-input item-stacked-label">
             <span class="input-label">Sobrenome</span>
             <input type="text" name="sobrenome" ng-model="user.sobrenome" placeholder="Sobrenome" required>
-             <small ng-show="formRegister.sobrenome.$invalid && formRegister.sobrenome.$touched" class="assertive">
+            <small ng-show="formRegister.sobrenome.$invalid && formRegister.sobrenome.$touched" class="assertive">
               Campo Obrigatório
             </small>
           </label>
@@ -48,7 +48,7 @@
               Campo Obrigatório
             </small>
           </label>
-          
+
           <!-- <label class="item item-input item-stacked-label">
             <span class="input-label">Senha</span>
             <input ng-model="user.password" name="password" type="password" placeholder="Senha" required>
@@ -78,10 +78,12 @@
               Campo Obrigatório
             </small>
           </label>
-           <label class="item item-input">
-              <i class="icon ion-ios-location-outline placeholder-icon"></i>
-              <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off" ng-model="user.estado" item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade" max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
-            </label>
+          <label class="item item-input">
+            <i class="icon ion-ios-location-outline placeholder-icon"></i>
+            <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off" ng-model="user.estado"
+              item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade"
+              max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
+          </label>
 
           <button ng-disabled="formRegister.$invalid" class="button button-block button-positive register-btn">Editar</button>
 
@@ -92,48 +94,114 @@
       <div class="row">
         <div class="col-80 col-offset-10 filtros">
           <div class="check-content">
+            <h5 style="position: absolute; right: 100px;">0</h5>
             <h5>Especialidades</h5>
             <ion-list>
-              <ion-checkbox  ng-repeat="especialidade in especialidades" ng-model="profile.treino">{{especialidade.modalidade}}</ion-checkbox>
+              <ion-checkbox ng-repeat="especialidade in especialidades" ng-model="profile.treino">{{especialidade.modalidade}}</ion-checkbox>
+              <div class="item-avatar">
+                <p>
+                  <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-circle-outline"></i>
+                  <h5>Alongamento</h5>
+                </p>
+                <p>
+                  <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-circle-outline"></i>
+                  <h5>Hipertrofia</h5>
+                </p>
+              </div>
             </ion-list>
-          </div>
-          <h5>Preco Medio por Treino</h5>
+
+            <label class="item item-input item-select">
+              <div class="input-label">
+                Formacao
+              </div>
+              <select ng-model="user.formation">
+                <option>Ensino medio</option>
+                <option selected>Superior cursando</option>
+                <option>Superior Completo</option>
+                <option>Pos graduacao</option>
+                <option>Mestrado</option>
+                <option>Doutorado</option>
+              </select>
+            </label>
+
+
+            <h5>Descricao</h5>
+            <label class="item item-input item-select">
+              <p>
+                <textarea rows="5" cols="80" maxlength="320" title="DESCRICAO">
+                          At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies. 
+                      </textarea>
+                <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-circle-outline"></i>
+              </p>
+
+            </label>
+
+
+            <h5>Preco Medio por Treino</h5>
             <div class="row">
-              <div class="col-10">R$</div>
-              <div class="col-35">
-                <h-number value="formData.num_start" min="0" max="1000" step="1" change="onChanged()">
-                  <input type="text" ng-model="formData.num_start">
-                 </h-number>
-              </div>
-              <div class="col-15"> - </div>
-              <div class="col-35">
-                <h-number value="formData.num_end" min="0" max="1000" step="1" change="onChanged()">
-                  <input type="text"   ng-model="formData.num_end">
-                 </h-number>
-              </div>
+              <div class="col-5">R$</div>
+              <input type="text" style="border:1px solid #000" class="inputForm" />
+              <div class="col-5"> - </div>
+              <input type="text" style="border:1px solid #000" class="inputForm" />
+            </div>
+            <div class="item range">
+              <input type="range" name="price" ng-model="data.price" min="10" max="1000" value="data.price">
             </div>
             <h5>Idade</h5>
             <div class="row">
-              <div class="col-15">DE</div>
-              <div class="col-35">
-                <h-number value="formData.age_start" min="0" max="1000" step="1" change="onChanged()">
-                  <input type="text" ng-model="formData.age_start">
-                 </h-number>
+              <div class="col-5">DE</div>
+              <input type="text" style="border:1px solid #000" class="inputForm" />
+              <div class="col-5"> a </div>
+              <input type="text" style="border:1px solid #000" class="inputForm" />
+            </div>
+            <div class="item range">
+              <input type="range" name="price" ng-model="data.age" min="5" max="150" value="data.age">
+            </div>
+            <div class="list profissional-profile">
+              <div class="item item-divider">
+                Locais de Atendimento
               </div>
-              <div class="col-15"> a </div>
-              <div class="col-35">
-                <h-number value="formData.age_end" min="0" max="1000" step="1" change="onChanged()">
-                  <input type="text"   ng-model="formData.age_end">
-                 </h-number>
+              <div class="item-avatar">
+                <p>
+                  <i style="position: absolute; right: 32px;" class="profile-icon icon ion-ios-trash"></i>
+                  <h5>Endereco 1</h5>
+                </p>
+                <p>
+                  <i style="position: absolute; right: 32px;" class="profile-icon icon ion-ios-trash"></i>
+                  <h5>Endereco 2</h5>
+                </p>
               </div>
             </div>
-          <div class="save-content">
-             <a href="#" class="button button-block button-positive save-btn">Buscar</a>
-           </div>
+            <div class="list list-inset">
+              <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+
+                <ion-google-place placeholder="Buscar Local" ng-model="location" current-location="true" location-changed="locationChangedCallback"
+                />
+              </label>
+            </div>
+            <ion-checkbox ng-model="filter.red">Posso atender em outros locais</ion-checkbox>
+            <div class="list profissional-profile">
+              <div class="item item-divider">
+                <i style="position: absolute; right: 32px;" class="profile-icon icon ion-ios-plus-outline"></i>
+                Adicionar bairro
+              </div>
+              <div class="item-avatar">
+                <p>
+                  <i style="position: absolute; right: 32px;" class="profile-icon icon ion-ios-trash"></i>
+                  <h5>Bela Vista</h5>
+                </p>
+                <p>
+                  <i style="position: absolute; right: 32px;" class="profile-icon icon ion-ios-trash"></i>
+                  <h5>Vila Mariana</h5>
+                </p>
+              </div>
+            </div>
+            <div class="save-content">
+              <a href="#" class="button button-block button-positive save-btn">Salvar</a>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
   </ion-content>
 </ion-view>
-
-
