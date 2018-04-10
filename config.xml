@@ -80,5 +80,9 @@
     <plugin name="cordova-plugin-statusbar" spec="2.2.1" />
     <plugin name="cordova-plugin-whitelist" spec="1.3.1" />
     <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
+    <plugin name="phonegap-facebook-plugin" spec="D:/Freelas/Olimpoapps/phonegap-facebook-plugin">
+        <variable name="APP_ID" value="2074845582799171" />
+        <variable name="APP_NAME" value="olimpoapp" />
+    </plugin>
     <engine name="android" spec="^6.4.0" />
 </widget>

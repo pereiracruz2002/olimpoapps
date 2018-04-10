@@ -1,33 +1,33 @@
 angular.module('starter.services', ['firebase'])
 
-App.service('UserService', function($http, URL_API, $httpParamSerializerJQLike,$firebaseArray,$q) {
+App.service('UserService', function ($http, URL_API, $httpParamSerializerJQLike, $firebaseArray, $q) {
 
-    var service  = this,
-    database = firebase.database().ref("enderecos"),
-    objects  = $firebaseArray(database);
+    var service = this,
+        database = firebase.database().ref("enderecos"),
+        objects = $firebaseArray(database);
 
 
-    service.getProfile= function(){
-      var user = localStorage.getItem("user.current_user");
+    service.getProfile = function () {
+        var user = localStorage.getItem("user.current_user");
         return user;
     }
-    service.saveProfile= function(user){
+    service.saveProfile = function (user) {
         console.log(user);
-      localStorage.setItem("user.current_user", JSON.stringify(user));
+        localStorage.setItem("user.current_user", JSON.stringify(user));
     }
-    service.logout = function(){
-    	localStorage.removeItem('user.current_user');
-        
+    service.logout = function () {
+        localStorage.removeItem('user.current_user');
+
     }
 
     service.getByGeo = function (lat, lng, radius) {
-        
-        if(typeof geoQuery !== 'undefined'){
+
+        if (typeof geoQuery !== 'undefined') {
             geoQuery.updateCriteria({
                 center: [lat, lng],
                 radius: Number(radius)
             });
-        }else{
+        } else {
             var geoFire = new GeoFire(database);
             geoQuery = geoFire.query({
                 center: [lat, lng],
@@ -40,9 +40,9 @@ App.service('UserService', function($http, URL_API, $httpParamSerializerJQLike,$
     service.create = function (object) {
 
         var defer = $q.defer();
-        objects.$loaded().then(function() {
+        objects.$loaded().then(function () {
             object.g = service.encodeGeohash(object.l);
-           
+
             defer.resolve(objects.$add(object));
         });
         return defer.promise;
@@ -52,7 +52,7 @@ App.service('UserService', function($http, URL_API, $httpParamSerializerJQLike,$
         console.log(id)
         var defer = $q.defer();
 
-        objects.$loaded().then(function() {
+        objects.$loaded().then(function () {
             console.log(objects.$getRecord(id))
             defer.resolve(objects.$getRecord(id));
         });
@@ -62,15 +62,15 @@ App.service('UserService', function($http, URL_API, $httpParamSerializerJQLike,$
     service.getEspecialidades = function (modalidade) {
         var defer = $q.defer();
 
-        objects.$loaded().then(function() {
-             console.log(objects.$keyAt(0).modalidade)
+        objects.$loaded().then(function () {
+            console.log(objects.$keyAt(0).modalidade)
             defer.resolve(objects.$indexFor('modalidade'));
         });
         return defer.promise;
         //return $firebaseArray(root.child('enderecos').orderByChild('modalidades').equalTo(profissional));
     };
 
-    service.encodeGeohash = function(location, precision) {
+    service.encodeGeohash = function (location, precision) {
 
         // Default geohash length
         var g_GEOHASH_PRECISION = 10;
@@ -136,5 +136,18 @@ App.service('UserService', function($http, URL_API, $httpParamSerializerJQLike,$
         }
         return hash;
     };
-    
+
+  /*  var setUser = function (user_data) {
+        window.localStorage.starter_facebook_user = JSON.stringify(user_data);
+    };
+
+    var getUser = function () {
+        return JSON.parse(window.localStorage.starter_facebook_user || '{}');
+    };
+
+    return {
+        getUser: getUser,
+        setUser: setUser
+    };*/
+
 });

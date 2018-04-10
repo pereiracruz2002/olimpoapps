@@ -13,57 +13,67 @@
         <h5 style="color: #ffffff;">São Paulo, SP</h5>
       </div>
     </div>
-    <div class="list profissional-profile">
-      <button style="position: absolute; left: 5px; top: 20%;" class="button profile-icon icon ion-eye"></button>
-      <div class="item-avatar">
-        <p>
-          <h5 style="opacity: 0.4;">VISUALIZAÇÕES NO PERFIL</h5>
-          <h3 style="margin-top: 0">600m</h3>
-        </p>
+
+    <div ng-show="profileType==1" id="type-account_user">
+      <ion-item>
+        <div class="item-avatar">
+        <ion-toggle ngModel="data.notify" style="position: absolute; left: 0; top: 20%;"></ion-toggle>
+        <ion-label>Exibir notificações</ion-label>
       </div>
+      </ion-item>
     </div>
-    <div class="list profissional-profile">
-      <button style="position: absolute; left: 5px; top: 20%;" class="button profile-icon icon ion-social-usd"></button>
-      <div class="item-avatar">
-        <p>
-          <h5 style="opacity: 0.4;">PREÇO MÉDIO POR TREINO (R$)</h5>
-          <h3 style="margin-top: 0">40 - 90</h3>
-        </p>
+    <div ng-show="profileType==2" id="type-account_pro">
+      <div class="list profissional-profile">
+        <button style="position: absolute; left: 5px; top: 20%;" class="button profile-icon icon ion-eye"></button>
+        <div class="item-avatar">
+          <p>
+            <h5 style="opacity: 0.4;">VISUALIZAÇÕES NO PERFIL</h5>
+            <h3 style="margin-top: 0">600m</h3>
+          </p>
+        </div>
       </div>
-    </div>
-    <div class="list profissional-profile">
-      <div class="item item-divider">
-        Especialidades
+      <div class="list profissional-profile">
+        <button style="position: absolute; left: 5px; top: 20%;" class="button profile-icon icon ion-social-usd"></button>
+        <div class="item-avatar">
+          <p>
+            <h5 style="opacity: 0.4;">PREÇO MÉDIO POR TREINO (R$)</h5>
+            <h3 style="margin-top: 0">40 - 90</h3>
+          </p>
+        </div>
       </div>
-      <div class="item-avatar">
-        <p>
-          <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-circle-filled"></i>
-          <h5>Alongamento</h5>
-        </p>
-        <p>
-          <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-circle-filled"></i>
-          <h5>Hipertrofia</h5>
-        </p>
+      <div class="list profissional-profile">
+        <div class="item item-divider">
+          Especialidades
+        </div>
+        <div class="item-avatar">
+          <p>
+            <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-circle-filled"></i>
+            <h5>Alongamento</h5>
+          </p>
+          <p>
+            <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-circle-filled"></i>
+            <h5>Hipertrofia</h5>
+          </p>
+        </div>
       </div>
-    </div>
-    <div class="list profissional-profile">
-      <div class="item item-divider">
-        Formação
+      <div class="list profissional-profile">
+        <div class="item item-divider">
+          Formação
+        </div>
+        <div class="item-avatar">
+          <p>
+            <i style="position: absolute; left: 32px;" class="profile-icon icon ion-clipboard"></i>
+            <h5>Superior Completo</h5>
+          </p>
+        </div>
       </div>
-      <div class="item-avatar">
-        <p>
-          <i style="position: absolute; left: 32px;" class="profile-icon icon ion-clipboard"></i>
-          <h5>Superior Completo</h5>
-        </p>
-      </div>
-    </div>
-    <div class="list profissional-profile">
-      <div class="item item-divider">
-        Sobre Mim
-      </div>
-      <div class="item-avatar"></div>
-      <ion-view style="width: 74%; height: 100%; min-height: 0; top: 25%; left: 25px; bottom: 10px;">
-        <ion-content class="padding">
+      <div class="list profissional-profile">
+        <div class="item item-divider">
+          Sobre Mim
+        </div>
+        <div class="item-avatar"></div>
+        <ion-view style="width: 74%; height: 100%; min-height: 0; top: 25%; left: 25px; bottom: 10px;">
+          <ion-content class="padding">
             <p style="color: #000">
               O Olimpo não é fornecedor de quaisquer bens, bem como não presta qualquer tipo de serviço de atividade ou condicionamento
               físico, aluguel de espaços particulares, serviços de cunho nutricional ou terapêutico. O Olimpo atua meramente
@@ -73,15 +83,15 @@
               por esses profissionais. Assim, eventuais Usuários interessados nos serviços ofertados por determinados profissionais
               poderão entrar em contato com o profissional de sua escolha para a contratação de seus serviços prestados através
               do app.</p>
-        </ion-content>
-      </ion-view>
-    </div>
-    </div>
-    <div class="list profissional-profile">
-      <div class="item item-divider">
-        Locais de Atendimento
+          </ion-content>
+        </ion-view>
       </div>
-      <div class="item-avatar">
+
+      <div class="list profissional-profile">
+        <div class="item item-divider">
+          Locais de Atendimento
+        </div>
+        <div class="item-avatar">
           <p>
             <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-location-outline"></i>
             <h5>Endereço rua tal</h5>
@@ -91,14 +101,15 @@
             <h5>endereço rua show</h5>
           </p>
         </div>
-    </div>
-    <div class="item-avatar">
+      </div>
+      <div class="item-avatar">
         <p>
           <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-checkmark"></i>
           <h5>Disponibilidade para atender em outros locais</h5>
         </p>
       </div>
-
+    </div>
+    </div>
     <!-- <ion-view view-title="{{profiles[0].nome}}">
   <ion-content class="has-header" ng-repeat="profile in profiles">
     <div class="hero has-mask " style="background-color: #11c1f3;">

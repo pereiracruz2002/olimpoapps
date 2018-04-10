@@ -1,4 +1,4 @@
-<ion-view  id="get-in">
+<ion-view id="get-in">
   <ion-content>
     <div class="list">
       <label class="item item-input item-stacked-label">
@@ -9,13 +9,18 @@
         <span class="input-label">Senha</span>
         <input type="password" placeholder="senha" ng-model="user.password">
       </label>
-       <!--  <p ng-if="firebaseUser">Signed in user: <strong>{{ firebaseUser.uid }}</strong></p> -->
-        <p ng-if="error">Error: <strong>{{ error }}</strong></p>
-        <button ng-click="signIn(user)" class="button button-block button-positive getin-btn">Entrar</button>
-      <button  ng-click="signIn(user)" class="button button-block button-positive facebook-btn"><i class="icon ion-social-facebook"></i>Entrar com facebook</button> <!-- trampo -->
+      <!--  <p ng-if="firebaseUser">Signed in user: <strong>{{ firebaseUser.uid }}</strong></p> -->
+      <p ng-if="error">Error:
+        <strong>{{ error }}</strong>
+      </p>
+      <button ng-click="signIn(user)" class="button button-block button-positive getin-btn">Entrar</button>
+      <button ng-click="facebookSignIn()" class="button button-block button-positive facebook-btn">
+        <i class="icon ion-social-facebook"></i>Entrar com facebook</button>
+      <!-- trampo -->
       <a href="#/register" class="account-create">Não tenho conta ainda</a>
       <br />
-      <a href="#/" class="account-create">Esqueci minha senha</a> <!-- trampo -->
+      <a ng-click="resetPassword(user)" class="account-create">Esqueci minha senha</a>
+      <!-- trampo -->
     </div>
   </ion-content>
 </ion-view>

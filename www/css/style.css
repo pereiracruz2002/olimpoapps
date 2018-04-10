@@ -994,5 +994,10 @@ input.ion-google-place[readonly] {
     padding-bottom: 0;
 }
 
+.custom-icon-blue {
+  font-size: 24px;
+  color : #18b4e4;
+}
+
 
 
