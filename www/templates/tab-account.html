@@ -2,42 +2,55 @@
   <ion-content>
     <div class="hero has-mask ">
       <div class="content">
-        <a href="#/configuration" class="button pic-perfil pic-perfil-configuration icon ion-gear-a"></a>
-        <div class="avatar" style="background-color: #11c1f3;"></div>
+        <a href="#/configuration" class="button pic-perfil-configuration">
+          <i class="ion-gear-a"></i>
+        </a>
+        <div class="avatar" style="background-image:url('{{user.picture}}');"></div>
         <a href="#/tab/account/edit">
           <span class="d4ficon-3 pic-perfil pic-perfil-detail">
             <i class="ion-android-create"></i>
           </span>
         </a>
-        <h3>Nome Teste</h3>
-        <h5 style="color: #ffffff;">São Paulo, SP</h5>
+        <h3>{{user.nome}} {{user.sobrenome}}</h3>
+        <h5 style="color: #ffffff;">{{user.cidade}}, {{user.estado}}</h5>
       </div>
     </div>
 
     <div ng-show="profileType==1" id="type-account_user">
-      <ion-item>
-        <div class="item-avatar">
-        <ion-toggle ngModel="data.notify" style="position: absolute; left: 0; top: 20%;"></ion-toggle>
-        <ion-label>Exibir notificações</ion-label>
+      <div class="item-avatar">
+        <label class="toggle toggle-calm" style="position: absolute; left: 15px;">
+          <input type="checkbox" />
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+        <p style="font-size: 18px; color: #000; text-transform: none; padding-top: 5px;">Exibir notificações</p>
       </div>
-      </ion-item>
     </div>
     <div ng-show="profileType==2" id="type-account_pro">
       <div class="list profissional-profile">
-        <button style="position: absolute; left: 5px; top: 20%;" class="button profile-icon icon ion-eye"></button>
+        <a style="position: absolute; left: 5px; top: 20%;" class="button profile-icon">
+          <i class="ion-eye"></i>
+        </a>
         <div class="item-avatar">
           <p>
-            <h5 style="opacity: 0.4;">VISUALIZAÇÕES NO PERFIL</h5>
-            <h3 style="margin-top: 0">600m</h3>
+            <p style="margin-top: 0; font-size: 14px; color: #000; opacity: 0.4;">VISUALIZAÇÕES NO PERFIL</p>
+            <p style="margin-top: 0; font-size: 24px; color: #000;">
+              <b>{{user.perfil_views}}</b>
+            </p>
           </p>
         </div>
       </div>
       <div class="list profissional-profile">
-        <button style="position: absolute; left: 5px; top: 20%;" class="button profile-icon icon ion-social-usd"></button>
+        <a style="position: absolute; left: 5px; top: 20%;" class="button profile-icon">
+          <i class="ion-social-usd"></i>
+        </a>
         <div class="item-avatar">
           <p>
-            <h5 style="opacity: 0.4;">PREÇO MÉDIO POR TREINO (R$)</h5>
-            <h3 style="margin-top: 0">40 - 90</h3>
+            <p style="margin-top: 0; font-size: 14px; color: #000; opacity: 0.4;">PREÇO MÉDIO POR TREINO (R$)</p>
+            <p style="margin-top: 0; font-size: 24px; color: #000;">
+              <b>{{price.valor_min}} - {{price.valor_max}}</b>
+            </p>
           </p>
         </div>
       </div>
@@ -45,15 +58,13 @@
         <div class="item item-divider">
           Especialidades
         </div>
-        <div class="item-avatar">
-          <p>
-            <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-circle-filled"></i>
-            <h5>Alongamento</h5>
-          </p>
-          <p>
-            <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-circle-filled"></i>
-            <h5>Hipertrofia</h5>
-          </p>
+        <div>
+          <ion-list style="margin-left: 32px;">
+            <p ng-repeat="treino in acts.treinos" style="font-size: 14px; color: #000; text-transform: none;" ng-model="acts.treinos">
+              <i style="margin-left: 32px; font-size: 1.3em;" class="profile-icon icon ion-ios-circle-filled"></i>
+              <label style="margin-left: 20px;">{{treino}}</label>
+            </p>
+          </ion-list>
         </div>
       </div>
       <div class="list profissional-profile">
@@ -62,8 +73,8 @@
         </div>
         <div class="item-avatar">
           <p>
-            <i style="position: absolute; left: 32px;" class="profile-icon icon ion-clipboard"></i>
-            <h5>Superior Completo</h5>
+            <i style="position: absolute; left: 32px; font-size: 1.3em; padding-top: 10px;" class="profile-icon icon ion-clipboard"></i>
+            <p style="font-size: 14px; color: #000; text-transform: none; padding-top: 10px;">{{user.formacao}}</p>
           </p>
         </div>
       </div>
@@ -71,41 +82,36 @@
         <div class="item item-divider">
           Sobre Mim
         </div>
-        <div class="item-avatar"></div>
-        <ion-view style="width: 74%; height: 100%; min-height: 0; top: 25%; left: 25px; bottom: 10px;">
-          <ion-content class="padding">
-            <p style="color: #000">
-              O Olimpo não é fornecedor de quaisquer bens, bem como não presta qualquer tipo de serviço de atividade ou condicionamento
-              físico, aluguel de espaços particulares, serviços de cunho nutricional ou terapêutico. O Olimpo atua meramente
-              ofertando uma plataforma digital que, através do seu aplicativo, fornece condições para que seus Usuários busquem
-              profissionais de diversas áreas de atividade físicas para fins aleatórios, atuando, assim, como uma intermediadora
-              entre os Profissionais cadastrados em sua plataforma digital, e os Usuários que buscam os serviços prestados
-              por esses profissionais. Assim, eventuais Usuários interessados nos serviços ofertados por determinados profissionais
-              poderão entrar em contato com o profissional de sua escolha para a contratação de seus serviços prestados através
-              do app.</p>
-          </ion-content>
-        </ion-view>
+        <div style="height: 200px;">
+          <ion-view style="width: 80%; height: 100%; min-height: 0; top: 15%; left: 25px; bottom: 10px;">
+            <ion-content class="padding">
+              <p style="color: #000; text-transform: none;">
+                {{user.descricao}}
+              </p>
+            </ion-content>
+          </ion-view>
+        </div>
       </div>
 
       <div class="list profissional-profile">
         <div class="item item-divider">
           Locais de Atendimento
         </div>
-        <div class="item-avatar">
-          <p>
-            <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-location-outline"></i>
-            <h5>Endereço rua tal</h5>
-          </p>
-          <p>
-            <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-location-outline"></i>
-            <h5>endereço rua show</h5>
-          </p>
+        <div>
+          <ion-list style="margin-left: 32px;">
+            <p ng-repeat="endereco in address" style="font-size: 14px; color: #000; text-transform: none;" ng-model="address">
+              <i style="margin-left: 32px; top: 40%; font-size: 2.0em; padding-top: 10px;" class="profile-icon icon ion-ios-location-outline"></i>
+              <label style="margin-left: 20px;" style="font-size: 18px; color: #000; text-transform: none; padding-top: 10px;">{{endereco.name}}</label>
+              <br>
+              <label style="margin-left: 52px;" style="font-size: 12px; color: rgba(0, 0, 0, 0.400); text-transform: none;">{{endereco.location}}</label>
+            </p>
+          </ion-list>
         </div>
       </div>
       <div class="item-avatar">
-        <p>
-          <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-checkmark"></i>
-          <h5>Disponibilidade para atender em outros locais</h5>
+        <p ng-if="user.disponibilidade">
+          <i style="position: absolute; left: 32px; font-size: 1.3em;" class="profile-icon icon ion-ios-checkmark"></i>
+          <p ng-if="user.disponibilidade" style="font-size: 12px; color: #000; text-transform: none;">Disponibilidade para atender em outros locais</p>
         </p>
       </div>
     </div>

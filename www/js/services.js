@@ -11,13 +11,154 @@ App.service('UserService', function ($http, URL_API, $httpParamSerializerJQLike,
         var user = localStorage.getItem("user.current_user");
         return user;
     }
+
+    service.getProfileData = function () {
+        var user = localStorage.getItem("user.current_user_data");
+        console.log("user no service " + JSON.stringify(user))
+        return user;
+    }
+
     service.saveProfile = function (user) {
-        console.log(user);
         localStorage.setItem("user.current_user", JSON.stringify(user));
     }
+
+    service.saveProfileData = function (key, user) {
+        localStorage.setItem(key, JSON.stringify(user));
+    }
+
     service.logout = function () {
         localStorage.removeItem('user.current_user');
 
+    }
+
+    service.getFirebaseData = function (uid, tipo, callback) {
+        var user = {};
+
+        if(tipo == "profissionais") {
+            var profissionais = [];
+            var enderecos = [];
+            var bairro = [];
+            var idade = [];
+            var treinos = [];
+            var valor = [];
+            profissionais = firebase.database().ref('profissionais').orderByChild('id').equalTo(uid);
+            profissionais.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) { 
+                    var key = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    user = {
+                        'key': key,
+                        'picture': childData.imagem,
+                        'nome': childData.nome,
+                        'sobrenome': childData.sobrenome,
+                        'cidade': childData.cidade,
+                        'estado': childData.estado,
+                        'disponibilidade': childData.atende_fora,
+                        'descricao': childData.descricao,
+                        'email': childData.email,
+                        'formacao': childData.formacao,
+                        'nascimento': childData.nascimento,
+                        'perfil_views': childData.perfil_views,
+                        'sexo': childData.sexo
+                    }
+                });
+                service.saveProfileData("user.current_user_data", user);
+           //     callback(user);
+            });
+
+            profissionais = firebase.database().ref('enderecos').orderByChild('profissional_id').equalTo(uid);
+            profissionais.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var key = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    user = childData.enderecos
+                });
+                service.saveProfileData("user.current_user_address", user);
+           //     callback(user);
+            });
+
+            profissionais = firebase.database().ref('profissionais_bairro').orderByChild('profissional_id').equalTo(uid);
+            profissionais.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var key = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    user = {
+                        'key': key,
+                        'bairro': childData.bairro
+                    }
+                });
+                service.saveProfileData("user.current_user_place", user);
+            //    callback(user);
+            });
+
+            profissionais = firebase.database().ref('profissionais_idade').orderByChild('profissional_id').equalTo(uid);
+            profissionais.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var key = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    user = {
+                        'key': key,
+                        'idade_min': childData.idade_min,
+                        'idade_max': childData.idade_max
+                    }
+                });
+                service.saveProfileData("user.current_user_age", user);
+           //     callback(user);
+            });
+
+            profissionais = firebase.database().ref('profissionais_valor').orderByChild('profissional_id').equalTo(uid);
+            profissionais.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var key = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    user = {
+                        'key': key,
+                        'valor_min': childData.valor_min,
+                        'valor_max': childData.valor_max
+                    }
+                });
+                service.saveProfileData("user.current_user_price", user);
+            //    callback(user);
+            });
+
+            profissionais = firebase.database().ref('profissionais_treinos').orderByChild('profissional_id').equalTo(uid);
+            profissionais.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var key = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    user = {
+                        'key': key,
+                        'treinos': childData.treinos
+                    }
+                });
+                service.saveProfileData("user.current_user_acts", user);
+                callback(user);
+            });
+        } else {
+            var alunos = [];
+            alunos = firebase.database().ref('alunos').orderByChild('id').equalTo(uid);
+            alunos.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var key = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    user = {
+                        'key': key,
+                        'picture': childData.imagem,
+                        'nome': childData.nome,
+                        'sobrenome': childData.sobrenome,
+                        'cidade': childData.cidade,
+                        'estado': childData.estado,
+                        'exibirNotif': childData.exibir_notif,
+                        'email': childData.email,
+                        'nascimento': childData.nascimento,
+                        'sexo': childData.sexo
+                    }
+                });
+                service.saveProfileData("user.current_user_data", user);
+                callback(user);
+            });
+        }
+        
     }
 
     service.getByGeo = function (lat, lng, radius) {
@@ -49,11 +190,9 @@ App.service('UserService', function ($http, URL_API, $httpParamSerializerJQLike,
     };
 
     service.get = function (id) {
-        console.log(id)
         var defer = $q.defer();
 
         objects.$loaded().then(function () {
-            console.log(objects.$getRecord(id))
             defer.resolve(objects.$getRecord(id));
         });
         return defer.promise;
@@ -63,7 +202,6 @@ App.service('UserService', function ($http, URL_API, $httpParamSerializerJQLike,
         var defer = $q.defer();
 
         objects.$loaded().then(function () {
-            console.log(objects.$keyAt(0).modalidade)
             defer.resolve(objects.$indexFor('modalidade'));
         });
         return defer.promise;
@@ -137,17 +275,16 @@ App.service('UserService', function ($http, URL_API, $httpParamSerializerJQLike,
         return hash;
     };
 
-  /*  var setUser = function (user_data) {
-        window.localStorage.starter_facebook_user = JSON.stringify(user_data);
-    };
-
-    var getUser = function () {
-        return JSON.parse(window.localStorage.starter_facebook_user || '{}');
-    };
-
-    return {
-        getUser: getUser,
-        setUser: setUser
-    };*/
-
+    /* service.setUser = function (user_data) {
+         window.localStorage.starter_facebook_user = JSON.stringify(user_data);
+     };
+ 
+     service.getUser = function () {
+         return JSON.parse(window.localStorage.starter_facebook_user || '{}');
+     };
+ 
+     return {
+         getUser: getUser,
+         setUser: setUser
+     };*/
 });

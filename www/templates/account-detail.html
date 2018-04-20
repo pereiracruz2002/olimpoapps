@@ -8,12 +8,7 @@
     <div ng-show="myTab.tab==1" id="edit-account">
       <form name="formRegister" ng-submit="editar(user)" ng-hide="contentBg">
         <div class="profile">
-          <div class="profile-photo">
-            <!-- <a ng-click="choosePicture()" >
-              <img src="{{user.imagem}}" alt="">
-            </a>
-             <span class="icon ion-ios-camera" ng-hide="user.imagem"></span>
-             <span ng-model="user.id">{{user.id}}</span> -->
+          <div class="profile-photo" style="left: 24px; top: 24px;">
             <h1 class="select-picture" ng-click="choosePicture()" style="background-image:url('{{user.picture}}'); background-position:center center; background-size:cover;">
               <span class="icon ion-ios-camera" ng-hide="user.picture"></span>
 
@@ -23,10 +18,17 @@
 
           </div>
           <span ng-model="user.id">{{user.id}}</span>
-          <h5>Foto de perfil</h5>
+          <div style="padding-left: 45%; top: 24px;">
+            <a ng-click="choosePicture()" style="font-size: 16px; color: rgba(0, 0, 0, 0.400); text-transform: none; left: 60px">
+              <b>Alterar foto</b>
+            </a>
+            <a ng-click="removePicture()" style="font-size: 16px; color: rgba(0, 0, 0, 0.400); text-transform: none; padding-left: 15px">
+              <b>Remover</b>
+            </a>
+          </div>
         </div>
 
-        <div class="list">
+        <div class="list" style="top: 12px;">
           <label class="item item-input item-stacked-label">
             <span class="input-label">Nome</span>
             <input type="text" name="nome" ng-model="user.nome" placeholder="Nome" required>
@@ -73,19 +75,35 @@
 
           <label class="item item-input item-stacked-label">
             <span class="input-label">Data Nascimento</span>
-            <input ng-model="user.nascimento" name="nascimento" type="date" format="dd/MM/yyyy" placeholder="Data Nasciemnto" required>
+            <input ng-model="user.dateFormatted" name="nascimento" type="date" format="dd/MM/yyyy" placeholder="Data Nascimento" required>
             <small ng-show="formRegister.nascimento.$invalid && formRegister.nascimento.$touched" class="assertive">
               Campo Obrigatório
             </small>
           </label>
-          <label class="item item-input">
+          <!--  <label class="item item-input">
             <i class="icon ion-ios-location-outline placeholder-icon"></i>
             <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off" ng-model="user.estado"
               item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade"
               max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
+          </label> -->
+
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Estado</span>
+            <input type="text" name="estado" ng-model="user.estado" placeholder="Estado" required>
+            <small ng-show="formRegister.estado.$invalid && formRegister.estado.$touched" class="assertive">
+              Campo Obrigatório
+            </small>
           </label>
 
-          <button ng-disabled="formRegister.$invalid" class="button button-block button-positive register-btn">Editar</button>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Cidade</span>
+            <input type="text" name="cidade" ng-model="user.cidade" placeholder="Cidade" required>
+            <small ng-show="formRegister.cidade.$invalid && formRegister.cidade.$touched" class="assertive">
+              Campo Obrigatório
+            </small>
+          </label>
+
+          <button ng-disabled="formRegister.$invalid" class="button button-block button-positive register-btn" ng-click="editar(user)">Editar</button>
 
         </div>
       </form>
@@ -94,111 +112,122 @@
       <div class="row">
         <div class="col-80 col-offset-10 filtros">
           <div class="check-content">
-            <h5 style="position: absolute; right: 100px;">0</h5>
-            <h5>Especialidades</h5>
-            <ion-list>
-              <ion-checkbox ng-repeat="especialidade in especialidades" ng-model="profile.treino">{{especialidade.modalidade}}</ion-checkbox>
-              <div class="item-avatar">
-                <p>
-                  <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-circle-outline"></i>
-                  <h5>Alongamento</h5>
-                </p>
-                <p>
-                  <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-circle-outline"></i>
-                  <h5>Hipertrofia</h5>
-                </p>
+            <div style="margin-top: 25px; margin-bottom: 10px;">
+              <p style="position: absolute; right: 40px; font-size: 18px; color: #000; text-transform: none;">{{ (especialidades | filter:{checked: true }).length }}</p>
+              <p style="font-size: 18px; color: #000; text-transform: none;">
+                <b>Especialidades</b>
+              </p>
+              <div style="overflow:scroll; height: 300px; border:1px solid rgba(0, 0, 0, 0.200); border-radius: 5px;">
+                <ion-list>
+                  <ion-checkbox ng-repeat="especialidade in especialidades" ng-model="especialidades">{{especialidade}}</ion-checkbox>
+                </ion-list>
               </div>
-            </ion-list>
-
-            <label class="item item-input item-select">
+            </div>
+            <label class="item item-input item-select" style="top: 10px; padding-left: 1px; border: none; color: rgba(0, 0, 0, 0.400);">
               <div class="input-label">
-                Formacao
+                <p style="font-size: 18px; color: rgba(0, 0, 0, 0.400); text-transform: none;">
+                  <b>Formação</b>
+                </p>
               </div>
-              <select ng-model="user.formation">
+              <select ng-model="user.formacao" style="color: rgba(0, 0, 0, 0.400);">
                 <option>Ensino medio</option>
                 <option selected>Superior cursando</option>
-                <option>Superior Completo</option>
+                <option>Superior completo</option>
                 <option>Pos graduacao</option>
                 <option>Mestrado</option>
                 <option>Doutorado</option>
               </select>
             </label>
 
-            <h5 style="position: absolute; right: 100px;">0/320</h5>
-            <h5>Descricao</h5>
-            <label class="item item-input item-select">
-              <p>
-                <textarea rows="5" cols="80" maxlength="320" title="DESCRICAO">
-                  At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies. 
+            <p style="position: absolute; right: 40px; font-size: 18px; color: #000; text-transform: none; padding-top: 25px;">
+              <b>{{0 + user.descricao.length}}</b>/320</p>
+            <p style="font-size: 18px; color: #000; text-transform: none; margin-top: 25px;">
+              <b>Descrição</b>
+            </p>
+            <p>
+              <textarea class="form-control" type="text" name="description_validate" ng-model="user.descricao" ng-minlength='{{valideDescricao.description_validate.minlength}}'
+                ng-maxlength="{{valideDescricao.description_validate.maxlength}}" ng-required='valideDescricao.description_validate.required'
+                ng-trim="false" maxlength="320" rows="10" cols="35" style="border:1px solid rgba(0, 0, 0, 0.400); border-radius: 5px; padding: 3px;">
                 </textarea>
-                <i style="position: absolute; left: 32px;" class="profile-icon icon ion-ios-circle-outline"></i>
-              </p>
+            </p>
 
-            </label>
-
-
-            <h5>Preco Medio por Treino</h5>
+            <p style="font-size: 18px; color: #000; text-transform: none; margin-top: 25px;">
+              <b>Preço médio por treino</b>
+            </p>
             <div class="row">
-              <div class="col-5">R$</div>
-              <input type="text" style="border:1px solid #000" class="inputForm" />
-              <div class="col-5"> - </div>
-              <input type="text" style="border:1px solid #000" class="inputForm" />
+              <div class="col-5">
+                <p style="font-size: 14px; color: #000; text-transform: none; padding: 8px;">R$</p>
+              </div>
+              <input ng-model="price.valor_min" type="text" maxlength="4" size="2" style="border:1px solid rgba(0, 0, 0, 0.400); border-radius: 25px; padding: 5px; text-align:center;"
+                class="inputForm" />
+              <div class="col-5">
+                <p style="font-size: 14px; color: #000; text-transform: none; padding: 8px;">-</p>
+              </div>
+              <input ng-model="price.valor_max" type="text" maxlength="4" size="2" style="border:1px solid rgba(0, 0, 0, 0.400); border-radius: 25px; padding: 5px; text-align:center;"
+                class="inputForm" />
             </div>
             <div class="item range">
               <input type="range" name="price" ng-model="data.age" min="5" max="150" value="data.age">
             </div>
-            <h5>Idade</h5>
+            <p style="font-size: 18px; color: #000; text-transform: none; margin-top: 25px;">
+              <b>Idade</b>
+            </p>
             <div class="row">
-              <div class="col-5">DE</div>
-              <input type="text" style="border:1px solid #000" class="inputForm" />
-              <div class="col-5"> a </div>
-              <input type="text" style="border:1px solid #000" class="inputForm" />
+              <div class="col-5">
+                <p style="font-size: 14px; color: #000; text-transform: none; padding: 8px;">De</p>
+              </div>
+              <input ng-model="age.idade_min" type="text" maxlength="4" size="2" style="border:1px solid rgba(0, 0, 0, 0.400); border-radius: 25px; padding: 5px; text-align:center;"
+                class="inputForm" />
+              <div class="col-5">
+                <p style="font-size: 14px; color: #000; text-transform: none; padding: 8px;">a</p>
+              </div>
+              <input ng-model="age.idade_max" type="text" maxlength="4" size="2" style="border:1px solid rgba(0, 0, 0, 0.400); border-radius: 25px; padding: 5px; text-align:center;"
+                class="inputForm" />
             </div>
-            <div class="item range custom-icon-blue">
+            <div class="item range">
               <input type="range" name="age" ng-model="data.age" min="5" max="150" value="data.age">
             </div>
-            <div class="list profissional-profile">
-              <div class="item item-divider">
-                Locais de Atendimento
-              </div>
-              <div class="item-avatar">
-                <p>
-                  <button style="position: absolute; right: 32px; border: none;" class="profile-icon icon ion-ios-trash custom-icon-blue"></button>
-                  <h5>Endereco 1</h5>
+            <p style="font-size: 18px; color: #000; text-transform: none; margin-top: 25px;">
+              <b>Locais de atendimento</b>
+            </p>
+            <div>
+              <ion-list>
+                <label ng-repeat="endereco in address" style="margin-left: 20px;" style="font-size: 18px; color: #000; text-transform: none; padding-top: 10px;"
+                  ng-model="address.name">
+                  {{endereco.name}}
+                </label>
+                <p ng-repeat="local in address.location" style="font-size: 14px; color: rgba(0, 0, 0, 0.400); text-transform: none;" ng-model="address.location">
+                  <button class="profile-icon icon ion-ios-trash custom-icon-blue" ng-click="deleteRow(bairro)"></button>
+                  {{local}}
                 </p>
-                <p>
-                    <button style="position: absolute; right: 32px; border: none;" class="profile-icon icon ion-ios-trash custom-icon-blue"></button>
-                  <h5>Endereco 2</h5>
-                </p>
-              </div>
+              </ion-list>
             </div>
-            <div class="list list-inset">
-              <label class="item item-input">
+            <div class="list list-inset" style="width: 100%; margin-left: 0;">
+              <label class="item item-input" style="background-color: #e7e7e7">
                 <i class="icon ion-search placeholder-icon"></i>
 
-                <ion-google-place placeholder="Buscar Local" ng-model="location" current-location="true" location-changed="locationChangedCallback"
+                <ion-google-place placeholder="Buscar Local" ng-model="location" current-location="false" location-changed="locationChangedCallback"
                 />
               </label>
             </div>
-            <ion-checkbox ng-model="filter.red">Posso atender em outros locais</ion-checkbox>
-            <div class="list profissional-profile">
-              <div class="item item-divider">
-                <button style="position: absolute; right: 32px; border: none;" class="profile-icon icon ion-ios-plus-outline"></button>
-                Adicionar bairro
-              </div>
-              <div class="item-avatar">
-                <p>
-                  <button style="position: absolute; right: 32px; border: none;" class="profile-icon icon ion-ios-trash custom-icon-blue"></button>
-                  <h5>Bela Vista</h5>
+            <ion-checkbox ng-model="filter.can" style="font-size: 14px; width: 100%;">
+              <b>Posso atender em outros locais</b>
+            </ion-checkbox>
+            <button style="position: absolute; right: 32px; border: none; background: none; margin-top: 15px;" class="profile-icon icon ion-ios-plus-outline"
+              ng-click="addBairro()"></button>
+            <p style="font-size: 18px; color: rgba(0, 0, 0, 0.400); text-transform: none; margin-top: 25px;">
+              <b>Adicionar bairro</b>
+            </p>
+            <div>
+              <ion-list>
+                <p ng-repeat="bairro in place.bairro" style="font-size: 14px; color: rgba(0, 0, 0, 0.400); text-transform: none;" ng-model="place.bairro">
+                  <button class="profile-icon icon ion-ios-trash custom-icon-blue" ng-click="deleteRow(bairro)"></button>
+                  {{bairro}}
                 </p>
-                <p>
-                  <button style="position: absolute; right: 32px; border: none;" class="profile-icon icon ion-ios-trash custom-icon-blue"></button>
-                  <h5>Vila Mariana</h5>
-                </p>
-              </div>
+              </ion-list>
             </div>
             <div class="save-content">
-              <a href="#" class="button button-block button-positive save-btn">Salvar</a>
+              <a class="button button-block button-positive save-btn" ng-click="editar(user)">Salvar</a>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 angular.module('starter.controllers', ['ionic', 'firebase']);
-App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth, UserService) {
+App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth, UserService, $q, $firebaseObject, $firebaseArray) {
   var auth = $firebaseAuth();
   $scope.signIn = function (user) {
     $scope.firebaseUser = null;
@@ -20,20 +20,25 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
 
       firebaseUser.tipo = tipo;
       UserService.saveProfile(firebaseUser);
-
+      UserService.getFirebaseData(firebaseUser.uid, tipo, function (user) {
+      })
       $scope.tipo = tipo;
 
       if (tipo == "aluno") {
-        $state.go('tab.dash');
+        UserService.getFirebaseData(firebaseUser.uid, tipo, function (user) {
+          $state.go('tab.dash');
+        })
       } else {
-        $state.go('tab.account');
+        UserService.getFirebaseData(firebaseUser.uid, tipo, function (user) {
+          $state.go('tab.account');
+        })
+
       }
 
     }).catch(function (error) {
       var errorCode = error.code;
       var errorMessage = error.message;
       var msgError = "";
-      console.log("url ");
       if (errorCode === 'auth/invalid-email') {
         msgError = 'Digite um email válido.';
       } else if (errorCode === "auth/argument-error") {
@@ -61,6 +66,8 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
     });
   }
 
+  var tipoFacebook = '';
+
   // This is the success callback from the login method
   var fbLoginSuccess = function (response) {
     if (!response.authResponse) {
@@ -73,24 +80,99 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
     getFacebookProfileInfo(authResponse)
       .then(function (profileInfo) {
         // For the purpose of this example I will store user data on local storage
-        UserService.setUser({
-          authResponse: authResponse,
-          userID: profileInfo.id,
-          name: profileInfo.name,
-          email: profileInfo.email,
-          picture: "http://graph.facebook.com/" + authResponse.userID + "/picture?type=large"
+
+        $scope.data = {
+          distance: 10
+        };
+
+        $scope.type = [
+          'Aluno',
+          'Profissional'
+        ];
+
+        var myPopupType = $ionicPopup.show({
+          templateUrl: 'templates/popup-type.html',
+          title: 'Escolha seu perfil',
+          scope: $scope,
+          buttons: [
+            { text: 'Cancel' }, {
+              text: '<b>Save</b>',
+              type: 'button-positive',
+              onTap: function (e) {
+                if (!$scope.data) {
+                  e.preventDefault();
+                } else {
+                  if ($scope.data.type === 'Profissional') {
+                    tipoFacebook = 'profissionais';
+                    UserService.saveProfile({
+                      authResponse: authResponse,
+                      uid: profileInfo.id,
+                      displayName: profileInfo.name + '_' + tipoFacebook,
+                      email: profileInfo.email,
+                      photoURL: "http://graph.facebook.com/" + authResponse.userID + "/picture?type=large"
+                    });
+                    console.log("passa0")
+                    $state.go('tab.account');
+                  } else {
+                    tipoFacebook = 'aluno';
+                    UserService.saveProfile({
+                      authResponse: authResponse,
+                      uid: profileInfo.id,
+                      displayName: profileInfo.name + '_' + tipoFacebook,
+                      email: profileInfo.email,
+                      photoURL: "http://graph.facebook.com/" + authResponse.userID + "/picture?type=large"
+                    });
+                    console.log("passa1")
+                    $state.go('tab.dash');
+                  }
+
+             /*     var key = Math.random().toString(36).substring(10);
+                  var root = firebase.database().ref();
+                  var usuarios = root.child('profissionais/').child(key);            
+                  var auth = JSON.parse(UserService.getProfile());
+
+                  addUsers = {
+                    nome: profileInfo.name,
+                    sobrenome: "",
+                    sexo: "",
+                    email: profileInfo.email,
+                    nascimento: "",
+                    estado: "",
+                    cidade: "",
+                    estado_cidade: "",
+                    id: auth.uid,
+                    imagem: "http://graph.facebook.com/" + authResponse.userID + "/picture?type=large",
+                    formacao: "",
+                    descricao: "",
+                    atende_fora: false,
+                    perfil_views: "" 
+                  };
+console.log("passa")
+                  usuarios.update(addUsers);*/
+
+                  return $scope.data.type;
+                }
+              }
+            }
+          ]
         });
+
+        /* UserService.saveProfile({
+           authResponse: authResponse,
+           userID: profileInfo.id,
+           name: profileInfo.name,
+           email: profileInfo.email,
+           picture: "http://graph.facebook.com/" + authResponse.userID + "/picture?type=large"
+         });*/
+
         //    $ionicLoading.hide();
-        $state.go('tab.dash');
       }, function (fail) {
         // Fail get profile info
-        console.log('profile info fail', fail);
       });
   };
 
   // This is the fail callback from the login method
   var fbLoginError = function (error) {
-    console.log('fbLoginError', error);
     //  $ionicLoading.hide();
   };
 
@@ -100,11 +182,9 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
 
     facebookConnectPlugin.api('/me?fields=email,name&access_token=' + authResponse.accessToken, null,
       function (response) {
-        console.log(response);
         info.resolve(response);
       },
       function (response) {
-        console.log(response);
         info.reject(response);
       }
     );
@@ -118,27 +198,55 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
         // The user is logged in and has authenticated your app, and response.authResponse supplies
         // the user's ID, a valid access token, a signed request, and the time the access token
         // and signed request each expire
-        console.log('getLoginStatus', success.status);
 
         // Check if we have our user saved
-        var user = UserService.getUser('facebook');
+        var user = JSON.parse(UserService.getProfile('facebook'));
 
-        if (!user.userID) {
+        if (!user.uid) {
           getFacebookProfileInfo(success.authResponse)
             .then(function (profileInfo) {
               // For the purpose of this example I will store user data on local storage
-              UserService.setUser({
-                authResponse: success.authResponse,
-                userID: profileInfo.id,
-                name: profileInfo.name,
-                email: profileInfo.email,
-                picture: "http://graph.facebook.com/" + success.authResponse.userID + "/picture?type=large"
+
+              var myPopupType = $ionicPopup.show({
+                templateUrl: 'templates/popup-type.html',
+                title: 'Escolha seu perfil',
+                scope: $scope,
+                buttons: [
+                  { text: 'Cancel' }, {
+                    text: '<b>Save</b>',
+                    type: 'button-positive',
+                    onTap: function (e) {
+                      if (!$scope.data.type) {
+                        e.preventDefault();
+                      } else {
+                        return $scope.data.type;
+                      }
+                    }
+                  }
+                ]
               });
 
+              myPopupType.then(function (resposta) {
+                $scope.list = [];
+              });
+
+              /* UserService.saveProfile({
+          authResponse: authResponse,
+          userID: profileInfo.id,
+          name: profileInfo.name,
+          email: profileInfo.email,
+          picture: "http://graph.facebook.com/" + authResponse.userID + "/picture?type=large"
+        });*/
+              UserService.saveProfile({
+                authResponse: authResponse,
+                uid: profileInfo.id,
+                displayName: profileInfo.name + "_" + tipoFacebook,
+                email: profileInfo.email,
+                photoURL: "http://graph.facebook.com/" + authResponse.userID + "/picture?type=large"
+              });
               $state.go('tab.dash');
             }, function (fail) {
               // Fail get profile info
-              console.log('profile info fail', fail);
             });
         } else {
           $state.go('tab.dash');
@@ -149,7 +257,6 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
         // Else the person is not logged into Facebook,
         // so we're not sure if they are logged into this app or not.
 
-        console.log('getLoginStatus', success.status);
 
         //		$ionicLoading.show({
         //      template: 'Logging in...'
@@ -163,16 +270,25 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
   };
 
   $scope.resetPassword = function (user) {
-    var emailAddress = user.email;
-    var alertPopup = $ionicPopup.alert({
-      title: 'E-mail de refinição de senha enviado',
-      template: 'Um link para redefinição de sua senha foi enviado no seu e-mail cadastrado.'
-    });
-    auth.$sendPasswordResetEmail(emailAddress).then(function () {
-      // Email sent.
-    }).catch(function (error) {
-      // An error happened.
-    });
+
+    if (user == null || user == undefined) {
+      var alertPopup = $ionicPopup.alert({
+        title: 'Campo obrigatório',
+        template: 'Digite seu e-mail'
+      });
+    } else {
+      var emailAddress = user.email;
+      var alertPopup = $ionicPopup.alert({
+        title: 'E-mail de refinição de senha enviado',
+        template: 'Um link para redefinição de sua senha foi enviado no seu e-mail cadastrado.'
+      });
+      auth.$sendPasswordResetEmail(emailAddress).then(function () {
+        // Email sent.
+      }).catch(function (error) {
+        // An error happened.
+      });
+    }
+
   }
 
 })
@@ -225,16 +341,14 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
         $cordovaCamera.getPicture(options).then(function (imageData) {
           $scope.user.picture = "data:image/jpeg;base64," + imageData;
           //syncArray.$add({image: imageData}).then(function() {
-          //console.log("Image has been uploaded");
           //});
 
         }, function (err) {
           console.log(err)
         });
       }
+
     });
-
-
 
     $scope.cadastro = function (user) {
       $scope.formData = {};
@@ -354,26 +468,6 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
     $scope.fechaModal = function () {
       $scope.modal.hide();
     }
-
-    /*  $ionicPopup.show({
-        scope: $scope,
-        template: 'templates/termo.html',
-        title: 'Termos de Uso',
-      }).then(function (p) {
-        $scope.alertPopup = p;
-   
-      });
-  
-    $scope.abrePopup = function () {
-      scope: $scope;
-      var alertPopup = $ionicPopup.alert({
-        title: 'Termos de Uso',
-        template: 'O Olimpo não é fornecedor de quaisquer bens, bem como não presta qualquer tipo de serviço de atividade ou condicionamento'
-      });
-  
-      $scope.alertPopup.show();
-  
-    }*/
 
   })
 
@@ -582,7 +676,6 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
     var arraytipo = profile.split('_');
     var tipo = arraytipo[1];
     $scope.tipo = { 'tipo': 1 };
-    console.log(tipo)
 
     var myPopupEspecialidades = $ionicPopup.show({
       templateUrl: 'templates/popup-especialidades.html',
@@ -596,7 +689,6 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
             if (!$scope.data) {
               e.preventDefault();
             } else {
-              console.log($scope.data.modalidades)
               return $scope.data.modalidades;
             }
           }
@@ -645,13 +737,10 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
     $scope.geoQuery = function () {
 
       var geoQuery = UserService.getByGeo($scope.lat, $scope.lng, $scope.data.distance);
-      console.log(geoQuery)
       geoQuery.on("key_entered", function (key, location, distance) {
-        console.log(key)
         $timeout(function () {
 
           UserService.get(key).then(function (restaurant) {
-            //console.log(restaurant)
             restaurant.distance = distance.toFixed(2);
 
             // var modalidades = restaurant.modalidade;
@@ -787,9 +876,6 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
     $scope.profiles = [];
     $scope.profiles = $firebaseArray(root.child('profissionais').orderByChild('id').equalTo(profissional));
     var estado_cidade = $scope.profiles.cidade_bairro;
-    console.log('aqui')
-    console.log($scope.profiles)
-    console.log($stateParams)
 
   })
 
@@ -804,7 +890,6 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
     }
     // var arraytipo  = profile.split('_');
     // var tipo = arraytipo[1];
-    console.log(auth)
 
 
 
@@ -839,6 +924,31 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
         console.log(error);
       });
     }
+
+    /*   $scope.user = UserService.getUser();
+   
+     $scope.showLogOutMenu = function() {
+       var hideSheet = $ionicActionSheet.show({
+         destructiveText: 'Sair',
+         titleText: 'Tem certeza que deseja sair?',
+         cancelText: 'Cancelar',
+         cancel: function() {},
+         buttonClicked: function(index) {
+           return true;
+         },
+         destructiveButtonClicked: function(){
+   
+           // Facebook logout
+           facebookConnectPlugin.logout(function(){
+             $state.go('welcome');
+           },
+           function(fail){
+         //    $ionicLoading.hide();
+           });
+         }
+       });
+     };*/
+
   })
 
   .controller('ChatDetailCtrl', function ($scope, $stateParams, UserService, $firebaseObject, $firebaseArray, $firebaseAuth) {
@@ -858,7 +968,6 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
 
 
     var chat = $firebaseArray(root.child('chat').orderByChild('profissional_aluno').equalTo(profissional_aluno));
-    console.log(chat.length)
 
     //if(chat.length > 0){
 
@@ -869,7 +978,6 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
           var key = data[0].$id;
           $scope.total = 1;
           //var key = Object.keys(data)[0];
-          console.log(key)
           $scope.chats = $firebaseArray(root.child('conversas').orderByChild('id').equalTo(key));
         }
       },
@@ -907,13 +1015,10 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
         //$scope.chats = myconversas;
 
         list.$add({ aluno: auth.uid, profissional: profissional, profissional_aluno: profissional_aluno, last_msg: $scope.data.message, photoURLAluno: '', photoURLProfissional: '' }).then(function (refChat) {
-          //console.log(refChat.key)
           id = refChat.key;
           $scope.chats = $firebaseArray(root.child('conversas').orderByChild('id').equalTo(id));
           $scope.chats.$add({ id: id, nome: auth.displayName, photoURL: auth.photoURL, texto: $scope.data.message }).then(function (conversaRef) {
-            //console.log(refChat.key)
             var id = conversaRef.key;
-            console.log("added record with id " + id);
             //list.$indexFor(id); // returns location in the array
           }, function (err) {
             console.log(err)
@@ -932,9 +1037,7 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
 
 
         $scope.chats.$add({ id: id, nome: auth.displayName, photoURL: auth.photoURL, texto: $scope.data.message }).then(function (conversaRef) {
-          //console.log(refChat.key)
           var id = conversaRef.key;
-          console.log("added record with id " + id);
           //list.$indexFor(id); // returns location in the array
         }, function (err) {
           console.log(err)
@@ -947,19 +1050,48 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
   })
 
 
-  .controller('AccountDetailCtrl', function ($scope, $stateParams, $firebaseObject, $firebaseArray, $q, $cordovaCamera, $ionicPlatform, UserService) {
+  .controller('AccountDetailCtrl', function ($scope, $stateParams, $firebaseObject, $firebaseArray, $q, $cordovaCamera, $ionicPlatform, UserService, $ionicPopup) {
     var id = $stateParams.accountId;
     var root = firebase.database().ref();
     $scope.perfil = false;
     $scope.myTab = { 'tab': 1 };
-    $scope.user = {};
     $scope.Optionsexo = [{ name: 'Masculino', id: 1 }, { name: 'Feminino', id: 2 }];
     var auth = JSON.parse(UserService.getProfile());
     var profile = auth.displayName;
     var arraytipo = profile.split('_');
     var tipo = arraytipo[1];
 
-    console.log(tipo)
+    $scope.especialidades = [
+      'Artes Marciais',
+      'Atividades aquáticas',
+      'Cardiacos, obesos e diabéticos',
+      'Ciclismo',
+      'Condicionamento Físico',
+      'Corrida de rua e Caminhada',
+      'Cross Fit',
+      'Emagrecimento',
+      'Gestantes',
+      'Hiit',
+      'Hipertrofia',
+      'Natação',
+      'Personal Figth',
+      'Pilates',
+      'Reabilitação',
+      'Treinamento Funcional',
+      'Tênis',
+      'Yoga',
+      'Zumba Fitness'
+    ];
+
+    // UserService.getFirebaseData(auth.uid, tipo, function (user) {
+    // })
+    $scope.user = JSON.parse(UserService.getProfileData());
+    $scope.user.dateFormatted = new Date($scope.user.nascimento);
+    $scope.address = JSON.parse(localStorage.getItem("user.current_user_address"));
+    $scope.place = JSON.parse(localStorage.getItem("user.current_user_place"));
+    $scope.age = JSON.parse(localStorage.getItem("user.current_user_age"));
+    $scope.price = JSON.parse(localStorage.getItem("user.current_user_price"));
+    $scope.acts = JSON.parse(localStorage.getItem("user.current_user_acts"));
 
     if (tipo == "aluno") {
       $dados = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(id));
@@ -969,7 +1101,6 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
     }
     $dados.$loaded(
       function (data) {
-        //console.log(data)
         var key = Object.keys(data)[0];
         firebaseId = data[0].$id;
         $scope.user.photoURL = data[0].photoURL;
@@ -982,22 +1113,80 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
 
         var bairro_cidade = data[0].estado_cidade.split('_');
         var dateformat = str_birthday[2] + '/' + str_birthday[1] + '/' + str_birthday[0];
-        //console.log(dateformat);
         var maisformat = dateformat.split('/');
-        //console.log(maisformat)
         //scope.user.nascimento = dateformat;
         $scope.user.nascimento = new Date(maisformat[0] + '/' + maisformat[1] + '/' + maisformat[2]);
-        //console.log($scope.user.nascimento)
         $scope.user.estado = bairro_cidade[1] + ',' + bairro_cidade[0];
         $scope.user.sexo = data[0].sexo;
         //$scope.user.photoURL = data[0].photoURL;
         $scope.user.picture = data[0].imagem;
+        console.error("data:", data);
 
       },
       function (error) {
         console.error("Error:", error);
       }
     );
+
+    $scope.addBairro = function () {
+
+      // Custom popup
+      var myPopup = $ionicPopup.prompt({
+        title: 'Novo endereço',
+        subTitle: 'Digite um novo bairro',
+        inputType: 'text',
+        inputPlaceholder: 'Ex.: Vila Mariana'
+      }).then(function (res) {
+        console.log('Your name is', res);
+        $scope.place.bairro.push(res);
+      });
+
+    };
+
+    $scope.locationChangedCallback = function (location) {
+
+      var nomePopup = $ionicPopup.prompt({
+        title: 'Modalidade',
+        subTitle: 'Digite a modalidade atendida',
+        inputType: 'text',
+        inputPlaceholder: 'Ex.: Hipertrofia'
+      }).then(function (res) {
+        console.log('Your name is', res);
+        $scope.address.modalidade = res;
+
+        $scope.list = [];
+        $scope.lat = location.geometry.location.lat();
+        $scope.lng = location.geometry.location.lng();
+        $scope.address.push({
+          'g': "",
+          'l': [String($scope.lat), String($scope.lng)],
+          'modalidade': $scope.address.modalidade,
+          'name': $scope.address.name,
+          'location': location.formatted_address,
+          'profileImg': ""
+        });
+      });
+
+      var modalidadePopup = $ionicPopup.prompt({
+        title: 'Nome do local',
+        subTitle: 'Digite o nome do local',
+        inputType: 'text',
+        inputPlaceholder: 'Ex.: Academia'
+      }).then(function (res) {
+        console.log('Your name is', res);
+        $scope.address.name = res;
+      });
+
+      console.log($scope.address)
+    };
+
+    $scope.deleteRow = function (row) {
+      var index = $scope.place.bairro.indexOf(row);
+      console.log(index)
+      if (index > -1) {
+        $scope.place.bairro.splice(index, 1);
+      }
+    }
 
     var geocoder = new google.maps.Geocoder();
     $scope.getAddressSuggestions = function (queryString) {
@@ -1045,23 +1234,29 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
 
     $scope.editar = function (user) {
       var dadosLocal = user.estado;
-      //console.log(dadosLocal)
+      var cidade = '';
+      var estado = '';
+      var localizacao = '';
       if (typeof dadosLocal === 'object') {
-        var cidade = dadosLocal.address_components[0].short_name;
-        var estado = dadosLocal.address_components[1].short_name;
+        cidade = dadosLocal.address_components[0].short_name;
+        estado = dadosLocal.address_components[1].short_name;
       } else {
-        var localizacao = dadosLocal.split(',');
-        var cidade = localizacao[1];
-        var estado = localizacao[0];
+        localizacao = dadosLocal.split(',');
+        cidade = localizacao[1];
+        estado = localizacao[0];
       }
 
-      var estado_cidade = cidade + "_" + estado;
+      var estado_cidade = user.cidade + "_" + user.estado;
 
-      //console.log(firebaseId)
       if (tipo == "alunos") {
         var usuarios = root.child('alunos/');
       } else {
-        var usuarios = root.child('profissionais/');
+        var usuarios = root.child('profissionais/').child($scope.user.key);
+      //  var enderecos = root.child('enderecos/').child($scope.address.key);
+        var bairros = root.child('profissionais_bairro/').child($scope.place.key);
+        var idade = root.child('profissionais_idade/').child($scope.age.key);
+        var treinos = root.child('profissionais_treinos/').child($scope.acts.key);
+        var valor = root.child('profissionais_valor/').child($scope.price.key);
       }
 
       // if(user.tipo =='aluno')
@@ -1074,6 +1269,7 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
       var day = data.getDate();
       var months = { "1": "01", "2": "02", "3": "03", "4": "04", "5": "05", "6": "06", "7": "07", "8": "08", "9": "09", "10": "10", "11": "11", "12": "12" };
       var formatted = day + "-" + months[month] + "-" + year;
+      console.log("data " + user.nascimento)
 
       editUsers = {
         nome: user.nome,
@@ -1081,15 +1277,52 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
         sexo: user.sexo,
         email: user.email,
         nascimento: formatted,
-        estado: estado,
-        cidade: cidade,
+        estado: user.estado,
+        cidade: user.cidade,
         estado_cidade: estado_cidade,
-        id: user.id,
-        imagem: user.picture
+        id: auth.uid,
+        imagem: user.picture,
+        formacao: user.formacao,
+        descricao: user.descricao,
+        atende_fora: false,
+        perfil_views: "400" 
       };
 
-      console.log(editUsers)
-      usuarios.child(firebaseId).set(editUsers);
+      editEnderecos = {
+        profissional_id: auth.uid,
+        enderecos: $scope.address
+      };
+
+      editBairros = {
+        profissional_id: auth.uid,
+        bairro: $scope.place.bairro
+      };
+
+      editIdade = {
+        profissional_id: auth.uid,
+        idade_min: $scope.age.idade_min,
+        idade_max: $scope.age.idade_max
+      };
+
+      editTreinos = {
+        profissional_id: auth.uid,
+        treinos: $scope.acts.treinos
+      };
+
+      editValor = {
+        profissional_id: auth.uid,
+        valor_min: $scope.price.valor_min,
+        valor_max: $scope.price.valor_max
+      };
+
+      console.log("edit " + JSON.stringify(editUsers))
+
+      usuarios.update(editUsers);
+   //   enderecos.update(editEnderecos);
+      bairros.update(editBairros);
+      idade.update(editIdade);
+      treinos.update(editTreinos);
+      valor.update(editValor);
       // $dados.$save(editUsers).then(function(usuarios) {
       //   //ref.key === $dados.$id; // true
       //   console.log('atualizou')
@@ -1105,26 +1338,33 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
       $ionicSideMenuDelegate.toggleLeft();
     };
   })
-  .controller('AccountCtrl', function ($scope, $firebaseAuth, $firebaseArray, UserService, $ionicSideMenuDelegate) {
+  .controller('AccountCtrl', function ($scope, $firebaseAuth, $firebaseArray, UserService, $ionicSideMenuDelegate, $firebaseObject) {
 
-    $scope.profiles = {
-      'cidade': '',
-      'estado': '',
-      'estado_cidade': ''
-    }
     var auth = JSON.parse(UserService.getProfile());
-    console.log(auth)
     var profile = auth.displayName;
     var arraytipo = profile.split('_');
     var tipo = arraytipo[1];
     var root = firebase.database().ref();
+    var userExists = JSON.parse(UserService.getProfileData());
+    // if(userExists == null || userExists == undefined) {
+    // UserService.getFirebaseData(auth.uid, tipo, function (user) {
+    // })
+    $scope.user = JSON.parse(UserService.getProfileData());
+    $scope.address = JSON.parse(localStorage.getItem("user.current_user_address"));
+    $scope.place = JSON.parse(localStorage.getItem("user.current_user_place"));
+    $scope.age = JSON.parse(localStorage.getItem("user.current_user_age"));
+    $scope.price = JSON.parse(localStorage.getItem("user.current_user_price"));
+    $scope.acts = JSON.parse(localStorage.getItem("user.current_user_acts"));
+    // } else {
+    //   $scope.user = userExists;
+    // }
+    console.log("user no controle " + JSON.stringify($scope.address))
+
     $scope.profileType = 0;
     if (tipo == "aluno") {
       $scope.profileType = 1;
-      $scope.profiles = $firebaseArray(root.child('alunos').orderByChild('id').equalTo(auth.uid));
     } else {
       $scope.profileType = 2;
-      $scope.profiles = $firebaseArray(root.child('profissionais').orderByChild('id').equalTo(auth.uid));
     }
 
   })
@@ -1154,7 +1394,6 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
     var root = firebase.database().ref();
     var auth = JSON.parse(UserService.getProfile());
     var profile = $firebaseArray(root.child('profissionais').orderByChild('id').equalTo(auth.uid));
-    console.log(profile)
     $scope.form = {};
 
     $scope.save = function () {
@@ -1163,9 +1402,7 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
       var lng = $scope.form.location.geometry.location.lng();
       var auth = JSON.parse(UserService.getProfile());
 
-      //console.log(auth)
       var profissional_id = auth.uid;
-      //console.log(profissional_id)
       var newObj = {};
       //newObj.name = $scope.form.name;
       // newObj.img = $scope.form.img
@@ -1173,18 +1410,16 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
       newObj.profissional = profissional_id,
         newObj.modalidade = $scope.form.modalidades,
         //newObj.profileImg = profile[0].imagem
-        console.log(newObj)
-      UserService.create(newObj).then(function () {
-        console.log('retorno')
-        var alertPopup = $ionicPopup.alert({
-          title: 'Endereco Cadastrado Com Sucesso',
-          template: 'Endereco Cadastrado Com Sucesso'
-        });
-        $scope.form = {};
-        $state.go('tab.account');
-      }, function (error) {
-        console.error("Error:", error);
-      })
+        UserService.create(newObj).then(function () {
+          var alertPopup = $ionicPopup.alert({
+            title: 'Endereco Cadastrado Com Sucesso',
+            template: 'Endereco Cadastrado Com Sucesso'
+          });
+          $scope.form = {};
+          $state.go('tab.account');
+        }, function (error) {
+          console.error("Error:", error);
+        })
     };
 
     $scope.locationChangedCallback = function (location) {

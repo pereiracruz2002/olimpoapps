@@ -13,7 +13,7 @@
           <!-- trampo -->
           <ion-nav-view name="student-tab"></ion-nav-view>
           <div class="cstm-content">
-            <a href="#" class="facebook-btn">
+            <a ng-click="facebookSignIn()" class="facebook-btn">
               <i class="icon ion-social-facebook"></i>Entrar com facebook</a>
             <form name="formRegister" ng-submit="cadastro(user)" ng-hide="contentBg">
               <div class="profile">
@@ -111,7 +111,7 @@
         <ion-tab title="Profissional">
           <ion-nav-view name="professional-tab" ng-show="isSet(2)">
             <div class="cstm-content">
-              <a href="#" class="facebook-btn">
+              <a ng-click="facebookSignIn()" class="facebook-btn">
                 <i class="icon ion-social-facebook"></i>Entrar com facebook</a>
               <div class="profile">
                 <div class="profile-photo">
