@@ -680,6 +680,7 @@ console.log("passa")
     var myPopupEspecialidades = $ionicPopup.show({
       templateUrl: 'templates/popup-especialidades.html',
       title: 'Especialidades',
+      cssClass: 'popup-pin',
       scope: $scope,
       buttons: [
         { text: 'Cancel' }, {
@@ -689,6 +690,7 @@ console.log("passa")
             if (!$scope.data) {
               e.preventDefault();
             } else {
+              console.log($scope.modalidades)
               return $scope.data.modalidades;
             }
           }
@@ -814,6 +816,7 @@ console.log("passa")
         templateUrl: 'templates/popup-especialidades.html',
         title: 'Especialidades',
         scope: $scope,
+        cssClass: 'popup-pin',
         buttons: [
           { text: 'Cancel' }, {
             text: '<b>Save</b>',

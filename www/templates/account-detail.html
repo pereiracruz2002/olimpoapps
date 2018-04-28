@@ -9,7 +9,7 @@
       <form name="formRegister" ng-submit="editar(user)" ng-hide="contentBg">
         <div class="profile">
           <div class="profile-photo" style="left: 24px; top: 24px;">
-            <h1 class="select-picture" ng-click="choosePicture()" style="background-image:url('{{user.picture}}'); background-position:center center; background-size:cover;">
+            <h1 class="select-picture" ng-click="choosePicture()" style="background-position:center center; background-size:cover; border-radius: 50%;">
               <span class="icon ion-ios-camera" ng-hide="user.picture"></span>
 
               <a ng-click="choosePicture()">

@@ -86,14 +86,21 @@
                   </small>
                 </label>
 
-
-                <label class="item item-input">
-                  <i class="icon ion-ios-location-outline placeholder-icon"></i>
-                  <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off" ng-model="user.estado"
-                    item-view-value-key="formatted_address" items-method="getAddressSuggestions(query)" placeholder="Bairro, Cidade"
-                    max-selected-items="1" cancel-label="Cancelar" select-items-label="Selecione uma cidade" />
+                <label class="item item-input item-stacked-label">
+                  <span class="input-label">Estado</span>
+                  <input type="text" name="estado" ng-model="user.estado" placeholder="Estado" required>
+                  <small ng-show="formRegister.estado.$invalid && formRegister.estado.$touched" class="assertive">
+                    Campo Obrigatório
+                  </small>
                 </label>
-
+      
+                <label class="item item-input item-stacked-label">
+                  <span class="input-label">Cidade</span>
+                  <input type="text" name="cidade" ng-model="user.cidade" placeholder="Cidade" required>
+                  <small ng-show="formRegister.cidade.$invalid && formRegister.cidade.$touched" class="assertive">
+                    Campo Obrigatório
+                  </small>
+                </label>
 
                 <input type="hidden" name="tipo" ng-init="user.tipo='aluno'" ng-model="user.tipo">
                 <ion-checkbox ng-model="filter.red">Li e aceito os termos de uso</ion-checkbox>

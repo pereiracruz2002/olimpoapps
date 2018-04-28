@@ -1,12 +1,11 @@
 <div class="row">
-    <div class="item" class="col col-90">
-		 <div class="" ng-repeat="item in modalidades">
-		    <ion-radio ng-click=""
-		               ng-model="data.modalidades"
-		               ng-value="item">{{item}}
-		        <!-- <img class="item-image" src="img/icons/{{item}}"> -->
-		    </ion-radio>
+	<div class="item" class="col col-90">
+		<div class="" ng-repeat="item in modalidades">
+			<ion-list>
+				<ion-checkbox class="item-checkbox-right" ng-click="" ng-model="modalidades[item]" ng-value="item" name="item">{{item}}
+					<!-- <img class="item-image" src="img/icons/{{item}}"> -->
+				</ion-checkbox>
+			</ion-list>
 		</div>
 	</div>
 </div>
-

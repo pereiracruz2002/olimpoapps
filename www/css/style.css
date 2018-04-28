@@ -946,6 +946,10 @@ input.ion-google-place[readonly] {
   opacity: 0.4;
 }
 
+.popup-pin .popup {
+  width: 50%; 
+}
+
 .button-map {
   font-size: 24px;
   color: #fff;
