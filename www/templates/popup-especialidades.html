@@ -2,7 +2,14 @@
 	<div class="item" class="col col-90">
 		<div class="" ng-repeat="item in modalidades">
 			<ion-list>
-				<ion-checkbox class="item-checkbox-right" ng-click="" ng-model="modalidades[item]" ng-value="item" name="item">{{item}}
+				<ion-checkbox class="item-checkbox-right" 
+				ng-change="validaOpcoes(item)" 
+				ng-click="" 
+				ng-model="modalidades[item]" 
+				ng-value="item" 
+				ng-checked="selection.indexOf(item) > -1"
+				ng-disabled="disableCheckbox"
+				name="selectedItens[]">{{item}}
 					<!-- <img class="item-image" src="img/icons/{{item}}"> -->
 				</ion-checkbox>
 			</ion-list>

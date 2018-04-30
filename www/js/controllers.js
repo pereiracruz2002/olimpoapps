@@ -676,6 +676,7 @@ console.log("passa")
     var arraytipo = profile.split('_');
     var tipo = arraytipo[1];
     $scope.tipo = { 'tipo': 1 };
+    $scope.tresItens = [];
 
     var myPopupEspecialidades = $ionicPopup.show({
       templateUrl: 'templates/popup-especialidades.html',
@@ -690,8 +691,8 @@ console.log("passa")
             if (!$scope.data) {
               e.preventDefault();
             } else {
-              console.log($scope.modalidades)
-              return $scope.data.modalidades;
+              console.log($scope.tresItens)
+              return $scope.tresItens;
             }
           }
         }
@@ -704,6 +705,23 @@ console.log("passa")
       $scope.FilterByEspecialides(resposta);
       //$scope.geoQuery();
     });
+
+    $scope.validaOpcoes = function (item) {
+      var idx = $scope.tresItens.indexOf(item);
+      if (idx > -1) {
+        $scope.tresItens.splice(idx, 1);
+      }
+      else {
+        $scope.tresItens.push(item);
+      }
+
+      if($scope.tresItens.length > 2) {
+        $scope.disableCheckbox = true;
+        console.log($scope.tresItens);
+      } else {
+        $scope.disableCheckbox = false;
+      }
+    }
 
     $scope.FilterByEspecialides = function (resposta) {
 
