@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ionic', 'firebase']);
+angular.module('starter.controllers', ['ionic', 'firebase', 'ionic-numberpicker']);
 App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth, UserService, $q, $firebaseObject, $firebaseArray) {
   var auth = $firebaseAuth();
   $scope.signIn = function (user) {
@@ -126,29 +126,29 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
                     $state.go('tab.dash');
                   }
 
-             /*     var key = Math.random().toString(36).substring(10);
-                  var root = firebase.database().ref();
-                  var usuarios = root.child('profissionais/').child(key);            
-                  var auth = JSON.parse(UserService.getProfile());
-
-                  addUsers = {
-                    nome: profileInfo.name,
-                    sobrenome: "",
-                    sexo: "",
-                    email: profileInfo.email,
-                    nascimento: "",
-                    estado: "",
-                    cidade: "",
-                    estado_cidade: "",
-                    id: auth.uid,
-                    imagem: "http://graph.facebook.com/" + authResponse.userID + "/picture?type=large",
-                    formacao: "",
-                    descricao: "",
-                    atende_fora: false,
-                    perfil_views: "" 
-                  };
-console.log("passa")
-                  usuarios.update(addUsers);*/
+                  /*     var key = Math.random().toString(36).substring(10);
+                       var root = firebase.database().ref();
+                       var usuarios = root.child('profissionais/').child(key);            
+                       var auth = JSON.parse(UserService.getProfile());
+     
+                       addUsers = {
+                         nome: profileInfo.name,
+                         sobrenome: "",
+                         sexo: "",
+                         email: profileInfo.email,
+                         nascimento: "",
+                         estado: "",
+                         cidade: "",
+                         estado_cidade: "",
+                         id: auth.uid,
+                         imagem: "http://graph.facebook.com/" + authResponse.userID + "/picture?type=large",
+                         formacao: "",
+                         descricao: "",
+                         atende_fora: false,
+                         perfil_views: "" 
+                       };
+     console.log("passa")
+                       usuarios.update(addUsers);*/
 
                   return $scope.data.type;
                 }
@@ -715,7 +715,7 @@ console.log("passa")
         $scope.tresItens.push(item);
       }
 
-      if($scope.tresItens.length > 2) {
+      if ($scope.tresItens.length > 2) {
         $scope.disableCheckbox = true;
         console.log($scope.tresItens);
       } else {
@@ -1071,7 +1071,7 @@ console.log("passa")
   })
 
 
-  .controller('AccountDetailCtrl', function ($scope, $stateParams, $firebaseObject, $firebaseArray, $q, $cordovaCamera, $ionicPlatform, UserService, $ionicPopup) {
+  .controller('AccountDetailCtrl', function ($scope, $state, $stateParams, $firebaseObject, $firebaseArray, $q, $cordovaCamera, $ionicPlatform, UserService, $ionicPopup) {
     var id = $stateParams.accountId;
     var root = firebase.database().ref();
     $scope.perfil = false;
@@ -1120,6 +1120,68 @@ console.log("passa")
       $scope.perfil = true;
       $dados = $firebaseArray(root.child('profissionais').orderByChild('id').equalTo(id));
     }
+
+    $scope.numberPickerValorMin = {
+      inputValue: $scope.price.valor_min, 
+      minValue: 1,
+      maxValue: 100,
+      step: 3, 
+      format: "WHOLE",
+      setLabel: 'Ok',
+      closeLabel: 'Cancelar',
+      setButtonType: 'button-positive', 
+      closeButtonType: 'button-stable',
+      callback: function (val) {
+        console.log(val) 
+      numberPickerCallback(val);
+    }
+  };
+
+  $scope.numberPickerValorMax = {
+    inputValue: $scope.price.valor_max, 
+    minValue: 1,
+    maxValue: 100,
+    step: 3, 
+    format: "WHOLE", 
+    setLabel: 'Ok', 
+    closeLabel: 'Cancelar', 
+    setButtonType: 'button-positive', 
+    closeButtonType: 'button-stable', 
+    callback: function (val) { 
+    timePickerCallback(val);
+  }
+};
+
+$scope.numberPickerIdadeMin = {
+  inputValue: $scope.age.idade_min, 
+  minValue: 1,
+  maxValue: 100,
+  step: 3, 
+  format: "WHOLE", 
+  setLabel: 'Ok', 
+  closeLabel: 'Cancelar', 
+  setButtonType: 'button-positive', 
+  closeButtonType: 'button-stable', 
+  callback: function (val) { 
+  timePickerCallback(val);
+}
+};
+
+$scope.numberPickerIdadeMax = {
+  inputValue: $scope.age.idade_max, 
+  minValue: 1,
+  maxValue: 100,
+  step: 3, 
+  format: "WHOLE", 
+  setLabel: 'Ok',
+  closeLabel: 'Cancelar', 
+  setButtonType: 'button-positive', 
+  closeButtonType: 'button-stable', 
+  callback: function (val) {  
+  timePickerCallback(val);
+}
+};
+
     $dados.$loaded(
       function (data) {
         var key = Object.keys(data)[0];
@@ -1273,7 +1335,7 @@ console.log("passa")
         var usuarios = root.child('alunos/');
       } else {
         var usuarios = root.child('profissionais/').child($scope.user.key);
-      //  var enderecos = root.child('enderecos/').child($scope.address.key);
+        //  var enderecos = root.child('enderecos/').child($scope.address.key);
         var bairros = root.child('profissionais_bairro/').child($scope.place.key);
         var idade = root.child('profissionais_idade/').child($scope.age.key);
         var treinos = root.child('profissionais_treinos/').child($scope.acts.key);
@@ -1290,7 +1352,7 @@ console.log("passa")
       var day = data.getDate();
       var months = { "1": "01", "2": "02", "3": "03", "4": "04", "5": "05", "6": "06", "7": "07", "8": "08", "9": "09", "10": "10", "11": "11", "12": "12" };
       var formatted = day + "-" + months[month] + "-" + year;
-      console.log("data " + user.nascimento)
+  //    console.log("data " + user.nascimento)
 
       editUsers = {
         nome: user.nome,
@@ -1306,8 +1368,16 @@ console.log("passa")
         formacao: user.formacao,
         descricao: user.descricao,
         atende_fora: false,
-        perfil_views: "400" 
+        perfil_views: "400"
       };
+
+      $scope.user.picture = user.picture;
+      $scope.user.nome = user.nome;
+      $scope.user.sobrenome = user.sobrenome;
+      $scope.user.estado = user.estado;
+      $scope.user.cidade = user.cidade;
+
+      UserService.saveProfileData("user.current_user_data", $scope.user);
 
       editEnderecos = {
         profissional_id: auth.uid,
@@ -1336,10 +1406,10 @@ console.log("passa")
         valor_max: $scope.price.valor_max
       };
 
-      console.log("edit " + JSON.stringify(editUsers))
+     // console.log("edit " + JSON.stringify($scope.user))
 
       usuarios.update(editUsers);
-   //   enderecos.update(editEnderecos);
+      //   enderecos.update(editEnderecos);
       bairros.update(editBairros);
       idade.update(editIdade);
       treinos.update(editTreinos);
@@ -1350,6 +1420,14 @@ console.log("passa")
       // }, function(error) {
       //   console.log("Error:", error);
       // });
+
+    //  $state.go('tab.account', {}, {reload: 'tab.account'});
+
+    //  $state.go('tab.dash').then(function(result) {
+      $state.reload('tab.account');
+        $state.go('tab.account');
+       
+    //  });
 
     }
 
@@ -1379,7 +1457,7 @@ console.log("passa")
     // } else {
     //   $scope.user = userExists;
     // }
-    console.log("user no controle " + JSON.stringify($scope.address))
+    console.log("user no controle " + JSON.stringify($scope.user))
 
     $scope.profileType = 0;
     if (tipo == "aluno") {

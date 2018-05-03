@@ -158,16 +158,13 @@
               <div class="col-5">
                 <p style="font-size: 14px; color: #000; text-transform: none; padding: 8px;">R$</p>
               </div>
-              <input ng-model="price.valor_min" type="text" maxlength="4" size="2" style="border:1px solid rgba(0, 0, 0, 0.400); border-radius: 25px; padding: 5px; text-align:center;"
-                class="inputForm" />
+              <ionic-numberpicker input-obj="numberPickerValorMin"><input ng-model="price.valor_min" type="text" maxlength="4" size="2" style="border:1px solid rgba(0, 0, 0, 0.400); border-radius: 25px; padding: 5px; text-align:center;"
+                class="inputForm" /></ionic-numberpicker>&nbsp;
               <div class="col-5">
                 <p style="font-size: 14px; color: #000; text-transform: none; padding: 8px;">-</p>
               </div>
-              <input ng-model="price.valor_max" type="text" maxlength="4" size="2" style="border:1px solid rgba(0, 0, 0, 0.400); border-radius: 25px; padding: 5px; text-align:center;"
-                class="inputForm" />
-            </div>
-            <div class="item range">
-              <input type="range" name="price" ng-model="data.age" min="5" max="150" value="data.age">
+              <ionic-numberpicker input-obj="numberPickerValorMax"><input ng-model="price.valor_max" type="text" maxlength="4" size="2" style="border:1px solid rgba(0, 0, 0, 0.400); border-radius: 25px; padding: 5px; text-align:center;"
+                class="inputForm" /></ionic-numberpicker>&nbsp;
             </div>
             <p style="font-size: 18px; color: #000; text-transform: none; margin-top: 25px;">
               <b>Idade</b>
@@ -176,16 +173,13 @@
               <div class="col-5">
                 <p style="font-size: 14px; color: #000; text-transform: none; padding: 8px;">De</p>
               </div>
-              <input ng-model="age.idade_min" type="text" maxlength="4" size="2" style="border:1px solid rgba(0, 0, 0, 0.400); border-radius: 25px; padding: 5px; text-align:center;"
-                class="inputForm" />
+              <ionic-numberpicker input-obj="numberPickerIdadeMin"><input ng-model="age.idade_min" type="text" maxlength="4" size="2" style="border:1px solid rgba(0, 0, 0, 0.400); border-radius: 25px; padding: 5px; text-align:center;"
+                class="inputForm" /></ionic-numberpicker>&nbsp;
               <div class="col-5">
                 <p style="font-size: 14px; color: #000; text-transform: none; padding: 8px;">a</p>
               </div>
-              <input ng-model="age.idade_max" type="text" maxlength="4" size="2" style="border:1px solid rgba(0, 0, 0, 0.400); border-radius: 25px; padding: 5px; text-align:center;"
-                class="inputForm" />
-            </div>
-            <div class="item range">
-              <input type="range" name="age" ng-model="data.age" min="5" max="150" value="data.age">
+              <ionic-numberpicker input-obj="numberPickerIdadeMax"><input ng-model="age.idade_max" type="text" maxlength="4" size="2" style="border:1px solid rgba(0, 0, 0, 0.400); border-radius: 25px; padding: 5px; text-align:center;"
+                class="inputForm" /></ionic-numberpicker>&nbsp;
             </div>
             <p style="font-size: 18px; color: #000; text-transform: none; margin-top: 25px;">
               <b>Locais de atendimento</b>

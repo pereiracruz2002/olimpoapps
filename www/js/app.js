@@ -161,9 +161,12 @@ App.run(function($ionicPlatform,$state,$rootScope,$firebaseAuth,$ionicLoading, $
     views: {
       'tab-account': {
         templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
+        controller: 'AccountCtrl',
+        reload: true
       }
-    }
+    },
+    cache: false,
+    reload: true
   });
 
   // if none of the above states are matched, use this as the fallback
