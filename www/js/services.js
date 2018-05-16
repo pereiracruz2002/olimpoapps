@@ -1,4 +1,4 @@
-angular.module('starter.services', ['firebase'])
+angular.module('starter.services', ['firebase', 'ionic-numberpicker'])
 
 App.service('UserService', function ($http, URL_API, $httpParamSerializerJQLike, $firebaseArray, $q) {
 

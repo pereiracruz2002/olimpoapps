@@ -1,4 +1,4 @@
-angular.module('starter.directives', [])
+angular.module('starter.directives', ['ionic-numberpicker'])
 	.directive('ionGooglePlace', function ($ionicTemplateLoader, $ionicBackdrop, $ionicPlatform, $q, $timeout, $rootScope, $document) {
 		return {
 			require: '?ngModel',

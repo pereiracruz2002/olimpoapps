@@ -186,14 +186,17 @@
             </p>
             <div>
               <ion-list>
-                <label ng-repeat="endereco in address" style="margin-left: 20px;" style="font-size: 18px; color: #000; text-transform: none; padding-top: 10px;"
+                <label ng-repeat="endereco in address" style="font-size: 14px; color: rgba(0, 0, 0, 0.400); text-transform: none; padding-top: 10px;"
                   ng-model="address.name">
+                  <br/>
                   {{endereco.name}}
-                </label>
-                <p ng-repeat="local in address.location" style="font-size: 14px; color: rgba(0, 0, 0, 0.400); text-transform: none;" ng-model="address.location">
+                  <br/>
+                  {{endereco.modalidade}}
+                  <br/>
+                  {{endereco.location}}
                   <button class="profile-icon icon ion-ios-trash custom-icon-blue" ng-click="deleteRow(bairro)"></button>
-                  {{local}}
-                </p>
+                  <br/>
+                </label>
               </ion-list>
             </div>
             <div class="list list-inset" style="width: 100%; margin-left: 0;">
