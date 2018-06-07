@@ -71,7 +71,7 @@ App.service('UserService', function ($http, URL_API, $httpParamSerializerJQLike,
                 snapshot.forEach(function (childSnapshot) {
                     var key = childSnapshot.key;
                     var childData = childSnapshot.val();
-                    user = childData.enderecos
+                    user = childData.enderecos;
                 });
                 service.saveProfileData("user.current_user_address", user);
            //     callback(user);

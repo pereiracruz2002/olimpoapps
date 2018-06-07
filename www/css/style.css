@@ -725,6 +725,7 @@
     transform: translate3d(0,0,0);
     width: 100%;
     margin-bottom: 30px;
+    filter: none;
 }
 
 .hero > .content {
@@ -732,7 +733,7 @@
     position: relative;
     text-align: center;
     width: 100%;
-    z-index: 1;
+    filter: initial;
 }
 
 .hero > .content > .avatar {

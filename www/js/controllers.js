@@ -109,7 +109,7 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
                       email: profileInfo.email,
                       photoURL: "http://graph.facebook.com/" + authResponse.userID + "/picture?type=large"
                     });
-                    console.log("passa0")
+
                     $state.go('tab.account');
                   } else {
                     tipoFacebook = 'aluno';
@@ -120,7 +120,7 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
                       email: profileInfo.email,
                       photoURL: "http://graph.facebook.com/" + authResponse.userID + "/picture?type=large"
                     });
-                    console.log("passa1")
+
                     $state.go('tab.dash');
                   }
 
@@ -193,6 +193,7 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
                 email: profileInfo.email,
                 photoURL: "http://graph.facebook.com/" + authResponse.userID + "/picture?type=large"
               });
+
               $state.go('tab.dash');
             }, function (fail) {
               // Fail get profile info
@@ -941,7 +942,7 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
         closeButtonType: 'button-stable',
         callback: function (val) {
           console.log(val)
-          if(val == undefined || val == null) {
+          if (val == undefined || val == null) {
             console.log('nao')
           } else {
             $scope.price.valor_min = val;
@@ -960,7 +961,7 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
         setButtonType: 'button-positive',
         closeButtonType: 'button-stable',
         callback: function (val) {
-          if(val == undefined || val == null) {
+          if (val == undefined || val == null) {
             console.log('nao')
           } else {
             $scope.price.valor_max = val;
@@ -979,7 +980,7 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
         setButtonType: 'button-positive',
         closeButtonType: 'button-stable',
         callback: function (val) {
-          if(val == undefined || val == null) {
+          if (val == undefined || val == null) {
             console.log('nao')
           } else {
             $scope.age.idade_min = val;
@@ -998,7 +999,7 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
         setButtonType: 'button-positive',
         closeButtonType: 'button-stable',
         callback: function (val) {
-          if(val == undefined || val == null) {
+          if (val == undefined || val == null) {
             console.log('nao')
           } else {
             $scope.age.idade_max = val;
@@ -1163,7 +1164,7 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
         var usuarios = root.child('alunos/');
       } else {
         var usuarios = root.child('profissionais/').child($scope.user.key);
-        //  var enderecos = root.child('enderecos/').child($scope.address.key);
+        var enderecos = root.child('enderecos/').child($scope.user.key);
         var bairros = root.child('profissionais_bairro/').child($scope.place.key);
         var idade = root.child('profissionais_idade/').child($scope.age.key);
         var treinos = root.child('profissionais_treinos/').child($scope.acts.key);
@@ -1205,7 +1206,7 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
           formacao: user.formacao,
           descricao: user.descricao,
           atende_fora: false,
-          perfil_views: "400"
+          perfil_views: ''
         };
       }
 
@@ -1224,7 +1225,6 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
 
       if (tipo == "profissionais") {
         editEnderecos = {
-          profissional_id: auth.uid,
           enderecos: $scope.address
         };
 
@@ -1255,7 +1255,7 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
         treinos.update(editTreinos);
         valor.update(editValor);
 
-        UserService.saveProfileData("user.current_user_address", editEnderecos);
+        UserService.saveProfileData("user.current_user_address", editEnderecos.enderecos);
         UserService.saveProfileData("user.current_user_place", editBairros);
         UserService.saveProfileData("user.current_user_age", editIdade);
         UserService.saveProfileData("user.current_user_price", editValor);
@@ -1278,11 +1278,12 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
   .controller('AccountCtrl', function ($scope, $firebaseAuth, $firebaseArray, UserService, $ionicSideMenuDelegate, $firebaseObject) {
 
     var auth = JSON.parse(UserService.getProfile());
+    console.log(JSON.stringify(auth))
     var profile = auth.displayName;
     var arraytipo = profile.split('_');
     var tipo = arraytipo[1];
     var root = firebase.database().ref();
-    var userExists = JSON.parse(UserService.getProfileData());
+    var viaFacebook = false;
 
     $scope.user = JSON.parse(UserService.getProfileData());
     $scope.address = JSON.parse(localStorage.getItem("user.current_user_address"));
@@ -1291,21 +1292,86 @@ App.controller('LoginCtrl', function ($scope, $state, $ionicPopup, $firebaseAuth
     $scope.price = JSON.parse(localStorage.getItem("user.current_user_price"));
     $scope.acts = JSON.parse(localStorage.getItem("user.current_user_acts"));
 
+    console.log($scope.address);
+
+    if ($scope.user == null) {
+      viaFacebook = true;
+      $scope.user = {
+        'key': auth.uid,
+        'picture': auth.photoURL,
+        'nome': arraytipo[0],
+        'sobrenome': '',
+        'cidade': '',
+        'estado': '',
+        'disponibilidade': false,
+        'descricao': '',
+        'email': auth.email,
+        'formacao': '',
+        'nascimento': '',
+        'perfil_views': '',
+        'sexo': ''
+      };
+
+      $scope.address = [{
+        'key': auth.uid,
+        'g': '',
+        'l': ['', ''],
+        'location': '',
+        'modalidade': '',
+        'name': '',
+        'profileImg': ''
+      }];
+
+      $scope.place = {
+        'key': auth.uid,
+        'bairro': ''
+      };
+
+      $scope.age = {
+        'key': auth.uid,
+        'idade_min': '',
+        'idade_max': ''
+      };
+
+      $scope.price = {
+        'key': auth.uid,
+        'valor_min': '',
+        'valor_max': ''
+      };
+
+      $scope.acts = {
+        'key': auth.uid,
+        'treinos': ''
+      };
+
+      UserService.saveProfileData("user.current_user_data", $scope.user);
+      UserService.saveProfileData("user.current_user_address", $scope.address);
+      UserService.saveProfileData("user.current_user_place", $scope.place);
+      UserService.saveProfileData("user.current_user_age", $scope.age);
+      UserService.saveProfileData("user.current_user_price", $scope.price);
+      UserService.saveProfileData("user.current_user_acts", $scope.acts);
+    }
+
     $scope.profileType = 0;
     if (tipo == "aluno") {
       $scope.profileType = 1;
     } else {
       $scope.profileType = 2;
       var usuarios = root.child('profissionais/').child($scope.user.key);
-      var views = parseInt($scope.user.perfil_views) + 1;
 
-      editViews = {
-        perfil_views: views
+      if (viaFacebook == false) {
+
+
+        var views = parseInt($scope.user.perfil_views) + 1;
+console.log(views)
+        editViews = {
+          perfil_views: views
+        }
+
+        usuarios.update(editViews);
+
       }
 
-      usuarios.update(editViews);
-
-      console.log(views)
     }
 
   })

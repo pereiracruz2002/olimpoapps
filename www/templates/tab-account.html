@@ -1,6 +1,7 @@
 <ion-view>
   <ion-content>
-    <div class="hero has-mask" style="background-image:url('{{user.picture}}');">
+    <div class="hero has-mask" style="position:relative;">
+      <div style="position:absolute; top:0; left:0; right:0; bottom:0; background-image:url('{{user.picture}}'); filter: blur(10px); z-index:-1;"></div>
       <div class="content">
         <a href="#/configuration" class="button pic-perfil-configuration">
           <i class="ion-gear-a"></i>
@@ -99,7 +100,8 @@
         </div>
         <div>
           <ion-list style="margin-left: 32px;">
-            <p ng-repeat="endereco in address" style="font-size: 14px; color: #000; text-transform: none; padding-left: 24px; padding-right: 16px;" ng-model="address">
+            <p ng-repeat="endereco in address" style="font-size: 14px; color: #000; text-transform: none; padding-left: 24px; padding-right: 16px;"
+              ng-model="address">
               <i style="top: 40%; font-size: 2.0em; padding-top: 10px;" class="profile-icon icon ion-ios-location-outline"></i>
               <label style="margin-left: 20px;" style="font-size: 18px; color: #000; text-transform: none; padding-top: 10px;">{{endereco.name}}</label>
               <br>
